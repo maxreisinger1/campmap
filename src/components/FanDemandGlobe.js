@@ -11,12 +11,6 @@ import { supabase } from "../supabase";
 import { SEED_ZIPS } from "../testdata";
 
 const CITY_GOAL = 100;
-const COLORS = {
-  bg: "#f7f1e1",
-  ink: "#1f2937",
-  rose: "#ef476f",
-  gold: "#f5c518",
-};
 
 export default function FanDemandGlobe() {
   const [rotate, setRotate] = useState([-20, -15, 0]);
@@ -181,11 +175,24 @@ export default function FanDemandGlobe() {
     if (!EMAIL_RE.test(email)) return setMessage("Please enter a valid email.");
     const z = String(zip || "").trim();
     if (z.length < 5) return setMessage("Enter a 5-digit ZIP.");
+
+    // Client-side spam protection: check for duplicate email or zip
+    const emailLower = email.trim().toLowerCase();
+    const alreadySubmitted = submissions.some(
+      (s) => s.email === emailLower && s.zip === z
+    );
+    if (alreadySubmitted) {
+      setMessage(
+        "You've already submitted a pin with this email and ZIP. Only one submission per user is allowed."
+      );
+      return;
+    }
+
     try {
       const info = await lookupZip(z);
       const submission = {
         name: name.trim(),
-        email: email.trim().toLowerCase(),
+        email: emailLower,
         zip: z,
         city: info.city,
         state: info.state,
@@ -273,13 +280,9 @@ export default function FanDemandGlobe() {
 
   return (
     <div
-      className="min-h-screen w-full"
       data-retro={retroMode ? "true" : "false"}
-      style={{
-        background: COLORS.bg,
-        color: COLORS.ink,
-        fontFamily: theme.fontFamily,
-      }}
+      className="min-h-screen w-full bg-[#f7f1e1] text-[#1f2937]"
+      style={{ fontFamily: theme.fontFamily }}
     >
       {/* Global styles and retro effects */}
       <style>{`
@@ -324,7 +327,6 @@ export default function FanDemandGlobe() {
             submissions={submissions}
             CITY_GOAL={CITY_GOAL}
             focus={focus}
-            COLORS={COLORS}
             theme={theme}
           />
         </div>
@@ -340,7 +342,6 @@ export default function FanDemandGlobe() {
             theme={theme}
             submissions={submissions}
             jitter={jitter}
-            COLORS={COLORS}
             containerRef={containerRef}
             cursor={cursor}
             hasSubmitted={hasSubmitted}

@@ -5,7 +5,6 @@ export default function Leaderboard({
   submissions,
   CITY_GOAL,
   focus,
-  COLORS,
   theme,
 }) {
   return (
@@ -58,7 +57,7 @@ export default function Leaderboard({
                   <div
                     className="absolute inset-0 pointer-events-none"
                     style={{
-                      backgroundImage: `radial-gradient(circle at 6px 7px, ${COLORS.gold} 2px, transparent 2.5px), radial-gradient(circle at calc(100% - 6px) 7px, ${COLORS.gold} 2px, transparent 2.5px)`,
+                      backgroundImage: `radial-gradient(circle at 6px 7px, #f5c518 2px, transparent 2.5px), radial-gradient(circle at calc(100% - 6px) 7px, #f5c518 2px, transparent 2.5px)`,
                       backgroundSize: "12px 14px, 12px 14px",
                       backgroundRepeat: "repeat-y",
                     }}

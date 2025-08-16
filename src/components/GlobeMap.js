@@ -20,7 +20,6 @@ export default function GlobeMap({
   theme,
   submissions,
   jitter,
-  COLORS,
   containerRef,
   cursor,
   hasSubmitted,
@@ -137,7 +136,7 @@ export default function GlobeMap({
               <g transform="translate(-6,-6)">
                 <circle
                   r={5.5}
-                  fill={retroMode ? "#ff00a6" : COLORS.rose}
+                  fill={retroMode ? "#ff00a6" : "#ef476f"}
                   stroke={theme.stroke}
                   strokeWidth={1.25}
                 />
