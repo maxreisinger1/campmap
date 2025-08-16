@@ -1,0 +1,17 @@
+export const SEED_ZIPS = {
+  10001: { city: "New York", state: "NY", lat: 40.7506, lon: -73.9972 },
+  73301: { city: "Austin", state: "TX", lat: 30.2672, lon: -97.7431 },
+  90001: { city: "Los Angeles", state: "CA", lat: 34.0522, lon: -118.2437 },
+  98101: { city: "Seattle", state: "WA", lat: 47.6101, lon: -122.3344 },
+  60601: { city: "Chicago", state: "IL", lat: 41.8853, lon: -87.6216 },
+  80202: { city: "Denver", state: "CO", lat: 39.7508, lon: -104.9966 },
+  94102: { city: "San Francisco", state: "CA", lat: 37.7793, lon: -122.4193 },
+  30301: { city: "Atlanta", state: "GA", lat: 33.749, lon: -84.388 },
+  48201: { city: "Detroit", state: "MI", lat: 42.346, lon: -83.061 },
+  "02108": { city: "Boston", state: "MA", lat: 42.357, lon: -71.065 },
+  78702: { city: "Austin", state: "TX", lat: 30.2672, lon: -97.7431 },
+  10010: { city: "New York", state: "NY", lat: 40.7386, lon: -73.9864 },
+  90210: { city: "Beverly Hills", state: "CA", lat: 34.0736, lon: -118.4004 },
+  33101: { city: "Miami", state: "FL", lat: 25.7743, lon: -80.1937 },
+  75201: { city: "Dallas", state: "TX", lat: 32.7875, lon: -96.8002 },
+};
