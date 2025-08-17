@@ -6,9 +6,10 @@ import RetroEffects from "./RetroEffects";
 import Header from "./Header";
 import { exportToCSV } from "../utils/csv";
 import { lookupZip } from "../utils/zipLookup";
-import { uid, clamp } from "../utils/helpers";
-import { supabase } from "../services/supabase";
+import { clamp } from "../utils/helpers";
 import { SEED_ZIPS } from "../services/testdata";
+import { loadSubmissions, addSubmission } from "../services/submissionsService";
+import { seedSubmissions } from "../services/SubmissionsService";
 
 const CITY_GOAL = 100;
 
@@ -38,21 +39,17 @@ export default function FanDemandGlobe() {
 
   // Load submissions from Supabase on component mount
   useEffect(() => {
-    loadSubmissions();
-  }, []);
+    const loadSubmissionsOnMount = async () => {
+      try {
+        const data = await loadSubmissions();
+        setSubmissions(data);
+      } catch (error) {
+        setFatal(String(error.message || error));
+      }
+    };
 
-  async function loadSubmissions() {
-    try {
-      const { data, error } = await supabase
-        .from("submissions")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      setSubmissions(data || []);
-    } catch (error) {
-      setFatal(`Failed to load submissions: ${error.message}`);
-    }
-  }
+    loadSubmissionsOnMount();
+  }, []);
 
   useEffect(() => {
     const onErr = (e) => setFatal(String(e?.message || e));
@@ -199,11 +196,7 @@ export default function FanDemandGlobe() {
         lat: Number(info.lat),
         lon: Number(info.lon),
       };
-      const { data, error } = await supabase
-        .from("submissions")
-        .insert([submission])
-        .select();
-      if (error) throw error;
+      const data = await addSubmission(submission);
       setSubmissions((prev) => [data[0], ...prev]);
       setForm({ name: "", email: "", zip: "" });
       setMessage("Pinned! Thanks for raising your hand.");
@@ -212,20 +205,6 @@ export default function FanDemandGlobe() {
       setMessage(
         "Couldn't resolve that ZIP right now. Try a different one or use 'Load demo pins'."
       );
-    }
-  }
-
-  async function resetData() {
-    try {
-      const { error } = await supabase
-        .from("submissions")
-        .delete()
-        .neq("id", 0);
-      if (error) throw error;
-      setSubmissions([]);
-      setMessage("All data reset successfully");
-    } catch (error) {
-      setMessage("Failed to reset data");
     }
   }
 
@@ -244,11 +223,7 @@ export default function FanDemandGlobe() {
           lon: info.lon,
         };
       });
-      const { data, error } = await supabase
-        .from("submissions")
-        .insert(sample)
-        .select();
-      if (error) throw error;
+      const data = await seedSubmissions(sample);
       setSubmissions((prev) => [...data, ...prev]);
       setMessage("Loaded sample pins.");
     } catch (error) {
