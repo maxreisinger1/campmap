@@ -1,4 +1,4 @@
-import { SEED_ZIPS } from "../testdata";
+import { SEED_ZIPS } from "../services/testdata";
 
 export async function lookupZip(z) {
   if (SEED_ZIPS[z]) return SEED_ZIPS[z];

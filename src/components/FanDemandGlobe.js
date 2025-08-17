@@ -7,8 +7,8 @@ import Header from "./Header";
 import { exportToCSV } from "../utils/csv";
 import { lookupZip } from "../utils/zipLookup";
 import { uid, clamp } from "../utils/helpers";
-import { supabase } from "../supabase";
-import { SEED_ZIPS } from "../testdata";
+import { supabase } from "../services/supabase";
+import { SEED_ZIPS } from "../services/testdata";
 
 const CITY_GOAL = 100;
 
