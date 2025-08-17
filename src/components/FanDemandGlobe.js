@@ -8,8 +8,11 @@ import { exportToCSV } from "../utils/csv";
 import { lookupZip } from "../utils/zipLookup";
 import { clamp } from "../utils/helpers";
 import { SEED_ZIPS } from "../services/testdata";
-import { loadSubmissions, addSubmission } from "../services/submissionsService";
-import { seedSubmissions } from "../services/SubmissionsService";
+import {
+  addSubmission,
+  loadSubmissions,
+  seedSubmissions,
+} from "../services/SubmissionsService";
 
 const CITY_GOAL = 100;
 

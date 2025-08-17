@@ -30,8 +30,12 @@ export async function addSubmission(submission) {
 
 export async function resetSubmissions() {
   try {
-    const { error } = await supabase.from("submissions").delete().neq("id", 0);
+    const { data, error } = await supabase
+      .from("submissions")
+      .delete()
+      .neq("id", 0);
     if (error) throw error;
+    return data;
   } catch (error) {
     console.error(`Failed to reset submissions: ${error.message}`);
     throw error;
@@ -40,11 +44,12 @@ export async function resetSubmissions() {
 
 export async function seedSubmissions(sample) {
   try {
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("submissions")
       .insert(sample)
       .select();
     if (error) throw error;
+    return data;
   } catch (error) {
     console.error(`Failed to seed submissions: ${error.message}`);
     throw error;
