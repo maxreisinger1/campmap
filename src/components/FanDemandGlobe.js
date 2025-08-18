@@ -8,12 +8,13 @@ import { exportToCSV } from "../utils/csv";
 import { lookupZip } from "../utils/zipLookup";
 import { clamp } from "../utils/helpers";
 import { SEED_ZIPS } from "../services/testdata";
+import { useLeaderboard } from "../hooks/useLeaderboard";
 import {
   addSubmission,
   loadSubmissions,
   seedSubmissions,
 } from "../services/SubmissionsService";
-import { supabase } from "../services/supabase";
+import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 
 const CITY_GOAL = 100;
 
@@ -22,7 +23,6 @@ export default function FanDemandGlobe() {
   const [zoom, setZoom] = useState(1.15);
   const [cursor, setCursor] = useState("grab");
   const [fatal, setFatal] = useState("");
-  const [submissions, setSubmissions] = useState([]);
   const [form, setForm] = useState({ name: "", email: "", zip: "" });
   const [message, setMessage] = useState("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -31,6 +31,8 @@ export default function FanDemandGlobe() {
   const [transitioning, setTransitioning] = useState(false);
   const resumeTimer = useRef(null);
   const RESUME_AFTER = 1500;
+  const { leaderboard, loading: lbLoading, error: lbError } = useLeaderboard();
+  const [submissions, setSubmissions] = useLiveSubmissions([]);
 
   const containerRef = useRef(null);
   const dragRef = useRef({
@@ -66,15 +68,6 @@ export default function FanDemandGlobe() {
       window.removeEventListener("unhandledrejection", onRej);
     };
   }, []);
-
-  const leaderboard = useMemo(() => {
-    const m = new Map();
-    for (const s of submissions)
-      m.set(`${s.city}, ${s.state}`, (m.get(`${s.city}, ${s.state}`) || 0) + 1);
-    return Array.from(m.entries())
-      .map(([place, count]) => ({ place, count }))
-      .sort((a, b) => b.count - a.count || a.place.localeCompare(b.place));
-  }, [submissions]);
 
   const focus = (lat, lon) => setRotate([-lon, -lat, 0]);
 
@@ -186,17 +179,18 @@ export default function FanDemandGlobe() {
         zip: z,
         city: info.city,
         state: info.state,
-        city_id: "7b103d22-0dd7-4889-96cf-ca04d0055b15",
         lat: Number(info.lat),
         lon: Number(info.lon),
       };
-      const { data, error } = await supabase.functions.invoke("submit_signup", {
-        body: submission,
-      });
+      const { data, error } = await addSubmission(submission);
 
       if (error) throw error.message || "Failed to submit form";
 
-      setSubmissions((prev) => [data.submission, ...prev]); // 👈 correct
+      // Optimistic—Realtime will also push it to everyone else
+      setSubmissions((prev) =>
+        prev.some((s) => s.id === data.id) ? prev : [data, ...prev]
+      );
+
       setForm({ name: "", email: "", zip: "" });
       setMessage("Pinned! Thanks for raising your hand.");
       setHasSubmitted(true);
@@ -295,7 +289,13 @@ export default function FanDemandGlobe() {
 
           {/* Leaderboard */}
           <Leaderboard
-            leaderboard={leaderboard}
+            leaderboard={leaderboard.map((r) => ({
+              place: `${r.city_name}, ${""}`, // or store state in cities if you like
+              count: r.signup_count,
+              ticketsAvailable: r.tickets_available,
+              cityId: r.city_id,
+              threshold: r.threshold,
+            }))}
             submissions={submissions}
             CITY_GOAL={CITY_GOAL}
             focus={focus}

@@ -16,10 +16,9 @@ export async function loadSubmissions() {
 
 export async function addSubmission(submission) {
   try {
-    const { data, error } = await supabase
-      .from("submissions")
-      .insert([submission])
-      .select();
+    const { data, error } = await supabase.functions.invoke("submit_signup", {
+      body: submission,
+    });
     if (error) throw error;
     return data;
   } catch (error) {
