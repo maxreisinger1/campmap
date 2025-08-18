@@ -83,7 +83,7 @@ export default function GlobeMap({
         />
       </div>
 
-      <div
+      {/* <div
         className="absolute inset-0 z-20 flex items-center justify-center transition-opacity duration-500"
         style={{
           opacity: hasSubmitted ? 0 : 1,
@@ -94,7 +94,7 @@ export default function GlobeMap({
           backgroundSize: "cover",
           backgroundBlendMode: "overlay",
         }}
-      />
+      /> */}
 
       <div
         ref={containerRef}

@@ -13,6 +13,7 @@ import {
   loadSubmissions,
   seedSubmissions,
 } from "../services/SubmissionsService";
+import { supabase } from "../services/supabase";
 
 const CITY_GOAL = 100;
 
@@ -176,38 +177,31 @@ export default function FanDemandGlobe() {
     const z = String(zip || "").trim();
     if (z.length < 5) return setMessage("Enter a 5-digit ZIP.");
 
-    // Client-side spam protection: check for duplicate email or zip
-    const emailLower = email.trim().toLowerCase();
-    const alreadySubmitted = submissions.some(
-      (s) => s.email === emailLower && s.zip === z
-    );
-    if (alreadySubmitted) {
-      setMessage(
-        "You've already submitted a pin with this email and ZIP. Only one submission per user is allowed."
-      );
-      return;
-    }
-
     try {
+      console.log("Submitting form:", { name, email, zip });
       const info = await lookupZip(z);
       const submission = {
         name: name.trim(),
-        email: emailLower,
+        email: email.trim().toLowerCase(),
         zip: z,
         city: info.city,
         state: info.state,
+        city_id: "7b103d22-0dd7-4889-96cf-ca04d0055b15",
         lat: Number(info.lat),
         lon: Number(info.lon),
       };
-      const data = await addSubmission(submission);
-      setSubmissions((prev) => [data[0], ...prev]);
+      const { data, error } = await supabase.functions.invoke("submit_signup", {
+        body: submission,
+      });
+
+      if (error) throw error.message || "Failed to submit form";
+
+      setSubmissions((prev) => [data.submission, ...prev]); // 👈 correct
       setForm({ name: "", email: "", zip: "" });
       setMessage("Pinned! Thanks for raising your hand.");
       setHasSubmitted(true);
     } catch (err) {
-      setMessage(
-        "Couldn't resolve that ZIP right now. Try a different one or use 'Load demo pins'."
-      );
+      console.error("Error submitting form:", err);
     }
   }
 
