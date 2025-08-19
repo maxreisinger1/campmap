@@ -7,7 +7,6 @@ export default function SignupForm({
   message,
   fatal,
   retroMode,
-  seedDemo,
   setMessage,
 }) {
   return (
@@ -110,13 +109,6 @@ export default function SignupForm({
             }`}
           >
             Clear
-          </button>
-          <button
-            type="button"
-            onClick={seedDemo}
-            className="ml-auto text-xs underline"
-          >
-            Load demo pins
           </button>
         </div>
         {message && (

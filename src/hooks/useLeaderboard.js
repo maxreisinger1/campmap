@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { supabase } from "../services/supabase";
+import {
+  getCityLeaderboard,
+  subscribeToCityLeaderboard,
+} from "../services/CityService";
 
 export function useLeaderboard() {
   const [rows, setRows] = useState([]);
@@ -8,107 +11,57 @@ export function useLeaderboard() {
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
+    getCityLeaderboard()
+      .then((data) => {
+        if (!cancelled) setRows(data ?? []);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
 
-    const load = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("city_leaderboard")
-        .select("*");
-      if (cancelled) return;
-      if (error) setError(error.message);
-      else setRows(data ?? []);
-      setLoading(false);
-    };
-
-    load();
-
-    // Realtime: city_metrics (counts)
-    const chMetrics = supabase
-      .channel("rt-city-metrics")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "city_metrics" },
-        (payload) => {
-          const rec = payload.new ?? payload.old;
-          if (!rec?.city_id) return;
-          setRows((prev) => {
-            const next = [...prev];
-            const i = next.findIndex((r) => r.city_id === rec.city_id);
-            if (i !== -1 && payload.new) {
-              next[i] = {
-                ...next[i],
-                signup_count:
-                  (payload.new && payload.new.signup_count) ??
-                  next[i].signup_count,
-                progress_ratio:
-                  ((payload.new && payload.new.signup_count) ??
-                    next[i].signup_count) / Math.max(1, next[i].threshold),
-              };
-              // keep sorted (desc by count, then alpha)
-              next.sort(
-                (a, b) =>
-                  b.signup_count - a.signup_count ||
-                  a.city_name.localeCompare(b.city_name)
-              );
-            }
-            return next;
-          });
+    // Subscribe to realtime updates
+    const unsub = subscribeToCityLeaderboard((type, payload) => {
+      const rec = payload.new ?? payload.old;
+      if (!rec?.city_id) return;
+      setRows((prev) => {
+        let next = [...prev];
+        const i = next.findIndex((r) => r.city_id === rec.city_id);
+        if (type === "metrics" && i !== -1 && payload.new) {
+          next[i] = {
+            ...next[i],
+            signup_count: payload.new.signup_count ?? next[i].signup_count,
+            progress_ratio:
+              (payload.new.signup_count ?? next[i].signup_count) /
+              Math.max(1, next[i].city_threshold),
+          };
+        } else if (type === "events" && i !== -1) {
+          next[i] = {
+            ...next[i],
+            evey_event_url: payload.new?.evey_event_url,
+            tickets_available: !!payload.new?.evey_event_url,
+            tickets_paused: payload.new?.tickets_paused,
+            tickets_sold: payload.new?.tickets_sold,
+          };
+        } else if (type === "cities" && i !== -1) {
+          next[i] = {
+            ...next[i],
+            city_name: payload.new.name ?? next[i].city_name,
+            city_threshold: payload.new.threshold ?? next[i].city_threshold,
+            progress_ratio:
+              next[i].signup_count /
+              Math.max(1, payload.new.threshold ?? next[i].city_threshold),
+          };
         }
-      )
-      .subscribe();
-
-    // Realtime: events (tickets availability)
-    const chEvents = supabase
-      .channel("rt-events")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "events" },
-        (payload) => {
-          const rec = payload.new ?? payload.old;
-          if (!rec?.city_id) return;
-          const hasTickets = !!payload.new?.evey_event_url;
-          setRows((prev) =>
-            prev.map((r) =>
-              r.city_id === rec.city_id
-                ? { ...r, tickets_available: hasTickets }
-                : r
-            )
-          );
-        }
-      )
-      .subscribe();
-
-    // Optional: threshold/name changes
-    const chCities = supabase
-      .channel("rt-cities")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "cities" },
-        (payload) => {
-          if (!payload.new) return;
-          setRows((prev) =>
-            prev.map((r) =>
-              r.city_id === payload.new.id
-                ? {
-                    ...r,
-                    city_name: payload.new.name ?? r.city_name,
-                    threshold: payload.new.threshold ?? r.threshold,
-                    progress_ratio:
-                      r.signup_count /
-                      Math.max(1, payload.new.threshold ?? r.threshold),
-                  }
-                : r
-            )
-          );
-        }
-      )
-      .subscribe();
-
+        return next;
+      });
+    });
     return () => {
       cancelled = true;
-      supabase.removeChannel(chMetrics);
-      supabase.removeChannel(chEvents);
-      supabase.removeChannel(chCities);
+      unsub();
     };
   }, []);
 

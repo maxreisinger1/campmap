@@ -199,29 +199,6 @@ export default function FanDemandGlobe() {
     }
   }
 
-  async function seedDemo() {
-    try {
-      const zips = Object.keys(SEED_ZIPS);
-      const sample = zips.map((z) => {
-        const info = SEED_ZIPS[z];
-        return {
-          name: `Fan ${z}`,
-          email: `fan${z}@example.com`,
-          zip: z,
-          city: info.city,
-          state: info.state,
-          lat: info.lat,
-          lon: info.lon,
-        };
-      });
-      const data = await seedSubmissions(sample);
-      setSubmissions((prev) => [...data, ...prev]);
-      setMessage("Loaded sample pins.");
-    } catch (error) {
-      setMessage(`Failed to load demo pins: ${error.message}`);
-    }
-  }
-
   const jitter = (i) => (i % 2 ? 0.2 : -0.2) * ((i % 5) + 1);
 
   const theme = useMemo(() => {
@@ -283,22 +260,13 @@ export default function FanDemandGlobe() {
             message={message}
             fatal={fatal}
             retroMode={retroMode}
-            seedDemo={seedDemo}
             setMessage={setMessage}
           />
 
           {/* Leaderboard */}
           <Leaderboard
-            leaderboard={leaderboard.map((r) => ({
-              place: `${r.city_name}, ${""}`, // or store state in cities if you like
-              count: r.signup_count,
-              ticketsAvailable: r.tickets_available,
-              cityId: r.city_id,
-              threshold: r.threshold,
-            }))}
-            submissions={submissions}
+            leaderboard={leaderboard}
             CITY_GOAL={CITY_GOAL}
-            focus={focus}
             theme={theme}
           />
         </div>
