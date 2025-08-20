@@ -242,6 +242,7 @@ export default function FanDemandGlobe() {
             setMessage={setMessage}
             loading={loading}
           />
+          
 
           {/* Leaderboard */}
           <Leaderboard submissions={submissions} theme={theme} />
