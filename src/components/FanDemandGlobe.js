@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import SignupForm from "./SignupForm";
+import { ToastProvider, useToast } from "./ToastContext";
 import Leaderboard from "./Leaderboard";
 import GlobeMap from "./GlobeMap";
 import RetroEffects from "./RetroEffects";
@@ -10,9 +11,38 @@ import { addSubmission, loadSubmissions } from "../services/SubmissionsService";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 import { useLeaderboard } from "../hooks/useLeaderboard";
 import Footer from "./Footer";
+import RetroLoader from "./RetroLoader";
 
-export default function FanDemandGlobe() {
+function FanDemandGlobeInner() {
   const [rotate, setRotate] = useState([-20, -15, 0]);
+  const rotateAnimRef = useRef();
+  // Animate globe to focus on a given lat/lon
+  function animateToLocation({ lat, lon }) {
+    // Orthographic: rotate = [longitude, -latitude, 0]
+    const target = [-(lon || 0), -(lat || 0), 0];
+    const duration = 900; // ms
+    const frameRate = 1000 / 60;
+    const steps = Math.round(duration / frameRate);
+    const [startX, startY, startZ] = rotate;
+    const [endX, endY, endZ] = target;
+    let step = 0;
+    if (rotateAnimRef.current) cancelAnimationFrame(rotateAnimRef.current);
+    function animate() {
+      step++;
+      const t = Math.min(1, step / steps);
+      // Ease in-out
+      const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      setRotate([
+        startX + (endX - startX) * ease,
+        startY + (endY - startY) * ease,
+        startZ + (endZ - startZ) * ease,
+      ]);
+      if (t < 1) {
+        rotateAnimRef.current = requestAnimationFrame(animate);
+      }
+    }
+    animate();
+  }
   const [zoom, setZoom] = useState(1.15);
   const [cursor, setCursor] = useState("grab");
   const [fatal, setFatal] = useState("");
@@ -21,12 +51,12 @@ export default function FanDemandGlobe() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
   const [retroMode, setRetroMode] = useState(false);
-  const [transitioning, setTransitioning] = useState(false);
+  // const [transitioning, setTransitioning] = useState(false); // Removed unused state
   const [loading, setLoading] = useState(false);
   const resumeTimer = useRef(null);
   const RESUME_AFTER = 1500;
   const [submissions, setSubmissions] = useLiveSubmissions([]);
-  const { leaderboard, loading: lbLoading, error: lbError } = useLeaderboard();
+  const { leaderboard, loading: lbLoading } = useLeaderboard();
 
   const containerRef = useRef(null);
   const dragRef = useRef({
@@ -36,6 +66,7 @@ export default function FanDemandGlobe() {
     startRotate: rotate,
     factor: 0.35,
   });
+  const { showToast } = useToast();
 
   // Load submissions from Supabase on component mount
   useEffect(() => {
@@ -49,7 +80,8 @@ export default function FanDemandGlobe() {
     };
 
     loadSubmissionsOnMount();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // setSubmissions is stable from hook, safe to omit
 
   useEffect(() => {
     const onErr = (e) => setFatal(String(e?.message || e));
@@ -178,8 +210,6 @@ export default function FanDemandGlobe() {
       };
       const result = await addSubmission(submission);
       console.log("Form submitted successfully:", result);
-      if (result.error)
-        throw new Error(result.error.message || "Failed to submit form");
       // Optimistic - Realtime will also push it to everyone else
       setSubmissions((prev) =>
         prev.some((s) => s.id === result.submission.id)
@@ -191,6 +221,11 @@ export default function FanDemandGlobe() {
       setHasSubmitted(true);
     } catch (err) {
       console.error("Error submitting form:", err);
+      if (err.message) {
+        showToast(err.message, retroMode);
+      } else {
+        setFatal("Submission failed");
+      }
     } finally {
       setLoading(false);
     }
@@ -225,11 +260,7 @@ export default function FanDemandGlobe() {
       style={{ fontFamily: theme.fontFamily }}
     >
       {/* Header and retro toggle */}
-      <Header
-        retroMode={retroMode}
-        setRetroMode={setRetroMode}
-        setTransitioning={setTransitioning}
-      />
+      <Header retroMode={retroMode} setRetroMode={setRetroMode} />
 
       <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-2 space-y-6">
@@ -246,27 +277,44 @@ export default function FanDemandGlobe() {
           />
 
           {/* Leaderboard */}
-          <Leaderboard leaderboard={leaderboard} theme={theme} />
+          <Leaderboard
+            leaderboard={leaderboard}
+            theme={theme}
+            loading={lbLoading}
+            retroMode={retroMode}
+            onCityFocus={animateToLocation}
+          />
         </div>
 
         <div className="lg:col-span-3">
-          {/* Globe map and controls */}
-          <GlobeMap
-            rotate={rotate}
-            setRotate={setRotate}
-            zoom={zoom}
-            setZoom={setZoom}
-            retroMode={retroMode}
-            theme={theme}
-            submissions={submissions}
-            jitter={jitter}
-            containerRef={containerRef}
-            cursor={cursor}
-            hasSubmitted={hasSubmitted}
-          />
-          <div className="mt-3 text-xs opacity-70 font-mono">
-            Drag to spin, wheel to zoom. Hold <b>Shift</b> for faster spin.
-          </div>
+          {/* Globe map and controls or loader */}
+          {loading || submissions.length === 0 ? (
+            <div className="h-[600px] flex items-center justify-center">
+              <RetroLoader
+                text="Loading globe & pins..."
+                retroMode={retroMode}
+              />
+            </div>
+          ) : (
+            <>
+              <GlobeMap
+                rotate={rotate}
+                setRotate={setRotate}
+                zoom={zoom}
+                setZoom={setZoom}
+                retroMode={retroMode}
+                theme={theme}
+                submissions={submissions}
+                jitter={jitter}
+                containerRef={containerRef}
+                cursor={cursor}
+                hasSubmitted={hasSubmitted}
+              />
+              <div className="mt-3 text-xs opacity-70 font-mono">
+                Drag to spin, wheel to zoom. Hold <b>Shift</b> for faster spin.
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -275,5 +323,13 @@ export default function FanDemandGlobe() {
       {/* Retro overlays and effects */}
       <RetroEffects retroMode={retroMode} hasSubmitted={hasSubmitted} />
     </div>
+  );
+}
+
+export default function FanDemandGlobe() {
+  return (
+    <ToastProvider>
+      <FanDemandGlobeInner />
+    </ToastProvider>
   );
 }

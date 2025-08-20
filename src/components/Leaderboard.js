@@ -1,8 +1,13 @@
+import RetroLoader from "./RetroLoader";
+
 export default function Leaderboard({
   leaderboard,
   CITY_GOAL = 100,
   focus,
   theme,
+  loading = false,
+  retroMode = false,
+  onCityFocus,
 }) {
   return (
     <div className="relative rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]">
@@ -14,7 +19,9 @@ export default function Leaderboard({
         <span className="font-bold">Premiere Night</span>. Bars fill as fans
         join.
       </p>
-      {leaderboard.length === 0 ? (
+      {loading ? (
+        <RetroLoader text="Loading leaderboard..." retroMode={retroMode} />
+      ) : leaderboard.length === 0 ? (
         <div className="text-sm opacity-70">
           No cities yet. Be the first to drop a pin.
         </div>
@@ -22,7 +29,14 @@ export default function Leaderboard({
         <div className="max-h-[360px] overflow-auto pr-1 space-y-2">
           {leaderboard.map((row, i) => {
             const onClick = () => {
-              // Optionally focus map if you have lat/lon
+              if (onCityFocus && row.lat && row.lon) {
+                onCityFocus({
+                  lat: row.lat,
+                  lon: row.lon,
+                  city: row.city_name,
+                  state: row.city_state,
+                });
+              }
             };
             const pct = Math.min(1, row.signup_count / row.city_threshold);
             const remaining = Math.max(

@@ -1,3 +1,4 @@
+import { parseError } from "../utils/errorParser";
 import { supabase } from "./supabase";
 
 export async function loadSubmissions() {
@@ -19,10 +20,15 @@ export async function addSubmission(submission) {
     const { data, error } = await supabase.functions.invoke("submit_signup", {
       body: submission,
     });
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error(`Failed to add submission: ${error.message}`);
-    throw error;
+
+    if (data && data.ok) return data;
+
+    if (error) {
+      const msg = await parseError(error);
+      throw new Error(msg);
+    }
+  } catch (err) {
+    console.error("Failed to add submission:", err);
+    throw err;
   }
 }
