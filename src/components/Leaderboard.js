@@ -1,14 +1,32 @@
-import React from "react";
+import { useMemo } from "react";
 
 export default function Leaderboard({
-  leaderboard,
-  submissions,
-  CITY_GOAL,
+  submissions = [],
+  CITY_GOAL = 100,
   focus,
   theme,
 }) {
-  console.log("Leaderboard data:", leaderboard);
-
+  // Group submissions by city/state and count signups
+  const leaderboard = useMemo(() => {
+    const map = new Map();
+    submissions.forEach((s) => {
+      const key = `${s.city},${s.state}`;
+      if (!map.has(key)) {
+        map.set(key, {
+          city_id: key,
+          city_name: s.city,
+          city_state: s.state,
+          signup_count: 0,
+          city_threshold: CITY_GOAL,
+        });
+      }
+      map.get(key).signup_count += 1;
+    });
+    // Sort by signup_count descending
+    return Array.from(map.values()).sort(
+      (a, b) => b.signup_count - a.signup_count
+    );
+  }, [submissions, CITY_GOAL]);
   return (
     <div className="relative rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]">
       <h3 className="text-lg md:text-xl font-extrabold mb-1">
@@ -26,7 +44,6 @@ export default function Leaderboard({
       ) : (
         <div className="max-h-[360px] overflow-auto pr-1 space-y-2">
           {leaderboard.map((row, i) => {
-            // New structure: row.city_name, row.city_state, row.signup_count, row.city_threshold, row.evey_event_url, row.tickets_available
             const onClick = () => {
               // Optionally focus map if you have lat/lon
             };
@@ -51,11 +68,7 @@ export default function Leaderboard({
                   <div className="text-xs font-mono w-20 text-right">
                     {row.signup_count}/{row.city_threshold}
                   </div>
-                  {unlocked ? (
-                    <span className="ml-2 inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full border-2 border-black bg-[conic-gradient(at_50%_50%,#fff_0_25%,#ffe08a_25%_50%,#fff_50%_75%,#ffe08a_75%_100%)] shadow-[2px_2px_0_0_rgba(0,0,0,0.6)]">
-                      ⭐ Premiere
-                    </span>
-                  ) : (
+                  {!unlocked && (
                     <span className="ml-2 text-xs font-mono opacity-70">
                       {remaining} to go
                     </span>

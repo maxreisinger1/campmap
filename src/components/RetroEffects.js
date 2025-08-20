@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function RetroEffects({ retroMode, hasSubmitted }) {
   if (!retroMode) return null;
   return (

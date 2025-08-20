@@ -10,20 +10,16 @@ export function useLiveSubmissions(initial = []) {
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "submissions" },
-        function (payload) {
-          var row = payload.new;
-          setSubs(function (prev) {
-            return prev.some(function (s) {
-              return s.id === row.id;
-            })
-              ? prev
-              : [row].concat(prev);
-          });
+        (payload) => {
+          const row = payload.new;
+          setSubs((prev) =>
+            prev.some((s) => s.id === row.id) ? prev : [row, ...prev]
+          );
         }
       )
       .subscribe();
 
-    return function () {
+    return () => {
       supabase.removeChannel(channel);
     };
   }, []);

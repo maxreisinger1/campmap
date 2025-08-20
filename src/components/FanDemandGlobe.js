@@ -4,19 +4,11 @@ import Leaderboard from "./Leaderboard";
 import GlobeMap from "./GlobeMap";
 import RetroEffects from "./RetroEffects";
 import Header from "./Header";
-import { exportToCSV } from "../utils/csv";
 import { lookupZip } from "../utils/zipLookup";
 import { clamp } from "../utils/helpers";
-import { SEED_ZIPS } from "../services/testdata";
-import { useLeaderboard } from "../hooks/useLeaderboard";
-import {
-  addSubmission,
-  loadSubmissions,
-  seedSubmissions,
-} from "../services/SubmissionsService";
+import { addSubmission, loadSubmissions } from "../services/SubmissionsService";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
-
-const CITY_GOAL = 100;
+import Footer from "./Footer";
 
 export default function FanDemandGlobe() {
   const [rotate, setRotate] = useState([-20, -15, 0]);
@@ -29,9 +21,9 @@ export default function FanDemandGlobe() {
   const [autoRotate, setAutoRotate] = useState(true);
   const [retroMode, setRetroMode] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
+  const [loading, setLoading] = useState(false);
   const resumeTimer = useRef(null);
   const RESUME_AFTER = 1500;
-  const { leaderboard, loading: lbLoading, error: lbError } = useLeaderboard();
   const [submissions, setSubmissions] = useLiveSubmissions([]);
 
   const containerRef = useRef(null);
@@ -68,8 +60,6 @@ export default function FanDemandGlobe() {
       window.removeEventListener("unhandledrejection", onRej);
     };
   }, []);
-
-  const focus = (lat, lon) => setRotate([-lon, -lat, 0]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -170,8 +160,10 @@ export default function FanDemandGlobe() {
     const z = String(zip || "").trim();
     if (z.length < 5) return setMessage("Enter a 5-digit ZIP.");
 
+    setLoading(true);
     try {
       console.log("Submitting form:", { name, email, zip });
+      console.log("Submissions: ", submissions);
       const info = await lookupZip(z);
       const submission = {
         name: name.trim(),
@@ -182,20 +174,23 @@ export default function FanDemandGlobe() {
         lat: Number(info.lat),
         lon: Number(info.lon),
       };
-      const { data, error } = await addSubmission(submission);
-
-      if (error) throw error.message || "Failed to submit form";
-
-      // Optimistic—Realtime will also push it to everyone else
+      const result = await addSubmission(submission);
+      console.log("Form submitted successfully:", result);
+      if (result.error)
+        throw new Error(result.error.message || "Failed to submit form");
+      // Optimistic - Realtime will also push it to everyone else
       setSubmissions((prev) =>
-        prev.some((s) => s.id === data.id) ? prev : [data, ...prev]
+        prev.some((s) => s.id === result.submission.id)
+          ? prev
+          : [result.submission, ...prev]
       );
-
       setForm({ name: "", email: "", zip: "" });
       setMessage("Pinned! Thanks for raising your hand.");
       setHasSubmitted(true);
     } catch (err) {
       console.error("Error submitting form:", err);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -227,22 +222,6 @@ export default function FanDemandGlobe() {
       className="min-h-screen w-full bg-[#f7f1e1] text-[#1f2937]"
       style={{ fontFamily: theme.fontFamily }}
     >
-      {/* Global styles and retro effects */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;700;900&family=Press+Start+2P&display=swap');
-        [data-retro="true"] .blink { animation: blink 1s steps(2, start) infinite; }
-        @keyframes blink { to { visibility: hidden; } }
-        [data-retro="true"] .retro-btn { box-shadow: 4px 4px 0 #000; border-width: 3px; }
-        .scanlines { pointer-events:none; position:absolute; inset:0; background: repeating-linear-gradient( to bottom, rgba(255,255,255,0.05), rgba(255,255,255,0.05) 2px, transparent 2px, transparent 4px ); mix-blend-mode: overlay; opacity: 0.28; }
-        .halftone { pointer-events:none; position:absolute; inset:0; background-image: radial-gradient(rgba(0,0,0,0.08) 1px, transparent 1px); background-size: 6px 6px; opacity: 0.35; }
-        .grain { pointer-events:none; position:absolute; inset:0; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.08"/></svg>'); opacity: .6; mix-blend-mode: overlay; }
-        .chrome { background-image: linear-gradient(180deg, #fff, #e9ecef 40%, #cfd4da 60%, #fff); border: 2px solid #0e2a47; box-shadow: 0 4px 0 #0e2a47; }
-        .orbit { position:absolute; border:2px solid rgba(14,42,71,.35); border-radius:9999px; animation: spin 24s linear infinite; }
-        .orbit .dot { position:absolute; width:8px; height:8px; background:#ff6f3d; border-radius:9999px; top:-4px; left:50%; transform:translateX(-50%); box-shadow:0 0 8px rgba(255,111,61,.6); }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .fade-layer { transition: opacity 480ms ease; }
-      `}</style>
-
       {/* Header and retro toggle */}
       <Header
         retroMode={retroMode}
@@ -261,14 +240,11 @@ export default function FanDemandGlobe() {
             fatal={fatal}
             retroMode={retroMode}
             setMessage={setMessage}
+            loading={loading}
           />
 
           {/* Leaderboard */}
-          <Leaderboard
-            leaderboard={leaderboard}
-            CITY_GOAL={CITY_GOAL}
-            theme={theme}
-          />
+          <Leaderboard submissions={submissions} theme={theme} />
         </div>
 
         <div className="lg:col-span-3">
@@ -292,17 +268,7 @@ export default function FanDemandGlobe() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 pb-8 mt-2 flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between">
-        <div className="text-xs font-mono opacity-70">
-          © {new Date().getFullYear()} Camp Studios — All vibes reserved.
-        </div>
-        <div className="text-xs font-mono">
-          Roadmap: <span className="underline">Global postcode geocoding</span>{" "}
-          • <span className="underline">Auth + DB (Supabase)</span> •{" "}
-          <span className="underline">Spam protection</span> •{" "}
-          <span className="underline">Public city pages</span>
-        </div>
-      </div>
+      <Footer />
 
       {/* Retro overlays and effects */}
       <RetroEffects retroMode={retroMode} hasSubmitted={hasSubmitted} />

@@ -26,31 +26,3 @@ export async function addSubmission(submission) {
     throw error;
   }
 }
-
-export async function resetSubmissions() {
-  try {
-    const { data, error } = await supabase
-      .from("submissions")
-      .delete()
-      .neq("id", 0);
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error(`Failed to reset submissions: ${error.message}`);
-    throw error;
-  }
-}
-
-export async function seedSubmissions(sample) {
-  try {
-    const { data, error } = await supabase
-      .from("submissions")
-      .insert(sample)
-      .select();
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error(`Failed to seed submissions: ${error.message}`);
-    throw error;
-  }
-}

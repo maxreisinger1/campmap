@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function SignupForm({
   form,
   setForm,
@@ -8,6 +6,7 @@ export default function SignupForm({
   fatal,
   retroMode,
   setMessage,
+  loading = false,
 }) {
   return (
     <div className="relative rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]">
@@ -88,13 +87,17 @@ export default function SignupForm({
         <div className="flex items-center gap-2 pt-1">
           <button
             type="submit"
-            className={`rounded-md border-2 border-black px-4 py-2 font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
+            disabled={loading}
+            className={`rounded-md border-2 border-black px-4 py-2 font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-2 ${
               retroMode
                 ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
                 : "bg-lime-300/80 hover:bg-lime-300"
-            }`}
+            } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
           >
-            Drop Pin
+            {loading && (
+              <span className="inline-block w-4 h-4 border-2 border-t-2 border-t-transparent border-black rounded-full animate-spin"></span>
+            )}
+            {loading ? "Processing..." : "Drop Pin"}
           </button>
           <button
             type="button"

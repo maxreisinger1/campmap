@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ComposableMap,
   Geographies,
@@ -82,19 +81,6 @@ export default function GlobeMap({
           onChange={(e) => setZoom(Number(e.target.value))}
         />
       </div>
-
-      {/* <div
-        className="absolute inset-0 z-20 flex items-center justify-center transition-opacity duration-500"
-        style={{
-          opacity: hasSubmitted ? 0 : 1,
-          pointerEvents: hasSubmitted ? "none" : "auto",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
-          backgroundImage: `radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.7) 70%), url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\"><filter id=\"g\"><feTurbulence type=\"fractalNoise\" baseFrequency=\"1.2\" numOctaves=\"4\" stitchTiles=\"stitch\"/></filter><rect width=\"100%\" height=\"100%\" filter=\"url(%23g)\" opacity=\"0.12\"/></svg>')`,
-          backgroundSize: "cover",
-          backgroundBlendMode: "overlay",
-        }}
-      /> */}
 
       <div
         ref={containerRef}
