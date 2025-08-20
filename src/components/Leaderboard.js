@@ -1,32 +1,9 @@
-import { useMemo } from "react";
-
 export default function Leaderboard({
-  submissions = [],
+  leaderboard,
   CITY_GOAL = 100,
   focus,
   theme,
 }) {
-  // Group submissions by city/state and count signups
-  const leaderboard = useMemo(() => {
-    const map = new Map();
-    submissions.forEach((s) => {
-      const key = `${s.city},${s.state}`;
-      if (!map.has(key)) {
-        map.set(key, {
-          city_id: key,
-          city_name: s.city,
-          city_state: s.state,
-          signup_count: 0,
-          city_threshold: CITY_GOAL,
-        });
-      }
-      map.get(key).signup_count += 1;
-    });
-    // Sort by signup_count descending
-    return Array.from(map.values()).sort(
-      (a, b) => b.signup_count - a.signup_count
-    );
-  }, [submissions, CITY_GOAL]);
   return (
     <div className="relative rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]">
       <h3 className="text-lg md:text-xl font-extrabold mb-1">

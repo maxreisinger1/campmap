@@ -30,7 +30,13 @@ export function useLeaderboard() {
       setRows((prev) => {
         let next = [...prev];
         const i = next.findIndex((r) => r.city_id === rec.city_id);
-        if (type === "metrics" && i !== -1 && payload.new) {
+        if (i === -1 && payload.new) {
+          // New city detected: refresh the leaderboard from backend for full data
+          getCityLeaderboard().then((data) => {
+            if (!cancelled) setRows(data ?? []);
+          });
+          return prev; // Don't add partial data, wait for refresh
+        } else if (type === "metrics" && i !== -1 && payload.new) {
           next[i] = {
             ...next[i],
             signup_count: payload.new.signup_count ?? next[i].signup_count,
@@ -67,11 +73,11 @@ export function useLeaderboard() {
 
   const sorted = useMemo(() => {
     const copy = [...rows];
-    copy.sort(
-      (a, b) =>
-        b.signup_count - a.signup_count ||
-        a.city_name.localeCompare(b.city_name)
-    );
+    copy.sort((a, b) => {
+      const aName = typeof a.city_name === "string" ? a.city_name : "";
+      const bName = typeof b.city_name === "string" ? b.city_name : "";
+      return b.signup_count - a.signup_count || aName.localeCompare(bName);
+    });
     return copy;
   }, [rows]);
 

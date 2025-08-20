@@ -8,6 +8,7 @@ import { lookupZip } from "../utils/zipLookup";
 import { clamp } from "../utils/helpers";
 import { addSubmission, loadSubmissions } from "../services/SubmissionsService";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
+import { useLeaderboard } from "../hooks/useLeaderboard";
 import Footer from "./Footer";
 
 export default function FanDemandGlobe() {
@@ -25,6 +26,7 @@ export default function FanDemandGlobe() {
   const resumeTimer = useRef(null);
   const RESUME_AFTER = 1500;
   const [submissions, setSubmissions] = useLiveSubmissions([]);
+  const { leaderboard, loading: lbLoading, error: lbError } = useLeaderboard();
 
   const containerRef = useRef(null);
   const dragRef = useRef({
@@ -242,10 +244,9 @@ export default function FanDemandGlobe() {
             setMessage={setMessage}
             loading={loading}
           />
-          
 
           {/* Leaderboard */}
-          <Leaderboard submissions={submissions} theme={theme} />
+          <Leaderboard leaderboard={leaderboard} theme={theme} />
         </div>
 
         <div className="lg:col-span-3">
