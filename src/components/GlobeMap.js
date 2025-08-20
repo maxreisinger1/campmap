@@ -20,7 +20,6 @@ export default function GlobeMap({
   theme,
   submissions,
   jitter,
-  COLORS,
   containerRef,
   cursor,
   hasSubmitted,
@@ -84,7 +83,7 @@ export default function GlobeMap({
         />
       </div>
 
-      <div
+      {/* <div
         className="absolute inset-0 z-20 flex items-center justify-center transition-opacity duration-500"
         style={{
           opacity: hasSubmitted ? 0 : 1,
@@ -95,7 +94,7 @@ export default function GlobeMap({
           backgroundSize: "cover",
           backgroundBlendMode: "overlay",
         }}
-      />
+      /> */}
 
       <div
         ref={containerRef}
@@ -137,7 +136,7 @@ export default function GlobeMap({
               <g transform="translate(-6,-6)">
                 <circle
                   r={5.5}
-                  fill={retroMode ? "#ff00a6" : COLORS.rose}
+                  fill={retroMode ? "#ff00a6" : "#ef476f"}
                   stroke={theme.stroke}
                   strokeWidth={1.25}
                 />

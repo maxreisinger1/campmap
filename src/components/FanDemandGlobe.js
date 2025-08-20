@@ -6,24 +6,23 @@ import RetroEffects from "./RetroEffects";
 import Header from "./Header";
 import { exportToCSV } from "../utils/csv";
 import { lookupZip } from "../utils/zipLookup";
-import { uid, clamp } from "../utils/helpers";
-import { supabase } from "../supabase";
-import { SEED_ZIPS } from "../testdata";
+import { clamp } from "../utils/helpers";
+import { SEED_ZIPS } from "../services/testdata";
+import { useLeaderboard } from "../hooks/useLeaderboard";
+import {
+  addSubmission,
+  loadSubmissions,
+  seedSubmissions,
+} from "../services/SubmissionsService";
+import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 
 const CITY_GOAL = 100;
-const COLORS = {
-  bg: "#f7f1e1",
-  ink: "#1f2937",
-  rose: "#ef476f",
-  gold: "#f5c518",
-};
 
 export default function FanDemandGlobe() {
   const [rotate, setRotate] = useState([-20, -15, 0]);
   const [zoom, setZoom] = useState(1.15);
   const [cursor, setCursor] = useState("grab");
   const [fatal, setFatal] = useState("");
-  const [submissions, setSubmissions] = useState([]);
   const [form, setForm] = useState({ name: "", email: "", zip: "" });
   const [message, setMessage] = useState("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -32,6 +31,8 @@ export default function FanDemandGlobe() {
   const [transitioning, setTransitioning] = useState(false);
   const resumeTimer = useRef(null);
   const RESUME_AFTER = 1500;
+  const { leaderboard, loading: lbLoading, error: lbError } = useLeaderboard();
+  const [submissions, setSubmissions] = useLiveSubmissions([]);
 
   const containerRef = useRef(null);
   const dragRef = useRef({
@@ -44,21 +45,17 @@ export default function FanDemandGlobe() {
 
   // Load submissions from Supabase on component mount
   useEffect(() => {
-    loadSubmissions();
-  }, []);
+    const loadSubmissionsOnMount = async () => {
+      try {
+        const data = await loadSubmissions();
+        setSubmissions(data);
+      } catch (error) {
+        setFatal(String(error.message || error));
+      }
+    };
 
-  async function loadSubmissions() {
-    try {
-      const { data, error } = await supabase
-        .from("submissions")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      setSubmissions(data || []);
-    } catch (error) {
-      setFatal(`Failed to load submissions: ${error.message}`);
-    }
-  }
+    loadSubmissionsOnMount();
+  }, []);
 
   useEffect(() => {
     const onErr = (e) => setFatal(String(e?.message || e));
@@ -71,15 +68,6 @@ export default function FanDemandGlobe() {
       window.removeEventListener("unhandledrejection", onRej);
     };
   }, []);
-
-  const leaderboard = useMemo(() => {
-    const m = new Map();
-    for (const s of submissions)
-      m.set(`${s.city}, ${s.state}`, (m.get(`${s.city}, ${s.state}`) || 0) + 1);
-    return Array.from(m.entries())
-      .map(([place, count]) => ({ place, count }))
-      .sort((a, b) => b.count - a.count || a.place.localeCompare(b.place));
-  }, [submissions]);
 
   const focus = (lat, lon) => setRotate([-lon, -lat, 0]);
 
@@ -181,7 +169,9 @@ export default function FanDemandGlobe() {
     if (!EMAIL_RE.test(email)) return setMessage("Please enter a valid email.");
     const z = String(zip || "").trim();
     if (z.length < 5) return setMessage("Enter a 5-digit ZIP.");
+
     try {
+      console.log("Submitting form:", { name, email, zip });
       const info = await lookupZip(z);
       const submission = {
         name: name.trim(),
@@ -192,60 +182,20 @@ export default function FanDemandGlobe() {
         lat: Number(info.lat),
         lon: Number(info.lon),
       };
-      const { data, error } = await supabase
-        .from("submissions")
-        .insert([submission])
-        .select();
-      if (error) throw error;
-      setSubmissions((prev) => [data[0], ...prev]);
+      const { data, error } = await addSubmission(submission);
+
+      if (error) throw error.message || "Failed to submit form";
+
+      // Optimistic—Realtime will also push it to everyone else
+      setSubmissions((prev) =>
+        prev.some((s) => s.id === data.id) ? prev : [data, ...prev]
+      );
+
       setForm({ name: "", email: "", zip: "" });
       setMessage("Pinned! Thanks for raising your hand.");
       setHasSubmitted(true);
     } catch (err) {
-      setMessage(
-        "Couldn't resolve that ZIP right now. Try a different one or use 'Load demo pins'."
-      );
-    }
-  }
-
-  async function resetData() {
-    try {
-      const { error } = await supabase
-        .from("submissions")
-        .delete()
-        .neq("id", 0);
-      if (error) throw error;
-      setSubmissions([]);
-      setMessage("All data reset successfully");
-    } catch (error) {
-      setMessage("Failed to reset data");
-    }
-  }
-
-  async function seedDemo() {
-    try {
-      const zips = Object.keys(SEED_ZIPS);
-      const sample = zips.map((z) => {
-        const info = SEED_ZIPS[z];
-        return {
-          name: `Fan ${z}`,
-          email: `fan${z}@example.com`,
-          zip: z,
-          city: info.city,
-          state: info.state,
-          lat: info.lat,
-          lon: info.lon,
-        };
-      });
-      const { data, error } = await supabase
-        .from("submissions")
-        .insert(sample)
-        .select();
-      if (error) throw error;
-      setSubmissions((prev) => [...data, ...prev]);
-      setMessage("Loaded sample pins.");
-    } catch (error) {
-      setMessage(`Failed to load demo pins: ${error.message}`);
+      console.error("Error submitting form:", err);
     }
   }
 
@@ -273,13 +223,9 @@ export default function FanDemandGlobe() {
 
   return (
     <div
-      className="min-h-screen w-full"
       data-retro={retroMode ? "true" : "false"}
-      style={{
-        background: COLORS.bg,
-        color: COLORS.ink,
-        fontFamily: theme.fontFamily,
-      }}
+      className="min-h-screen w-full bg-[#f7f1e1] text-[#1f2937]"
+      style={{ fontFamily: theme.fontFamily }}
     >
       {/* Global styles and retro effects */}
       <style>{`
@@ -314,17 +260,13 @@ export default function FanDemandGlobe() {
             message={message}
             fatal={fatal}
             retroMode={retroMode}
-            seedDemo={seedDemo}
             setMessage={setMessage}
           />
 
           {/* Leaderboard */}
           <Leaderboard
             leaderboard={leaderboard}
-            submissions={submissions}
             CITY_GOAL={CITY_GOAL}
-            focus={focus}
-            COLORS={COLORS}
             theme={theme}
           />
         </div>
@@ -340,7 +282,6 @@ export default function FanDemandGlobe() {
             theme={theme}
             submissions={submissions}
             jitter={jitter}
-            COLORS={COLORS}
             containerRef={containerRef}
             cursor={cursor}
             hasSubmitted={hasSubmitted}
