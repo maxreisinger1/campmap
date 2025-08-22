@@ -16,6 +16,7 @@ const RetroEffects = lazy(() => import("./RetroEffects"));
 
 function FanDemandGlobeInner() {
   const [rotate, setRotate] = useState([-20, -15, 0]);
+  const [transitioning, setTransitioning] = useState(false);
   const rotateAnimRef = useRef();
   // Animate globe to focus on a given lat/lon
   function animateToLocation({ lat, lon }) {
@@ -244,7 +245,7 @@ function FanDemandGlobeInner() {
       style={{ fontFamily: theme.fontFamily }}
     >
       {/* Header and retro toggle */}
-      <Header retroMode={retroMode} setRetroMode={setRetroMode} />
+      <Header retroMode={retroMode} setRetroMode={setRetroMode} setTransitioning={setTransitioning} />
 
       <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-2 space-y-6">

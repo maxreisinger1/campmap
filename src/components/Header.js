@@ -14,7 +14,7 @@ export default function Header({ retroMode, setRetroMode, setTransitioning }) {
         <button
           onClick={() => {
             setTransitioning(true);
-            setRetroMode((v) => !v);
+            setRetroMode((retroMode) => !retroMode);
             setTimeout(() => setTransitioning(false), 500);
           }}
           className={`text-xs md:text-sm uppercase tracking-wider font-mono opacity-90 retro-btn px-3 py-1 border border-black active:translate-y-[1px] rounded-full ${
