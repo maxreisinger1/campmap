@@ -1,9 +1,7 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect, useMemo, lazy, Suspense } from "react";
 import SignupForm from "./SignupForm";
-import { ToastProvider, useToast } from "./ToastContext";
+import { ToastProvider, useToast } from "../context/ToastContext";
 import Leaderboard from "./Leaderboard";
-import GlobeMap from "./GlobeMap";
-import RetroEffects from "./RetroEffects";
 import Header from "./Header";
 import { lookupZip } from "../utils/zipLookup";
 import { clamp } from "../utils/helpers";
@@ -12,6 +10,9 @@ import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 import { useLeaderboard } from "../hooks/useLeaderboard";
 import Footer from "./Footer";
 import RetroLoader from "./RetroLoader";
+
+const GlobeMap = lazy(() => import("./GlobeMap"));
+const RetroEffects = lazy(() => import("./RetroEffects"));
 
 function FanDemandGlobeInner() {
   const [rotate, setRotate] = useState([-20, -15, 0]);
@@ -297,19 +298,27 @@ function FanDemandGlobeInner() {
             </div>
           ) : (
             <>
-              <GlobeMap
-                rotate={rotate}
-                setRotate={setRotate}
-                zoom={zoom}
-                setZoom={setZoom}
-                retroMode={retroMode}
-                theme={theme}
-                submissions={submissions}
-                jitter={jitter}
-                containerRef={containerRef}
-                cursor={cursor}
-                hasSubmitted={hasSubmitted}
-              />
+              <Suspense
+                fallback={
+                  <div className="h-[600px] flex items-center justify-center">
+                    <RetroLoader text="Loading globe…" retroMode={retroMode} />
+                  </div>
+                }
+              >
+                <GlobeMap
+                  rotate={rotate}
+                  setRotate={setRotate}
+                  zoom={zoom}
+                  setZoom={setZoom}
+                  retroMode={retroMode}
+                  theme={theme}
+                  submissions={submissions}
+                  jitter={jitter}
+                  containerRef={containerRef}
+                  cursor={cursor}
+                  hasSubmitted={hasSubmitted}
+                />
+              </Suspense>
               <div className="mt-3 text-xs opacity-70 font-mono">
                 Drag to spin, wheel to zoom. Hold <b>Shift</b> for faster spin.
               </div>
@@ -320,8 +329,10 @@ function FanDemandGlobeInner() {
 
       <Footer />
 
-      {/* Retro overlays and effects */}
-      <RetroEffects retroMode={retroMode} hasSubmitted={hasSubmitted} />
+      {/* Retro overlays and effects (lazy loaded) */}
+      <Suspense fallback={null}>
+        <RetroEffects retroMode={retroMode} hasSubmitted={hasSubmitted} />
+      </Suspense>
     </div>
   );
 }

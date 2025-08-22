@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import RetroLoader from "./RetroLoader";
 
 export default function Leaderboard({
@@ -9,6 +10,27 @@ export default function Leaderboard({
   retroMode = false,
   onCityFocus,
 }) {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  function formatCountdown(ms) {
+    if (!ms || ms <= 0) return "0s";
+    const totalSec = Math.floor(ms / 1000);
+    const days = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const minutes = Math.floor((totalSec % 3600) / 60);
+    const seconds = totalSec % 60;
+    const parts = [];
+    if (days) parts.push(`${days}d`);
+    if (hours) parts.push(`${hours}h`);
+    if (minutes) parts.push(`${minutes}m`);
+    parts.push(`${seconds}s`);
+    return parts.join(" ");
+  }
   return (
     <div className="relative rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]">
       <h3 className="text-lg md:text-xl font-extrabold mb-1">
@@ -44,6 +66,26 @@ export default function Leaderboard({
               row.city_threshold - row.signup_count
             );
             const unlocked = pct >= 1;
+
+            // Ticket availability & prepurchase logic
+            const hasEvey = !!row.evey_event_url;
+            const prepurchaseAt = row.prepurchase_enabled_at
+              ? Date.parse(row.prepurchase_enabled_at)
+              : null;
+            const hasPrepurchase = !!prepurchaseAt;
+            const prepurchaseMs = hasPrepurchase ? prepurchaseAt - now : null;
+            const ticketsPaused = row.tickets_paused === true;
+            const canShowBuy =
+              unlocked &&
+              hasEvey &&
+              !ticketsPaused &&
+              (!hasPrepurchase || (hasPrepurchase && prepurchaseMs <= 0));
+            const canShowCountdown =
+              unlocked &&
+              hasEvey &&
+              hasPrepurchase &&
+              prepurchaseMs > 0 &&
+              !ticketsPaused;
             return (
               <div
                 key={row.city_id}
@@ -64,18 +106,16 @@ export default function Leaderboard({
                       {remaining} to go
                     </span>
                   )}
-                  {row.evey_event_url &&
-                    row.tickets_available &&
-                    !row.tickets_paused && (
-                      <a
-                        href={row.evey_event_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="ml-2 px-2 py-1 text-xs font-bold rounded bg-yellow-400 border border-black shadow hover:bg-yellow-300 transition"
-                      >
-                        Buy Tickets
-                      </a>
-                    )}
+                  {canShowBuy && (
+                    <a
+                      href={row.evey_event_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ml-2 px-2 py-1 text-xs font-bold rounded bg-yellow-400 border border-black shadow hover:bg-yellow-300 transition"
+                    >
+                      Buy Tickets
+                    </a>
+                  )}
                 </div>
                 <div className="mt-2 h-4 w-full rounded-full border-2 border-black bg-[repeating-linear-gradient(45deg,#fff,#fff_6px,#f3efe4_6px,#f3efe4_12px)] overflow-hidden relative">
                   <div
@@ -94,6 +134,11 @@ export default function Leaderboard({
                     }}
                   />
                 </div>
+                {canShowCountdown && (
+                  <span className="py-2 text-xs font-mono opacity-90">
+                    Pre-sale in {formatCountdown(prepurchaseMs)}
+                  </span>
+                )}
               </div>
             );
           })}

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
-import RetroToast from "./RetroToast";
+import RetroToast from "../components/RetroToast";
 
 const ToastContext = createContext();
 

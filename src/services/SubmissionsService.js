@@ -1,5 +1,5 @@
 import { parseError } from "../utils/errorParser";
-import { supabase } from "./supabase";
+import { supabase, invokeEdgeFunction } from "./supabase";
 
 export async function loadSubmissions() {
   try {
@@ -16,19 +16,27 @@ export async function loadSubmissions() {
 }
 
 export async function addSubmission(submission) {
+  // Basic client-side validation to avoid bad requests to the function.
+  if (!submission || typeof submission !== "object") {
+    throw new Error("Invalid submission payload");
+  }
+  const { name, email, zip } = submission;
+  if (!name || !email || !zip) {
+    throw new Error("Missing required fields: name, email, or zip");
+  }
+
   try {
-    const { data, error } = await supabase.functions.invoke("submit_signup", {
-      body: submission,
+    const data = await invokeEdgeFunction("submit_signup", submission, {
+      timeout: 10000,
     });
-
-    if (data && data.ok) return data;
-
-    if (error) {
-      const msg = await parseError(error);
-      throw new Error(msg);
-    }
+    return data;
   } catch (err) {
-    console.error("Failed to add submission:", err);
-    throw err;
+    // Parse known shapes, otherwise rethrow
+    const parsed = await parseError(err).catch(
+      () => err.message || String(err)
+    );
+    // eslint-disable-next-line no-console
+    console.error("Failed to add submission:", parsed);
+    throw new Error(parsed);
   }
 }
