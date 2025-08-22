@@ -2,10 +2,8 @@ export default function SignupForm({
   form,
   setForm,
   handleSubmit,
-  message,
   fatal,
   retroMode,
-  setMessage,
   loading = false,
 }) {
   return (
@@ -103,7 +101,6 @@ export default function SignupForm({
             type="button"
             onClick={() => {
               setForm({ name: "", email: "", zip: "" });
-              setMessage("");
             }}
             className={`rounded-md border-2 border-black px-3 py-2 font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
               retroMode
@@ -114,9 +111,7 @@ export default function SignupForm({
             Clear
           </button>
         </div>
-        {message && (
-          <div className="text-sm font-mono text-emerald-700">{message}</div>
-        )}
+        {/* Notifications are shown via toast in the parent */}
         {fatal && (
           <div className="mt-2 text-xs font-mono text-rose-700">
             Error: {fatal}

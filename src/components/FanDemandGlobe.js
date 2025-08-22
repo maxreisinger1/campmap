@@ -3,11 +3,11 @@ import SignupForm from "./SignupForm";
 import { ToastProvider, useToast } from "../context/ToastContext";
 import Leaderboard from "./Leaderboard";
 import Header from "./Header";
-import { lookupZip } from "../utils/zipLookup";
 import { clamp } from "../utils/helpers";
-import { addSubmission, loadSubmissions } from "../services/SubmissionsService";
+import { loadSubmissions } from "../services/SubmissionsService";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 import { useLeaderboard } from "../hooks/useLeaderboard";
+import { useSubmitSignup } from "../hooks/useSubmitSignup";
 import Footer from "./Footer";
 import RetroLoader from "./RetroLoader";
 
@@ -48,7 +48,7 @@ function FanDemandGlobeInner() {
   const [cursor, setCursor] = useState("grab");
   const [fatal, setFatal] = useState("");
   const [form, setForm] = useState({ name: "", email: "", zip: "" });
-  const [message, setMessage] = useState("");
+  // messages are shown via ToastContext
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
   const [retroMode, setRetroMode] = useState(false);
@@ -68,6 +68,7 @@ function FanDemandGlobeInner() {
     factor: 0.35,
   });
   const { showToast } = useToast();
+  const { submit, message: submitMessage } = useSubmitSignup();
 
   // Load submissions from Supabase on component mount
   useEffect(() => {
@@ -187,30 +188,9 @@ function FanDemandGlobeInner() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setMessage("");
-    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    const { name, email, zip } = form;
-    if (!name.trim()) return setMessage("Please enter your name.");
-    if (!EMAIL_RE.test(email)) return setMessage("Please enter a valid email.");
-    const z = String(zip || "").trim();
-    if (z.length < 5) return setMessage("Enter a 5-digit ZIP.");
-
     setLoading(true);
     try {
-      console.log("Submitting form:", { name, email, zip });
-      console.log("Submissions: ", submissions);
-      const info = await lookupZip(z);
-      const submission = {
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        zip: z,
-        city: info.city,
-        state: info.state,
-        lat: Number(info.lat),
-        lon: Number(info.lon),
-      };
-      const result = await addSubmission(submission);
-      console.log("Form submitted successfully:", result);
+      const result = await submit(form);
       // Optimistic - Realtime will also push it to everyone else
       setSubmissions((prev) =>
         prev.some((s) => s.id === result.submission.id)
@@ -218,8 +198,11 @@ function FanDemandGlobeInner() {
           : [result.submission, ...prev]
       );
       setForm({ name: "", email: "", zip: "" });
-      setMessage("Pinned! Thanks for raising your hand.");
       setHasSubmitted(true);
+      showToast(
+        submitMessage || "Pinned! Thanks for raising your hand.",
+        retroMode
+      );
     } catch (err) {
       console.error("Error submitting form:", err);
       if (err.message) {
@@ -270,10 +253,8 @@ function FanDemandGlobeInner() {
             form={form}
             setForm={setForm}
             handleSubmit={handleSubmit}
-            message={message}
             fatal={fatal}
             retroMode={retroMode}
-            setMessage={setMessage}
             loading={loading}
           />
 
