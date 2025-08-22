@@ -2,6 +2,7 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
+
 import "@testing-library/jest-dom";
 import "jest-canvas-mock";
 
@@ -32,6 +33,12 @@ global.document.createElement = jest.fn((tagName) => {
   }
   return mockElement;
 });
+
+global.document.body.appendChild = jest.fn();
+global.document.body.removeChild = jest.fn();
+
+// Polyfill ReadableStream for Node.js environment
+global.ReadableStream = class ReadableStream {};
 
 global.document.body.appendChild = jest.fn();
 global.document.body.removeChild = jest.fn();

@@ -1,6 +1,6 @@
 export default function Header({ retroMode, setRetroMode, setTransitioning }) {
   return (
-    <div className="relative border-b border-black/20">
+    <div className="relative border-b border-black/20" role="banner">
       <div className="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between">
         <h1
           className="text-2xl md:text-3xl font-black tracking-tight"
