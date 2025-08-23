@@ -239,6 +239,18 @@ function FanDemandGlobeInner() {
     };
   }, [retroMode]);
 
+  // Deduplicate submissions by city (first occurrence only)
+  const dedupedSubmissions = useMemo(() => {
+    const seen = new Set();
+    return submissions.filter((s) => {
+      if (!s.city) return false;
+      const key = s.city.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [submissions]);
+
   return (
     <div
       data-retro={retroMode ? "true" : "false"}
@@ -283,7 +295,7 @@ function FanDemandGlobeInner() {
                 retroMode={retroMode}
               />
             </div>
-          ) : submissions.length === 0 ? (
+          ) : dedupedSubmissions.length === 0 ? (
             <>
               <Suspense
                 fallback={
@@ -326,7 +338,7 @@ function FanDemandGlobeInner() {
                   setZoom={setZoom}
                   retroMode={retroMode}
                   theme={theme}
-                  submissions={submissions}
+                  submissions={dedupedSubmissions}
                   jitter={jitter}
                   containerRef={containerRef}
                   cursor={cursor}
