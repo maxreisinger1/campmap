@@ -16,6 +16,7 @@ const RetroEffects = lazy(() => import("./RetroEffects"));
 
 function FanDemandGlobeInner() {
   const [rotate, setRotate] = useState([-20, -15, 0]);
+  // eslint-disable-next-line no-unused-vars
   const [transitioning, setTransitioning] = useState(false);
   const rotateAnimRef = useRef();
   // Animate globe to focus on a given lat/lon
@@ -245,7 +246,11 @@ function FanDemandGlobeInner() {
       style={{ fontFamily: theme.fontFamily }}
     >
       {/* Header and retro toggle */}
-      <Header retroMode={retroMode} setRetroMode={setRetroMode} setTransitioning={setTransitioning} />
+      <Header
+        retroMode={retroMode}
+        setRetroMode={setRetroMode}
+        setTransitioning={setTransitioning}
+      />
 
       <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-2 space-y-6">
@@ -271,13 +276,40 @@ function FanDemandGlobeInner() {
 
         <div className="lg:col-span-3">
           {/* Globe map and controls or loader */}
-          {loading || submissions.length === 0 ? (
+          {loading ? (
             <div className="h-[600px] flex items-center justify-center">
               <RetroLoader
                 text="Loading globe & pins..."
                 retroMode={retroMode}
               />
             </div>
+          ) : submissions.length === 0 ? (
+            <>
+              <Suspense
+                fallback={
+                  <div className="h-[600px] flex items-center justify-center">
+                    <RetroLoader text="Loading globe…" retroMode={retroMode} />
+                  </div>
+                }
+              >
+                <GlobeMap
+                  rotate={rotate}
+                  setRotate={setRotate}
+                  zoom={zoom}
+                  setZoom={setZoom}
+                  retroMode={retroMode}
+                  theme={theme}
+                  submissions={[]}
+                  jitter={jitter}
+                  containerRef={containerRef}
+                  cursor={cursor}
+                  hasSubmitted={hasSubmitted}
+                />
+              </Suspense>
+              <div className="mt-3 text-xs opacity-70 font-mono">
+                Drag to spin, wheel to zoom. Hold <b>Shift</b> for faster spin.
+              </div>
+            </>
           ) : (
             <>
               <Suspense

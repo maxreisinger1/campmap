@@ -4,7 +4,7 @@ import { supabase, invokeEdgeFunction } from "./supabase";
 export async function loadSubmissions() {
   try {
     const { data, error } = await supabase
-      .from("submissions")
+      .from("submissions_public")
       .select("*")
       .order("created_at", { ascending: false });
     if (error) throw error;

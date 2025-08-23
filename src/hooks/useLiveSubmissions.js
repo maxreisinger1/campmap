@@ -29,7 +29,7 @@ export function useLiveSubmissions(initial = []) {
       .channel("rt-submissions")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "submissions" },
+        { event: "INSERT", schema: "public", table: "submissions_public" },
         (payload) => {
           const row = payload.new;
           setSubs((prev) =>
