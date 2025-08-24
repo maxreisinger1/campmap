@@ -9,14 +9,29 @@ const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlzam50aWZtbGplb2d2eWd3aXNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwMzk3MjYsImV4cCI6MjA3MDYxNTcyNn0.5u_4vZAI8KFo7LpMphLZ72Mbh6EMMMqbz-rK1tn88MM";
 
 export let options = {
-  vus: 10, // number of virtual users
-  duration: "20s",
+  stages: [
+    { duration: "10s", target: 50 }, // ramp to 50 VUs
+    { duration: "20s", target: 200 }, // then 200 VUs
+    { duration: "20s", target: 0 }, // ramp down
+  ],
+  thresholds: {
+    http_req_failed: ["rate<0.01"], // <1% errors
+    http_req_duration: ["p(95)<500"], // 95% < 500ms
+  },
 };
 
+function rand(n) {
+  return Math.floor(Math.random() * n);
+}
+function ip() {
+  return [rand(255), rand(255), rand(255), rand(255)].join(".");
+}
+
+// eslint-disable-next-line import/no-anonymous-default-export
 export default function () {
   const payload = JSON.stringify({
-    name: `Test User ${Math.floor(Math.random() * 100000)}`,
-    email: `testuser${Math.floor(Math.random() * 100000)}@example.com`,
+    name: `User ${rand(1e7)}`,
+    email: `user${rand(1e9)}@example.com`,
     city: "Austin",
     state: "TX",
     zip: "73301",
@@ -24,32 +39,26 @@ export default function () {
     lon: -97.7713,
   });
 
-  // Generate a random IPv4 address for x-forwarded-for
-  function randomIp() {
-    return Array(4)
-      .fill(0)
-      .map(() => Math.floor(Math.random() * 256))
-      .join(".");
-  }
-
   const params = {
     headers: {
       "Content-Type": "application/json",
       apikey: SUPABASE_ANON_KEY,
       Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-      "x-forwarded-for": randomIp(),
+      "x-forwarded-for": ip(),
+      Origin: "https://camp-six.vercel.app/",
     },
+    timeout: "60s",
   };
 
   const res = http.post(SUPABASE_FUNCTION_URL, payload, params);
 
-  const success = check(res, {
-    "status is 200 or 201": (r) => r.status === 200 || r.status === 201,
+  const ok = check(res, {
+    "status 200/201": (r) => r.status === 200 || r.status === 201,
   });
 
-  if (!success) {
-    console.log(`Failed submission: status=${res.status}, body=${res.body}`);
+  if (!ok) {
+    console.log(`ERR ${res.status}: ${res.body}`);
   }
 
-  sleep(1);
+  sleep(0.5);
 }

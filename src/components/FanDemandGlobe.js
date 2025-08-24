@@ -1,16 +1,16 @@
 import { useState, useRef, useEffect, useMemo, lazy, Suspense } from "react";
-import SignupForm from "./SignupForm";
 import { ToastProvider, useToast } from "../context/ToastContext";
-import Leaderboard from "./Leaderboard";
-import Header from "./Header";
 import { clamp } from "../utils/helpers";
 import { loadSubmissions } from "../services/SubmissionsService";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 import { useLeaderboard } from "../hooks/useLeaderboard";
 import { useSubmitSignup } from "../hooks/useSubmitSignup";
-import Footer from "./Footer";
-import RetroLoader from "./RetroLoader";
 
+const SignupForm = lazy(() => import("./SignupForm"));
+const Leaderboard = lazy(() => import("./Leaderboard"));
+const Footer = lazy(() => import("./Footer"));
+const Header = lazy(() => import("./Header"));
+const RetroLoader = lazy(() => import("./RetroLoader"));
 const GlobeMap = lazy(() => import("./GlobeMap"));
 const RetroEffects = lazy(() => import("./RetroEffects"));
 
@@ -258,49 +258,62 @@ function FanDemandGlobeInner() {
       style={{ fontFamily: theme.fontFamily }}
     >
       {/* Header and retro toggle */}
-      <Header
-        retroMode={retroMode}
-        setRetroMode={setRetroMode}
-        setTransitioning={setTransitioning}
-      />
+      <Suspense fallback={null}>
+        <Header
+          retroMode={retroMode}
+          setRetroMode={setRetroMode}
+          setTransitioning={setTransitioning}
+        />
+      </Suspense>
 
       <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-2 space-y-6">
           {/* Signup form */}
-          <SignupForm
-            form={form}
-            setForm={setForm}
-            handleSubmit={handleSubmit}
-            fatal={fatal}
-            retroMode={retroMode}
-            loading={loading}
-          />
+          <Suspense fallback={<div>Loading form…</div>}>
+            <SignupForm
+              form={form}
+              setForm={setForm}
+              handleSubmit={handleSubmit}
+              fatal={fatal}
+              retroMode={retroMode}
+              loading={loading}
+            />
+          </Suspense>
 
           {/* Leaderboard */}
-          <Leaderboard
-            leaderboard={leaderboard}
-            theme={theme}
-            loading={lbLoading}
-            retroMode={retroMode}
-            onCityFocus={animateToLocation}
-          />
+          <Suspense fallback={<div>Loading leaderboard…</div>}>
+            <Leaderboard
+              leaderboard={leaderboard}
+              theme={theme}
+              loading={lbLoading}
+              retroMode={retroMode}
+              onCityFocus={animateToLocation}
+            />
+          </Suspense>
         </div>
 
         <div className="lg:col-span-3">
           {/* Globe map and controls or loader */}
           {loading ? (
             <div className="h-[600px] flex items-center justify-center">
-              <RetroLoader
-                text="Loading globe & pins..."
-                retroMode={retroMode}
-              />
+              <Suspense fallback={<div>Loading…</div>}>
+                <RetroLoader
+                  text="Loading globe & pins..."
+                  retroMode={retroMode}
+                />
+              </Suspense>
             </div>
           ) : dedupedSubmissions.length === 0 ? (
             <>
               <Suspense
                 fallback={
                   <div className="h-[600px] flex items-center justify-center">
-                    <RetroLoader text="Loading globe…" retroMode={retroMode} />
+                    <Suspense fallback={<div>Loading…</div>}>
+                      <RetroLoader
+                        text="Loading globe…"
+                        retroMode={retroMode}
+                      />
+                    </Suspense>
                   </div>
                 }
               >
@@ -327,7 +340,12 @@ function FanDemandGlobeInner() {
               <Suspense
                 fallback={
                   <div className="h-[600px] flex items-center justify-center">
-                    <RetroLoader text="Loading globe…" retroMode={retroMode} />
+                    <Suspense fallback={<div>Loading…</div>}>
+                      <RetroLoader
+                        text="Loading globe…"
+                        retroMode={retroMode}
+                      />
+                    </Suspense>
                   </div>
                 }
               >
@@ -353,7 +371,9 @@ function FanDemandGlobeInner() {
         </div>
       </div>
 
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
 
       {/* Retro overlays and effects (lazy loaded) */}
       <Suspense fallback={null}>
