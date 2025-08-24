@@ -20,9 +20,6 @@
       ]
     }
   ],
-  "static": {
-    "cacheControl": "public, max-age=31536000, immutable"
-  },
   "images": {
     "domains": ["cdn.jsdelivr.net"]
   }

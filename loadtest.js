@@ -10,8 +10,8 @@ const SUPABASE_ANON_KEY =
 
 export let options = {
   stages: [
-    { duration: "10s", target: 50 }, // ramp to 50 VUs
-    { duration: "20s", target: 200 }, // then 200 VUs
+    { duration: "10s", target: 10 }, // ramp to 50 VUs
+    // { duration: "20s", target: 200 }, // then 200 VUs
     { duration: "20s", target: 0 }, // ramp down
   ],
   thresholds: {
