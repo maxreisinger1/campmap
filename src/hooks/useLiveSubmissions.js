@@ -1,7 +1,43 @@
+/**
+ * @fileoverview Custom hook for managing real-time submission updates via Supabase
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "../services/supabase";
 import { loadSubmissions } from "../services/SubmissionsService";
 
+/**
+ * Custom hook for managing real-time submission updates.
+ *
+ * Sets up Supabase real-time subscriptions to automatically update the submissions
+ * list when new submissions are added. The hook handles initial data loading,
+ * real-time updates, and proper cleanup of subscriptions.
+ *
+ * @function useLiveSubmissions
+ * @param {Array} [initial=[]] - Initial submissions data
+ * @returns {Array} Tuple containing [submissions, setSubmissions]
+ * @returns {Array} returns[0] - Current submissions array
+ * @returns {Function} returns[1] - Function to manually update submissions
+ *
+ * @example
+ * ```javascript
+ * function SubmissionsDisplay() {
+ *   const [submissions, setSubmissions] = useLiveSubmissions([]);
+ *
+ *   // submissions will automatically update when new data arrives
+ *   return (
+ *     <div>
+ *       <h2>Live Submissions ({submissions.length})</h2>
+ *       {submissions.map(sub => (
+ *         <div key={sub.id}>{sub.name} from {sub.city}</div>
+ *       ))}
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export function useLiveSubmissions(initial = []) {
   const [subs, setSubs] = useState(initial);
   const mounted = useRef(true);

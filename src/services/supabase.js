@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Supabase client configuration and utility functions
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
 import { createClient } from "@supabase/supabase-js";
 import { parseError } from "../utils/errorParser";
 
@@ -14,15 +20,30 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-// Configure client with sensible defaults for a browser application.
-// We disable session detection via URL because this app doesn't manage full auth flows.
+/**
+ * Supabase client instance configured for the Creator Camp application.
+ *
+ * Configuration includes:
+ * - Disabled session persistence (stateless app)
+ * - Disabled URL session detection
+ * - Rate-limited realtime events (2 per second)
+ *
+ * @type {import('@supabase/supabase-js').SupabaseClient}
+ */
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: { persistSession: false, detectSessionInUrl: false },
   // Limit realtime event throughput per connection; tune in production if needed.
   realtime: { params: { eventsPerSecond: 2 } },
 });
 
-// Helper: promise timeout wrapper
+/**
+ * Wraps a promise with a timeout to prevent hanging requests.
+ *
+ * @param {Promise} promise - The promise to wrap
+ * @param {number} ms - Timeout in milliseconds
+ * @returns {Promise} Promise that resolves/rejects within the timeout
+ * @throws {Error} When the timeout is exceeded
+ */
 function withTimeout(promise, ms) {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => reject(new Error("Request timed out")), ms);
@@ -38,8 +59,30 @@ function withTimeout(promise, ms) {
   });
 }
 
-// Invoke an edge function with timeout and improved error parsing.
-// Returns the function response data on success or throws a descriptive Error.
+/**
+ * Invokes a Supabase Edge Function with timeout and error handling.
+ *
+ * @param {string} name - The name of the edge function to invoke
+ * @param {Object} [body={}] - The request body to send to the function
+ * @param {Object} [options={}] - Additional options
+ * @param {number} [options.timeout=8000] - Request timeout in milliseconds
+ * @returns {Promise<any>} The function response data
+ * @throws {Error} When the function fails or times out
+ *
+ * @example
+ * ```javascript
+ * try {
+ *   const result = await invokeEdgeFunction('submit_signup', {
+ *     name: 'John Doe',
+ *     email: 'john@example.com',
+ *     zip: '12345'
+ *   }, { timeout: 10000 });
+ *   console.log('Signup successful:', result);
+ * } catch (error) {
+ *   console.error('Signup failed:', error.message);
+ * }
+ * ```
+ */
 export async function invokeEdgeFunction(name, body = {}, options = {}) {
   const timeout = options.timeout ?? 8000; // 8s default
   try {

@@ -1,5 +1,36 @@
+/**
+ * @fileoverview Retro-styled toast notification component with auto-dismiss
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
 import React, { useEffect } from "react";
 
+/**
+ * Toast notification component with retro styling and auto-dismiss functionality.
+ *
+ * Displays temporary messages with distinctive retro effects when enabled.
+ * Automatically dismisses after 3.5 seconds and provides manual close option.
+ * The component applies different styling based on retro mode.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} props.message - Message to display in the toast
+ * @param {boolean} props.show - Whether the toast is visible
+ * @param {Function} props.onClose - Callback function when toast is closed
+ * @param {boolean} props.retroMode - Whether to apply retro styling effects
+ * @returns {JSX.Element|null} Toast notification or null if not shown
+ *
+ * @example
+ * ```javascript
+ * <RetroToast
+ *   message="Signup successful!"
+ *   show={isToastVisible}
+ *   onClose={handleToastClose}
+ *   retroMode={isRetroMode}
+ * />
+ * ```
+ */
 export default function RetroToast({ message, show, onClose, retroMode }) {
   useEffect(() => {
     if (show) {

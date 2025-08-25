@@ -1,6 +1,43 @@
+/**
+ * @fileoverview City leaderboard component with progress tracking and countdown timers
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
 import React, { useState, useEffect } from "react";
 import RetroLoader from "./RetroLoader";
 
+/**
+ * Leaderboard component displaying city signup progress and event information.
+ *
+ * Shows cities ranked by signup progress, event status, ticket availability,
+ * and countdown timers. Supports different visual themes and interactive
+ * city focusing functionality.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {Array} props.leaderboard - Array of city leaderboard data
+ * @param {number} [props.CITY_GOAL=100] - Target signup count for cities
+ * @param {string|null} props.focus - Currently focused city ID
+ * @param {string} props.theme - Visual theme for styling
+ * @param {boolean} [props.loading=false] - Whether data is loading
+ * @param {boolean} [props.retroMode=false] - Whether retro styling is enabled
+ * @param {Function} props.onCityFocus - Callback when city is focused
+ * @returns {JSX.Element} Leaderboard with city rankings and status
+ *
+ * @example
+ * ```javascript
+ * <Leaderboard
+ *   leaderboard={cityData}
+ *   CITY_GOAL={150}
+ *   focus={selectedCityId}
+ *   theme="modern"
+ *   loading={isLoading}
+ *   retroMode={isRetroMode}
+ *   onCityFocus={handleCityFocus}
+ * />
+ * ```
+ */
 export default function Leaderboard({
   leaderboard,
   CITY_GOAL = 100,
@@ -17,6 +54,16 @@ export default function Leaderboard({
     return () => clearInterval(t);
   }, []);
 
+  /**
+   * Formats a countdown timer from milliseconds to human-readable format.
+   *
+   * Converts milliseconds to days, hours, minutes, and seconds format.
+   * Returns the most significant time units, always including seconds.
+   *
+   * @function formatCountdown
+   * @param {number} ms - Milliseconds to format
+   * @returns {string} Formatted countdown string (e.g., "2d 5h 30m 15s")
+   */
   function formatCountdown(ms) {
     if (!ms || ms <= 0) return "0s";
     const totalSec = Math.floor(ms / 1000);

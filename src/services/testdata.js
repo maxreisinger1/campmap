@@ -1,3 +1,30 @@
+/**
+ * @fileoverview Test data for ZIP code lookups and city seeding
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
+/**
+ * Seed ZIP codes for testing and development with major US cities.
+ *
+ * Each entry maps a ZIP code to its corresponding city information including
+ * geographic coordinates for map plotting and location-based features.
+ *
+ * @constant {Object<string, Object>} SEED_ZIPS
+ * @property {string} city - The city name
+ * @property {string} state - The state abbreviation
+ * @property {number} lat - Latitude coordinate
+ * @property {number} lon - Longitude coordinate
+ *
+ * @example
+ * ```javascript
+ * import { SEED_ZIPS } from './testdata';
+ *
+ * const nyc = SEED_ZIPS['10001'];
+ * console.log(`${nyc.city}, ${nyc.state}: ${nyc.lat}, ${nyc.lon}`);
+ * // "New York, NY: 40.7506, -73.9972"
+ * ```
+ */
 export const SEED_ZIPS = {
   10001: { city: "New York", state: "NY", lat: 40.7506, lon: -73.9972 },
   73301: { city: "Austin", state: "TX", lat: 30.2672, lon: -97.7431 },

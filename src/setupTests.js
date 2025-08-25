@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Jest test setup configuration with mocks and global test utilities
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
 // jest-dom adds custom jest matchers for asserting on DOM nodes.
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
@@ -6,11 +12,22 @@
 import "@testing-library/jest-dom";
 import "jest-canvas-mock";
 
-// Mock fetch globally
+/**
+ * Global fetch mock for testing HTTP requests.
+ * @type {jest.MockedFunction}
+ */
 global.fetch = jest.fn();
 
-// Mock window.URL.createObjectURL
+/**
+ * Mock window.URL.createObjectURL for blob URL testing.
+ * @type {jest.MockedFunction}
+ */
 global.URL.createObjectURL = jest.fn(() => "mocked-blob-url");
+
+/**
+ * Mock window.URL.revokeObjectURL for cleanup testing.
+ * @type {jest.MockedFunction}
+ */
 global.URL.revokeObjectURL = jest.fn();
 
 // Mock document methods for CSV tests

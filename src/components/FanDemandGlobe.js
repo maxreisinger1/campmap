@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Main globe component integrating map, submissions, and leaderboard
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
 import { useState, useRef, useEffect, useMemo, lazy, Suspense } from "react";
 import { ToastProvider, useToast } from "../context/ToastContext";
 import { clamp } from "../utils/helpers";
@@ -14,12 +20,33 @@ const RetroLoader = lazy(() => import("./RetroLoader"));
 const GlobeMap = lazy(() => import("./GlobeMap"));
 const RetroEffects = lazy(() => import("./RetroEffects"));
 
+/**
+ * Inner component containing the main globe functionality.
+ *
+ * Manages globe rotation, submission handling, leaderboard display, and user interactions.
+ * Includes globe animation, form submission, real-time updates, and visual mode switching.
+ *
+ * @component
+ * @returns {JSX.Element} Complete globe interface with all features
+ */
 function FanDemandGlobeInner() {
   const [rotate, setRotate] = useState([-20, -15, 0]);
   // eslint-disable-next-line no-unused-vars
   const [transitioning, setTransitioning] = useState(false);
   const rotateAnimRef = useRef();
-  // Animate globe to focus on a given lat/lon
+
+  /**
+   * Animates the globe to focus on a specific geographic location.
+   *
+   * Smoothly rotates the globe to center the given latitude and longitude
+   * coordinates using eased animation over 900ms. Cancels any ongoing
+   * animation before starting a new one.
+   *
+   * @function animateToLocation
+   * @param {Object} location - Target location coordinates
+   * @param {number} location.lat - Latitude coordinate
+   * @param {number} location.lon - Longitude coordinate
+   */
   function animateToLocation({ lat, lon }) {
     // Orthographic: rotate = [longitude, -latitude, 0]
     const target = [-(lon || 0), -(lat || 0), 0];
@@ -383,6 +410,25 @@ function FanDemandGlobeInner() {
   );
 }
 
+/**
+ * Main FanDemandGlobe component with toast context provider.
+ *
+ * Wraps the inner globe component with ToastProvider to enable notification
+ * functionality throughout the globe interface. This is the component that
+ * should be imported and used in other parts of the application.
+ *
+ * @component
+ * @returns {JSX.Element} Globe component with toast context
+ *
+ * @example
+ * ```javascript
+ * import FanDemandGlobe from './components/FanDemandGlobe';
+ *
+ * function App() {
+ *   return <FanDemandGlobe />;
+ * }
+ * ```
+ */
 export default function FanDemandGlobe() {
   return (
     <ToastProvider>

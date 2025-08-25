@@ -1,3 +1,32 @@
+/**
+ * @fileoverview Header component with branding and mode toggle functionality
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
+/**
+ * Header component displaying the application title and retro mode toggle.
+ *
+ * Features a distinctive skewed "CAMP" logo with gradient styling and a toggle
+ * button to switch between normal and retro visual modes. The component handles
+ * smooth transitions when switching modes.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} props.retroMode - Current retro mode state
+ * @param {Function} props.setRetroMode - Function to toggle retro mode
+ * @param {Function} props.setTransitioning - Function to handle transition state
+ * @returns {JSX.Element} Header with title and mode toggle
+ *
+ * @example
+ * ```javascript
+ * <Header
+ *   retroMode={retroMode}
+ *   setRetroMode={setRetroMode}
+ *   setTransitioning={setTransitioning}
+ * />
+ * ```
+ */
 export default function Header({ retroMode, setRetroMode, setTransitioning }) {
   return (
     <div className="relative border-b border-black/20" role="banner">

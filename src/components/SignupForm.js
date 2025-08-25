@@ -1,3 +1,41 @@
+/**
+ * @fileoverview Signup form component for user registration and location input
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
+/**
+ * Signup form component for collecting user information and ZIP code.
+ *
+ * Provides input fields for name, email, and ZIP code with form validation
+ * and submission handling. The form adapts its styling based on retro mode
+ * and displays appropriate loading and error states.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {Object} props.form - Form data object
+ * @param {string} props.form.name - User's name
+ * @param {string} props.form.email - User's email
+ * @param {string} props.form.zip - User's ZIP code
+ * @param {Function} props.setForm - Function to update form data
+ * @param {Function} props.handleSubmit - Form submission handler
+ * @param {string|null} props.fatal - Fatal error message if any
+ * @param {boolean} props.retroMode - Whether retro styling is enabled
+ * @param {boolean} [props.loading=false] - Whether form is in loading state
+ * @returns {JSX.Element} Signup form with validation and styling
+ *
+ * @example
+ * ```javascript
+ * <SignupForm
+ *   form={formData}
+ *   setForm={setFormData}
+ *   handleSubmit={handleFormSubmit}
+ *   fatal={errorMessage}
+ *   retroMode={isRetroMode}
+ *   loading={isSubmitting}
+ * />
+ * ```
+ */
 export default function SignupForm({
   form,
   setForm,

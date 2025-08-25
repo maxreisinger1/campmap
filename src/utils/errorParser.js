@@ -1,3 +1,31 @@
+/**
+ * @fileoverview Error parsing utilities for handling various error formats
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
+/**
+ * Parses errors from various sources, especially Supabase function errors.
+ *
+ * Handles different error formats including ReadableStream responses,
+ * JSON error objects, and plain string errors. Attempts to extract
+ * meaningful error messages from complex error structures.
+ *
+ * @async
+ * @function parseError
+ * @param {Error} error - The error object to parse
+ * @returns {Promise<string>} Parsed error message
+ *
+ * @example
+ * ```javascript
+ * try {
+ *   // Some operation that might fail
+ * } catch (error) {
+ *   const message = await parseError(error);
+ *   console.error('Parsed error:', message);
+ * }
+ * ```
+ */
 export async function parseError(error) {
   let msg = error.message;
 

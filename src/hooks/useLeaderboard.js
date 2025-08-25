@@ -1,9 +1,55 @@
+/**
+ * @fileoverview Custom hook for managing city leaderboard data with real-time updates
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
 import { useEffect, useMemo, useState } from "react";
 import {
   getCityLeaderboard,
   subscribeToCityLeaderboard,
 } from "../services/CityService";
 
+/**
+ * Custom hook for managing city leaderboard data with real-time updates.
+ *
+ * Automatically fetches initial leaderboard data and sets up real-time subscriptions
+ * to monitor changes in city metrics, events, and city configurations. The hook
+ * intelligently updates local state when changes occur and triggers full refreshes
+ * when necessary.
+ *
+ * @function useLeaderboard
+ * @returns {Object} Leaderboard state and computed values
+ * @returns {Array} returns.data - Array of city leaderboard objects
+ * @returns {boolean} returns.loading - Loading state indicator
+ * @returns {string} returns.error - Error message if fetch fails
+ * @returns {Array} returns.sortedData - Leaderboard sorted by progress ratio
+ * @returns {Object} returns.stats - Aggregate statistics
+ * @returns {number} returns.stats.totalCities - Total number of cities
+ * @returns {number} returns.stats.totalSignups - Total signup count across all cities
+ * @returns {number} returns.stats.averageProgress - Average progress ratio
+ *
+ * @example
+ * ```javascript
+ * function LeaderboardComponent() {
+ *   const { data, loading, error, sortedData, stats } = useLeaderboard();
+ *
+ *   if (loading) return <div>Loading leaderboard...</div>;
+ *   if (error) return <div>Error: {error}</div>;
+ *
+ *   return (
+ *     <div>
+ *       <h2>Cities: {stats.totalCities} | Total Signups: {stats.totalSignups}</h2>
+ *       {sortedData.map(city => (
+ *         <div key={city.city_id}>
+ *           {city.city_name}: {city.signup_count}/{city.city_threshold}
+ *         </div>
+ *       ))}
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export function useLeaderboard() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,7 +117,8 @@ export function useLeaderboard() {
     };
   }, []);
 
-  const sorted = useMemo(() => {
+  // Computed sorted leaderboard
+  const sortedData = useMemo(() => {
     const copy = [...rows];
     copy.sort((a, b) => {
       const aName = typeof a.city_name === "string" ? a.city_name : "";
@@ -81,5 +128,33 @@ export function useLeaderboard() {
     return copy;
   }, [rows]);
 
-  return { leaderboard: sorted, loading, error };
+  // Computed statistics
+  const stats = useMemo(() => {
+    const totalCities = rows.length;
+    const totalSignups = rows.reduce(
+      (sum, city) => sum + (city.signup_count || 0),
+      0
+    );
+    const averageProgress =
+      totalCities > 0
+        ? rows.reduce((sum, city) => sum + (city.progress_ratio || 0), 0) /
+          totalCities
+        : 0;
+
+    return {
+      totalCities,
+      totalSignups,
+      averageProgress,
+    };
+  }, [rows]);
+
+  return {
+    data: rows,
+    loading,
+    error,
+    sortedData,
+    stats,
+    // Legacy compatibility
+    leaderboard: sortedData,
+  };
 }

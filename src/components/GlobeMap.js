@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Interactive 3D globe map component with geographic visualization
+ * @author Creator Camp Team
+ * @version 1.0.0
+ */
+
 import {
   ComposableMap,
   Geographies,
@@ -7,9 +13,52 @@ import {
   Marker,
 } from "react-simple-maps";
 
+/**
+ * URL for world geographic data used in the globe visualization.
+ * @constant {string}
+ */
 const GEO_URL =
   "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
+/**
+ * Interactive globe map component with rotation, zoom, and submission markers.
+ *
+ * Renders a 3D globe using react-simple-maps with world geography, submission
+ * markers, and interactive controls. Supports different visual themes, zoom
+ * levels, and rotation states with smooth animations.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {Array<number>} props.rotate - Globe rotation [longitude, latitude, roll]
+ * @param {Function} props.setRotate - Function to update globe rotation
+ * @param {number} props.zoom - Current zoom level
+ * @param {Function} props.setZoom - Function to update zoom level
+ * @param {boolean} props.retroMode - Whether retro styling is enabled
+ * @param {string} props.theme - Visual theme for styling
+ * @param {Array} props.submissions - Array of user submissions with coordinates
+ * @param {number} props.jitter - Amount of position jittering for markers
+ * @param {React.RefObject} props.containerRef - Reference to container element
+ * @param {string} props.cursor - CSS cursor style
+ * @param {boolean} props.hasSubmitted - Whether user has submitted
+ * @returns {JSX.Element} Interactive globe with controls and markers
+ *
+ * @example
+ * ```javascript
+ * <GlobeMap
+ *   rotate={[0, 0, 0]}
+ *   setRotate={setRotation}
+ *   zoom={150}
+ *   setZoom={setZoom}
+ *   retroMode={false}
+ *   theme="modern"
+ *   submissions={submissionData}
+ *   jitter={0.1}
+ *   containerRef={mapRef}
+ *   cursor="grab"
+ *   hasSubmitted={false}
+ * />
+ * ```
+ */
 export default function GlobeMap({
   rotate,
   setRotate,
