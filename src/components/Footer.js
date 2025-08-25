@@ -21,15 +21,17 @@
  */
 export default function Footer() {
   return (
-    <div className="max-w-7xl mx-auto px-4 pb-8 mt-2 flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between">
+    <div className="max-w-7xl w-full mx-auto px-4 pb-8 mt-2 flex flex-row items-start gap-3 justify-between">
       <div className="text-xs font-mono opacity-70">
         © {new Date().getFullYear()} Camp Studios — All vibes reserved.
       </div>
-      <div className="text-xs font-mono">
-        Roadmap: <span className="underline">Global postcode geocoding</span> •{" "}
-        <span className="underline">Auth + DB (Supabase)</span> •{" "}
-        <span className="underline">Spam protection</span> •{" "}
-        <span className="underline">Public city pages</span>
+      <div className="text-xs flex flex-row font-mono">
+        <span className="mr-4">Follow along the Camp Studios journey:</span>
+        <span className="font-medium underline">Instagram</span>
+        <div className="h-4 w-[2px] mx-4 bg-black" />
+        <span className="font-medium underline">Youtube</span>
+        <div className="h-4 w-[2px] mx-4 bg-black" />
+        <span className="font-medium underline">Discord</span>
       </div>
     </div>
   );

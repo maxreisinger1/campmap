@@ -73,7 +73,7 @@ export default function GlobeMap({
   hasSubmitted,
 }) {
   return (
-    <div className="relative rounded-2xl border border-black bg-gradient-to-br from-[#fff9e8] via-[#f8efe0] to-[#efe3cf] shadow-[12px_12px_0_0_rgba(0,0,0,0.65)] overflow-hidden">
+    <div className="relative rounded-2xl border border-black bg-gradient-to-br from-[#fff9e8] via-[#f8efe0] to-[#efe3cf] shadow-[12px_12px_0_0_rgba(0,0,0,0.65)] h-full flex flex-col">
       <div className="absolute z-10 top-3 left-3 flex items-center gap-2 bg-white/85 backdrop-blur rounded-md border border-black p-2">
         <button
           title="Rotate Left"
@@ -133,12 +133,15 @@ export default function GlobeMap({
 
       <div
         ref={containerRef}
-        className="w-full h-[520px] md:h-[600px] select-none"
+        className="w-full flex-1 select-none min-h-[520px] p-4"
         style={{ cursor }}
       >
         <ComposableMap
           projection="geoOrthographic"
-          projectionConfig={{ scale: 220 * zoom, rotate }}
+          projectionConfig={{ scale: 200 * zoom, rotate }}
+          width={800}
+          height={600}
+          style={{ width: "100%", height: "100%" }}
         >
           <Sphere stroke={theme.stroke} strokeWidth={0.75} fill={theme.ocean} />
           <Graticule
@@ -199,6 +202,11 @@ export default function GlobeMap({
             </Marker>
           ))}
         </ComposableMap>
+      </div>
+
+      {/* Instructions text in bottom right corner */}
+      <div className="absolute z-10 bottom-3 left-3 text-xs opacity-70 font-mono p-2">
+        Drag to spin, wheel to zoom. Hold <b>Shift</b> for faster spin.
       </div>
     </div>
   );

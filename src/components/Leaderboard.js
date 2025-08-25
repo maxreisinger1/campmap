@@ -79,8 +79,8 @@ export default function Leaderboard({
     return parts.join(" ");
   }
   return (
-    <div className="relative rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]">
-      <h3 className="text-lg md:text-xl font-extrabold mb-1">
+    <div className="relative rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)] h-full flex flex-col">
+      <h3 className="text-3xl tracking-wider font-extrabold mb-1">
         City Leaderboard
       </h3>
       <p className="text-xs mb-3 opacity-70">
@@ -89,13 +89,15 @@ export default function Leaderboard({
         join.
       </p>
       {loading ? (
-        <RetroLoader text="Loading leaderboard..." retroMode={retroMode} />
+        <div className="flex-1 flex items-center justify-center">
+          <RetroLoader text="Loading leaderboard..." retroMode={retroMode} />
+        </div>
       ) : leaderboard.length === 0 ? (
-        <div className="text-sm opacity-70">
+        <div className="text-sm opacity-70 flex-1 flex items-center justify-center">
           No cities yet. Be the first to drop a pin.
         </div>
       ) : (
-        <div className="max-h-[360px] overflow-auto pr-1 space-y-2">
+        <div className="flex-1 overflow-auto pr-1 space-y-2">
           {leaderboard.map((row, i) => {
             const onClick = () => {
               if (onCityFocus && row.lat && row.lon) {
@@ -158,26 +160,25 @@ export default function Leaderboard({
                       href={row.evey_event_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ml-2 px-2 py-1 text-xs font-bold rounded bg-yellow-400 border border-black shadow hover:bg-yellow-300 transition"
+                      className="ml-2 px-2 py-1 text-xs font-bold rounded bg-[#FF9D47] border border-black shadow hover:bg-[#FF9D47]/80 transition"
                     >
                       Buy Tickets
                     </a>
                   )}
                 </div>
-                <div className="mt-2 h-4 w-full rounded-full border-2 border-black bg-[repeating-linear-gradient(45deg,#fff,#fff_6px,#f3efe4_6px,#f3efe4_12px)] overflow-hidden relative">
+                <div className="mt-2 h-4 w-full rounded-full border-2 border-black bg-gray-200 overflow-hidden relative">
                   <div
-                    className="absolute inset-0 pointer-events-none"
+                    className="absolute left-0 top-0 h-full pointer-events-none"
                     style={{
-                      backgroundImage: `radial-gradient(circle at 6px 7px, #f5c518 2px, transparent 2.5px), radial-gradient(circle at calc(100% - 6px) 7px, #f5c518 2px, transparent 2.5px)`,
-                      backgroundSize: "12px 14px, 12px 14px",
-                      backgroundRepeat: "repeat-y",
+                      width: "8px",
+                      background: "#EE4284",
                     }}
                   />
                   <div
                     className="h-full border-r-2 border-black transition-[width] duration-700 ease-out"
                     style={{
                       width: `${pct * 100}%`,
-                      background: theme.barFill,
+                      background: "#D42568",
                     }}
                   />
                 </div>

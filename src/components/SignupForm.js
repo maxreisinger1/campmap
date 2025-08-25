@@ -45,17 +45,19 @@ export default function SignupForm({
   loading = false,
 }) {
   return (
-    <div className="relative rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]">
+    <div className="relative max-w-4xl rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]">
       <div className="absolute -top-2 -left-2 h-4 w-4 bg-black" />
       <div className="absolute -bottom-2 -right-2 h-4 w-4 bg-black" />
 
       <h2 className="text-xl md:text-2xl font-extrabold mb-3">
-        Bring the movie to{" "}
-        <span className="underline decoration-amber-500">your city</span>
+        Vote For Two Sleepy People In{" "}
+        <span className="underline decoration-black">Your City:</span>
       </h2>
       <p className="text-sm mb-4 opacity-80">
-        Pop in your details and drop a pin. We'll use this to plan screenings
-        and send you updates.
+        We’re bringing creator-made cinema to theaters nationwide, and want you
+        to be part of it. If you want to host a screening, see it with your
+        friends, or be the first to hear where we’re headed next — drop your
+        info below.
       </p>
       <form onSubmit={handleSubmit} className="space-y-3">
         <div>
@@ -126,8 +128,8 @@ export default function SignupForm({
             disabled={loading}
             className={`rounded-md border-2 border-black px-4 py-2 font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-2 ${
               retroMode
-                ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
-                : "bg-lime-300/80 hover:bg-lime-300"
+                ? "bg-[#00ffd1] hover:bg-[#00e1ba] text-black"
+                : "bg-[#D42568] hover:bg-[#A61D4D] text-white"
             } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
           >
             {loading && (
