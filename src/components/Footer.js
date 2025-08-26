@@ -25,9 +25,9 @@ export default function Footer() {
       {/* Mobile Layout */}
       <div className="flex flex-col gap-4 md:hidden">
         {/* Follow along section first on mobile */}
-        <div className="text-xs font-mono">
+        <div className="text-xs font-mono text-center">
           <div className="mb-2">Follow along the Camp Studios journey:</div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col items-center gap-2">
             <span className="font-semibold italic underline">Instagram</span>
             <span className="font-semibold italic underline">Youtube</span>
             <span className="font-semibold italic underline">Discord</span>
@@ -35,13 +35,13 @@ export default function Footer() {
         </div>
 
         {/* Copyright text second on mobile */}
-        <div className="text-xs font-mono opacity-70">
+        <div className="text-xs font-mono opacity-70 text-center">
           © {new Date().getFullYear()} Camp Studios — All vibes reserved.
         </div>
       </div>
 
       {/* Desktop Layout */}
-      <div className="hidden md:flex flex-row items-start gap-3 justify-between">
+      <div className="hidden md:flex flex-row md:items-start gap-3 justify-between">
         <div className="text-xs font-mono opacity-70">
           © {new Date().getFullYear()} Camp Studios — All vibes reserved.
         </div>

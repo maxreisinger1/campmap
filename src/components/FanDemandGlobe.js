@@ -371,7 +371,7 @@ function FanDemandGlobeInner() {
     >
       <Hero />
 
-      <div className="text-center my-12 max-w-7xl mx-auto px-8 md:px-12 lg:px-16">
+      <div className="text-center my-6 md:my-12 max-w-7xl mx-auto px-8 md:px-12 lg:px-16">
         <div className="mb-8 text-center">
           <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] text-white font-semibold uppercase px-10 py-2 rounded">
             The Two Sleepy Tour
@@ -379,10 +379,10 @@ function FanDemandGlobeInner() {
         </div>
 
         <div>
-          <h2 className="text-pink-600 text-5xl font-bold tracking-wider">
+          <h2 className="text-pink-600 text-2xl md:text-5xl font-bold tracking-wider">
             WANT TO WATCH THE FILM?
           </h2>
-          <span className="text-base text-black font-extralight tracking-widest">
+          <span className="text-xs md:text-base text-black font-extralight tracking-widest">
             VOTE BELOW, TO SEE IT IN A THEATER NEAR YOU{" "}
             <span className="font-bold">THIS FALL.</span>
           </span>

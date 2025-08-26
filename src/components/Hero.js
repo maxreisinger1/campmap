@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="relative w-full h-screen overflow-hidden">
+    <section className="relative w-full h-[389px] md:h-[800px] overflow-hidden">
       {/* Background Image */}
       <video
         src="/images/twosleepymontage2.mp4" // replace with your actual hero image path
@@ -38,11 +38,11 @@ export default function Hero() {
         <img
           src="/images/hero-text.png"
           alt="Two Sleepy People"
-          className="mt-4 h-auto w-full max-w-xs md:max-w-3xl"
+          className="mt-4 h-auto w-full max-w-sm md:max-w-3xl"
         />
 
         {/* Subtitle */}
-        <p className="mt-4 text-2xl md:text-4xl inline-block font-semibold text-white tracking-wide">
+        <p className="mt-2 text-xl md:text-4xl inline-block font-semibold text-white tracking-wide">
           THE ROAD TO
           <img
             src="/images/counter.png"
@@ -53,8 +53,8 @@ export default function Hero() {
         </p>
 
         {/* Mobile Badge - Only visible on mobile */}
-        <div className="mt-6 md:hidden">
-          <span className="bg-white rounded-full px-4 py-2 text-xs font-semibold tracking-wide uppercase">
+        <div className="mt-2 md:hidden">
+          <span className="bg-white rounded-full px-10 py-1 text-[9.5px] font-semibold tracking-wide uppercase">
             In Theaters Nationwide This Fall
           </span>
         </div>

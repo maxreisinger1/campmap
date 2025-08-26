@@ -64,26 +64,26 @@ export default function AboutSection() {
             </span>
           </p>
 
-          {/* CTA Buttons with retro offset shadow */}
-          <div className="flex flex-wrap gap-6">
+          {/* CTA Buttons with retro offset shadow - Mobile Full Width */}
+          <div className="flex flex-col gap-4 md:gap-6">
             {/* Pink button */}
-            <div className="relative inline-block">
+            <div className="relative w-full">
               <span
                 aria-hidden
                 className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-md bg-[#3e2a35]"
               />
-              <button className="relative text-[11px] rounded-md border border-black bg-pink-600 px-16 py-2 text-white font-semibold uppercase tracking-wide">
+              <button className="relative text-[11px] rounded-md border border-black bg-pink-600 px-16 py-2 text-white font-semibold uppercase tracking-wide w-full">
                 Trailer Coming Soon
               </button>
             </div>
 
             {/* Orange button */}
-            <div className="relative inline-block">
+            <div className="relative w-full">
               <span
                 aria-hidden
                 className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-md bg-[#5a3b1f]"
               />
-              <button className="relative text-[11px] rounded-md border border-black bg-orange-500 px-16 py-2 text-white font-semibold uppercase tracking-wide">
+              <button className="relative text-[11px] rounded-md border border-black bg-orange-500 px-16 py-2 text-white font-semibold uppercase tracking-wide w-full">
                 Learn More From Camp Studios
               </button>
             </div>
@@ -116,21 +116,21 @@ export default function AboutSection() {
         <div className="relative mx-auto md:mx-0 flex flex-col gap-8 items-center h-full md:w-2/5">
           <div className="relative items-center justify-center">
             {/* Stacked stills in a single vertical column behind poster */}
-            <div className="absolute -left-32 flex flex-col -gap-8">
+            <div className="absolute -left-16 md:-left-24 lg:-left-32 flex flex-col -gap-8">
               <img
                 src="/images/still-1.jpg"
                 alt="Film still"
-                className="w-44 rotate-[13.27deg] shadow-md"
+                className="w-32 md:w-36 lg:w-44 rotate-[13.27deg] shadow-md"
               />
               <img
                 src="/images/still-2.jpg"
                 alt="Film still"
-                className="w-48 shadow-md z-10"
+                className="w-36 md:w-40 lg:w-48 shadow-md z-10"
               />
               <img
                 src="/images/still-3.jpg"
                 alt="Film still"
-                className="w-44 rotate-[-14.38deg] shadow-md"
+                className="w-32 md:w-36 lg:w-44 rotate-[-14.38deg] shadow-md"
               />
             </div>
 
@@ -138,7 +138,7 @@ export default function AboutSection() {
             <img
               src="/images/cover.jpg"
               alt="Two Sleepy People Poster"
-              className="relative z-10 w-72 shadow-[0_4px_6px_rgba(0,0,0,0.3)] rotate-[-3.72deg]"
+              className="relative z-10 w-64 md:w-72 shadow-[0_4px_6px_rgba(0,0,0,0.3)] rotate-[-3.72deg]"
             />
           </div>
 
@@ -146,7 +146,7 @@ export default function AboutSection() {
           <img
             src="/images/every-night-text.png"
             alt="Every night they’re married. Every morning, they’re strangers."
-            className="mt-4 w-80 h-auto"
+            className="mt-4 w-72 md:w-80 h-auto"
           />
         </div>
 
