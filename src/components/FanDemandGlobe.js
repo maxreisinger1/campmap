@@ -379,7 +379,7 @@ function FanDemandGlobeInner() {
         </div>
 
         <div>
-          <h2 className="text-pink-600 text-[26px] md:text-5xl font-bold tracking-wider  md:mb-[15px]">
+          <h2 className="text-pink-600 text-[24px] md:text-5xl font-bold tracking-wider  md:mb-[15px]">
             WANT TO WATCH THE FILM?
           </h2>
           <span className="text-[9.5px] md:text-base text-black font-medium md:font-extralight md:tracking-widest">
