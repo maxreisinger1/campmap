@@ -371,15 +371,15 @@ function FanDemandGlobeInner() {
     >
       <Hero />
 
-      <div className="text-center my-6 md:my-12 max-w-7xl mx-auto px-8 md:px-12 lg:px-16">
-        <div className="mb-8 text-center">
-          <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] text-white font-semibold uppercase px-10 py-2 rounded">
+      <div className="text-center my-6 md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
+        <div className="mb-[28px] text-center">
+          <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] max-h-[40px] max-w-[200px] text-white text-[14px] font-normal uppercase px-[15px] py-2 rounded">
             The Two Sleepy Tour
           </span>
         </div>
 
         <div>
-          <h2 className="text-pink-600 text-2xl md:text-5xl font-bold tracking-wider">
+          <h2 className="text-pink-600 text-2xl md:text-5xl font-bold tracking-wider mb-[15px]">
             WANT TO WATCH THE FILM?
           </h2>
           <span className="text-xs md:text-base text-black font-extralight tracking-widest">
@@ -390,7 +390,7 @@ function FanDemandGlobeInner() {
       </div>
 
       {/* Signup form - Full width */}
-      <div className="max-w-7xl mx-auto px-8 md:px-12 lg:px-16 py-6">
+      <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6">
         <Suspense fallback={<div>Loading form…</div>}>
           <SignupForm
             form={form}
@@ -406,7 +406,7 @@ function FanDemandGlobeInner() {
       <SignupsCounter count={submissions.length} />
 
       {/* Leaderboard and Globe - Side by side with equal height */}
-      <div className="max-w-7xl mx-auto px-8 md:px-12 lg:px-16 py-6">
+      <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 min-h-[600px]">
           {/* Globe - 60% width (3/5) - First on mobile, second on desktop */}
           <div className="lg:col-span-3 flex flex-col order-1 lg:order-2">
@@ -492,7 +492,7 @@ function FanDemandGlobeInner() {
         </div>
       </div>
 
-      <div className="w-full h-[2px] bg-black/20 max-w-7xl mx-auto px-8 md:px-12 lg:px-16 my-10" />
+      <div className="w-full h-[2px] bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 my-10" />
 
       <AboutSection />
 

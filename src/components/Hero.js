@@ -3,7 +3,7 @@ export default function Hero() {
     <section className="relative w-full h-[389px] md:h-[800px] overflow-hidden">
       {/* Background Image */}
       <video
-        src="/images/twosleepymontage2.mp4" // replace with your actual hero image path
+        src="/images/twosleepymontage2.mp4"
         alt="Two Sleepy People"
         className="absolute inset-0 w-full h-full object-cover"
         autoPlay
@@ -15,34 +15,45 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/30"></div>
 
       {/* Top Bar */}
-      <div className="absolute top-4 md:left-6 md:flex md:items-center md:space-x-2 flex flex-col items-center w-full md:w-auto">
-        <div className="flex items-center space-x-2">
+      <div className="justify-between items-start p-4 md:px-[144px] md:pt-12 absolute inset-x-0 top-0 w-full hidden md:flex flex-row">
+        <div className="flex flex-row items-center space-x-2">
           {/* Studio Logo */}
           <img src="/images/logo.png" alt="Camp Studios" className="h-6" />
-          <span className="text-xs uppercase text-white opacity-80">
+          <span className="text-xs uppercase text-white">
             A Camp Studios Production
           </span>
         </div>
-      </div>
 
-      {/* Top Right Badge - Hidden on mobile */}
-      <div className="absolute top-6 right-6 hidden md:block">
+        {/* Top Right Badge - Hidden on mobile */}
         <span className="bg-white rounded-full px-4 py-1 text-xs font-semibold tracking-wide uppercase">
           In Theaters Nationwide This Fall
         </span>
       </div>
 
       {/* Center Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-10 md:px-4">
         {/* Film Title */}
-        <img
-          src="/images/hero-text.png"
-          alt="Two Sleepy People"
-          className="mt-4 h-auto w-full max-w-sm md:max-w-3xl"
-        />
+        <h1
+          className="bg-pink-600 border border-black border-w-[2px] max-h-[120px] text-white text-[20px] md:text-[72px] font-normal uppercase px-[76px] py-5 rounded"
+          style={{
+            fontFamily: "Grange Heavy, sans-serif",
+            fontWeight: 900,
+            lineHeight: "106%",
+            letterSpacing: "-1%",
+          }}
+        >
+          Two Sleepy People
+        </h1>
 
         {/* Subtitle */}
-        <p className="mt-2 text-xl md:text-4xl inline-block font-semibold text-white tracking-wide">
+        <p
+          className="mt-[22px] text-xl md:text-[41px] inline-block text-white"
+          style={{
+            fontWeight: 500,
+            lineHeight: "106%",
+            letterSpacing: "-17%",
+          }}
+        >
           THE ROAD TO
           <img
             src="/images/counter.png"

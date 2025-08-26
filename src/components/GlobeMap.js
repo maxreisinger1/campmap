@@ -114,61 +114,128 @@ export default function GlobeMap({
   const showClustering = zoom < 1.8; // Show clustering when zoomed out
   return (
     <div className="relative rounded-2xl border border-black bg-gradient-to-br from-[#fff9e8] via-[#f8efe0] to-[#efe3cf] shadow-[12px_12px_0_0_rgba(0,0,0,0.65)] h-full flex flex-col">
-      <div className="absolute z-10 top-3 left-3 flex items-center gap-2 bg-white/85 backdrop-blur rounded-md border border-black p-2">
-        <button
-          title="Rotate Left"
-          onClick={() => setRotate(([x, y, z]) => [x - 15, y, z])}
-          className={`px-2 py-1 text-xs font-bold border-2 border-black shadow-[3px_3px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
-            retroMode
-              ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
-              : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
-          }`}
-        >
-          ◀
-        </button>
-        <button
-          title="Rotate Right"
-          onClick={() => setRotate(([x, y, z]) => [x + 15, y, z])}
-          className={`px-2 py-1 text-xs font-bold border-2 border-black shadow-[3px_3px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
-            retroMode
-              ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
-              : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
-          }`}
-        >
-          ▶
-        </button>
-        <button
-          title="Rotate Up"
-          onClick={() => setRotate(([x, y, z]) => [x, y - 10, z])}
-          className={`px-2 py-1 text-xs font-bold border-2 border-black shadow-[3px_3px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
-            retroMode
-              ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
-              : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
-          }`}
-        >
-          ▲
-        </button>
-        <button
-          title="Rotate Down"
-          onClick={() => setRotate(([x, y, z]) => [x, y + 10, z])}
-          className={`px-2 py-1 text-xs font-bold border-2 border-black shadow-[3px_3px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
-            retroMode
-              ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
-              : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
-          }`}
-        >
-          ▼
-        </button>
-        <div className="h-6 w-px bg-black/20 mx-1" />
-        <label className="text-xs font-bold">Zoom</label>
-        <input
-          type="range"
-          min={0.9}
-          max={7.5}
-          step={0.01}
-          value={zoom}
-          onChange={(e) => setZoom(Number(e.target.value))}
-        />
+      <div className="absolute z-10 top-2 left-2 right-2 md:top-3 md:left-3 md:right-auto md:w-auto flex flex-row md:items-center gap-2 bg-white/85 backdrop-blur rounded-md border border-black p-2 md:p-2">
+        {/* Mobile: Rotation controls in a single horizontal line */}
+        <div className="flex md:hidden">
+          <div className="flex gap-1">
+            <button
+              title="Rotate Left"
+              onClick={() => setRotate(([x, y, z]) => [x - 15, y, z])}
+              className={`px-1 py-1 text-xs font-bold border border-black shadow-[2px_2px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
+                retroMode
+                  ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
+                  : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
+              }`}
+            >
+              ◀
+            </button>
+            <button
+              title="Rotate Right"
+              onClick={() => setRotate(([x, y, z]) => [x + 15, y, z])}
+              className={`px-1 py-1 text-xs font-bold border border-black shadow-[2px_2px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
+                retroMode
+                  ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
+                  : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
+              }`}
+            >
+              ▶
+            </button>
+            <button
+              title="Rotate Up"
+              onClick={() => setRotate(([x, y, z]) => [x, y - 10, z])}
+              className={`px-1 py-1 text-xs font-bold border border-black shadow-[2px_2px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
+                retroMode
+                  ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
+                  : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
+              }`}
+            >
+              ▲
+            </button>
+            <button
+              title="Rotate Down"
+              onClick={() => setRotate(([x, y, z]) => [x, y + 10, z])}
+              className={`px-1 py-1 text-xs font-bold border border-black shadow-[2px_2px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
+                retroMode
+                  ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
+                  : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
+              }`}
+            >
+              ▼
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile: Zoom controls */}
+        <div className="flex md:hidden items-center gap-1 flex-1">
+          <label className="text-xs font-bold">Zoom</label>
+          <input
+            type="range"
+            min={0.9}
+            max={7.5}
+            step={0.01}
+            value={zoom}
+            onChange={(e) => setZoom(Number(e.target.value))}
+            className="flex-1 min-w-0"
+          />
+        </div>
+
+        {/* Desktop: Original horizontal layout */}
+        <div className="hidden md:flex items-center gap-2">
+          <button
+            title="Rotate Left"
+            onClick={() => setRotate(([x, y, z]) => [x - 15, y, z])}
+            className={`px-2 py-1 text-xs font-bold border-2 border-black shadow-[3px_3px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
+              retroMode
+                ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
+                : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
+            }`}
+          >
+            ◀
+          </button>
+          <button
+            title="Rotate Right"
+            onClick={() => setRotate(([x, y, z]) => [x + 15, y, z])}
+            className={`px-2 py-1 text-xs font-bold border-2 border-black shadow-[3px_3px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
+              retroMode
+                ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
+                : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
+            }`}
+          >
+            ▶
+          </button>
+          <button
+            title="Rotate Up"
+            onClick={() => setRotate(([x, y, z]) => [x, y - 10, z])}
+            className={`px-2 py-1 text-xs font-bold border-2 border-black shadow-[3px_3px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
+              retroMode
+                ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
+                : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
+            }`}
+          >
+            ▲
+          </button>
+          <button
+            title="Rotate Down"
+            onClick={() => setRotate(([x, y, z]) => [x, y + 10, z])}
+            className={`px-2 py-1 text-xs font-bold border-2 border-black shadow-[3px_3px_0_0_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
+              retroMode
+                ? "bg-[#00ffd1] hover:bg-[#00e1ba]"
+                : "bg-[#d2f8d2] hover:bg-[#c2f5c2]"
+            }`}
+          >
+            ▼
+          </button>
+          <div className="h-6 w-px bg-black/20 mx-1" />
+          <label className="text-xs font-bold">Zoom</label>
+          <input
+            type="range"
+            min={0.9}
+            max={7.5}
+            step={0.01}
+            value={zoom}
+            onChange={(e) => setZoom(Number(e.target.value))}
+          />
+        </div>
       </div>
 
       <div
@@ -181,7 +248,7 @@ export default function GlobeMap({
           projectionConfig={{ scale: 200 * zoom, rotate }}
           width={800}
           height={600}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", height: "100%", borderRadius: "16px" }}
         >
           <Sphere stroke={theme.stroke} strokeWidth={0.75} fill={theme.ocean} />
           <Graticule

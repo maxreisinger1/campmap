@@ -1,9 +1,9 @@
 export default function AboutSection() {
   return (
-    <section className="max-w-7xl mx-auto pb-16 px-8 md:px-12 lg:px-16 overflow-x-hidden">
+    <section className="max-w-7xl mx-auto pb-16 px-10 md:px-12 lg:px-16 overflow-x-hidden">
       {/* Badge centered above BOTH columns */}
       <div className="mb-8 text-center">
-        <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] text-white font-semibold uppercase px-10 py-2 rounded">
+        <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] max-h-[40px] max-w-[200px] text-white text-[14px] font-normal uppercase px-[15px] py-2 rounded">
           About the Film
         </span>
       </div>

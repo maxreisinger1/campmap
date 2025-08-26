@@ -47,11 +47,26 @@ export default function Footer() {
         </div>
         <div className="text-xs flex flex-row font-mono">
           <span className="mr-4">Follow along the Camp Studios journey:</span>
-          <span className="font-semibold italic underline">Instagram</span>
+          <a
+            href="https://www.instagram.com/_campstudios/?hl=en"
+            className="font-semibold italic underline"
+          >
+            Instagram
+          </a>
           <div className="h-4 w-[2px] mx-4 bg-black" />
-          <span className="font-semibold italic underline">Youtube</span>
+          <a
+            href="https://www.youtube.com/@campstudios-com"
+            className="font-semibold italic underline"
+          >
+            Youtube
+          </a>
           <div className="h-4 w-[2px] mx-4 bg-black" />
-          <span className="font-semibold italic underline">Discord</span>
+          <a
+            href="https://discord.com/invite/bMHhSKfegq"
+            className="font-semibold italic underline"
+          >
+            Discord
+          </a>
         </div>
       </div>
     </div>
