@@ -32,20 +32,38 @@
  * ```
  */
 export async function lookupZip(z) {
+  // Autodetect country from postal code
+  let country = "us";
+  let code = z.trim();
+  // US ZIP: 5 digits, optionally with 4-digit extension
+  const usZipRegex = /^\d{5}(-\d{4})?$/;
+  // Argentina: AR followed by 4 digits and 3 letters (e.g., AR1601ABC) or AR + 4 digits (e.g., AR1601)
+  const arZipRegex = /^AR\d{4}[A-Z]{0,3}$/i;
+
+  if (arZipRegex.test(code)) {
+    country = "ar";
+    code = code.replace(/^AR/i, ""); // Remove AR prefix for API
+  } else if (usZipRegex.test(code)) {
+    country = "us";
+  } else {
+    throw new Error("Unsupported or invalid postal code format");
+  }
+
   try {
-    const res = await fetch(`https://api.zippopotam.us/us/${z}`);
-    if (!res.ok) throw new Error("ZIP lookup failed");
+    const res = await fetch(`https://api.zippopotam.us/${country}/${code}`);
+    if (!res.ok) throw new Error("Postal code lookup failed");
     const data = await res.json();
     const place = data.places?.[0];
-    if (!place) throw new Error("ZIP not found");
+    if (!place) throw new Error("Postal code not found");
     return {
       city: place["place name"],
-      state: place["state abbreviation"],
+      state: place["state abbreviation"] || place["state"] || "",
+      country: data["country abbreviation"] || country.toUpperCase(),
       lat: Number(place.latitude),
       lon: Number(place.longitude),
     };
   } catch (error) {
-    console.error("ZIP lookup error:", error);
-    throw new Error(error.message || "Failed to lookup ZIP code");
+    console.error("Postal code lookup error:", error);
+    throw new Error(error.message || "Failed to lookup postal code");
   }
 }

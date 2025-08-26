@@ -119,7 +119,7 @@ export default function SignupForm({
             onChange={(e) =>
               setForm({
                 ...form,
-                zip: e.target.value.replace(/[^0-9]/g, "").slice(0, 5),
+                zip: e.target.value.replace(/[^a-zA-Z0-9]/g, ""),
               })
             }
           />
