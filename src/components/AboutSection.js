@@ -2,7 +2,7 @@ export default function AboutSection() {
   return (
     <section className="max-w-7xl mx-auto pb-16 px-10 md:px-12 lg:px-16 overflow-x-hidden">
       <div className="mb-8 text-center">
-        <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] max-h-[40px] max-w-[200px] text-white text-[14px] font-normal uppercase px-[15px] py-2 rounded">
+        <span className="inline-block bg-[#D42568] border border-black border-w-[0.66px] max-h-[40px] max-w-[200px] text-white text-[14px] font-normal uppercase px-[15px] py-2 rounded">
           About the Film
         </span>
       </div>
@@ -71,7 +71,7 @@ export default function AboutSection() {
                 aria-hidden
                 className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-md bg-[#3e2a35]"
               />
-              <button className="relative text-[11px] rounded-md border border-black bg-pink-600 px-16 py-2 text-white font-semibold uppercase tracking-wide w-full">
+              <button className="relative text-[11px] rounded-md border border-black bg-[#D42568] px-16 py-2 text-white font-semibold uppercase tracking-wide w-full">
                 Trailer Coming Soon
               </button>
             </div>
@@ -193,7 +193,7 @@ export default function AboutSection() {
                 aria-hidden
                 className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-md bg-[#3e2a35]"
               />
-              <button className="relative text-[11px] rounded-md border border-black bg-pink-600 px-16 py-2 text-white font-semibold uppercase tracking-wide">
+              <button className="relative text-[11px] rounded-md border border-black bg-[#D42568] px-16 py-2 text-white font-semibold uppercase tracking-wide">
                 Trailer Coming Soon
               </button>
             </div>

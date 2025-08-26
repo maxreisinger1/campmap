@@ -11,10 +11,10 @@ import { loadSubmissions } from "../services/SubmissionsService";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 import { useLeaderboard } from "../hooks/useLeaderboard";
 import { useSubmitSignup } from "../hooks/useSubmitSignup";
-import Hero from "./Hero";
-import AboutSection from "./AboutSection";
-import SignupsCounter from "./SignupsCounter";
 
+const Hero = lazy(() => import("./Hero"));
+const AboutSection = lazy(() => import("./AboutSection"));
+const SignupsCounter = lazy(() => import("./SignupsCounter"));
 const SignupForm = lazy(() => import("./SignupForm"));
 const Leaderboard = lazy(() => import("./Leaderboard"));
 const Footer = lazy(() => import("./Footer"));
@@ -369,11 +369,30 @@ function FanDemandGlobeInner() {
       className="min-h-screen flex flex-col justify-center items-center w-full bg-[#f7f1e1] text-[#1f2937] overflow-x-hidden"
       style={{ fontFamily: theme.fontFamily }}
     >
-      <Hero />
+      <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
+              Loading Hero Section...
+            </div>
+          </div>
+        }
+      >
+        <Hero />
+      </Suspense>
 
       <div className="text-center mb-[40px] mt-[56px] md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
         <div className="mb-[28px] text-center">
-          <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] max-h-[40px] max-w-[200px] text-white text-[14px] font-normal uppercase px-[15px] py-2 rounded">
+          <span className="inline-block bg-[#D42568] border border-black border-w-[0.66px] max-h-[40px] max-w-[200px] text-white text-[14px] font-normal uppercase px-[15px] py-2 rounded">
             The Two Sleepy Tour
           </span>
         </div>
@@ -403,7 +422,25 @@ function FanDemandGlobeInner() {
         </Suspense>
       </div>
 
-      <SignupsCounter count={submissions.length} />
+      <Suspense
+        fallback={
+          <div className="h-12 flex items-center justify-center py-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-[#D42568] rounded-full animate-pulse"></div>
+              <div
+                className={`text-xs font-mono uppercase tracking-wider ${
+                  retroMode ? "text-yellow-500" : "text-[#1f2937]"
+                }`}
+              >
+                Loading Counter...
+              </div>
+              <div className="w-2 h-2 bg-[#D42568] rounded-full animate-pulse delay-75"></div>
+            </div>
+          </div>
+        }
+      >
+        <SignupsCounter count={submissions.length} />
+      </Suspense>
 
       {/* Leaderboard and Globe - Side by side with equal height */}
       <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6">
@@ -494,7 +531,32 @@ function FanDemandGlobeInner() {
 
       <div className="w-full h-[2px] bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 my-[72px]" />
 
-      <AboutSection />
+      <Suspense
+        fallback={
+          <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-16">
+            <div className="flex flex-col items-center justify-center space-y-6">
+              <div className="flex space-x-1">
+                <div className="w-4 h-4 bg-[#D42568] rounded-sm animate-pulse"></div>
+                <div className="w-4 h-4 bg-[#D42568] rounded-sm animate-pulse delay-75"></div>
+                <div className="w-4 h-4 bg-[#D42568] rounded-sm animate-pulse delay-150"></div>
+                <div className="w-4 h-4 bg-[#D42568] rounded-sm animate-pulse delay-225"></div>
+              </div>
+              <div
+                className={`text-sm font-mono uppercase tracking-wider ${
+                  retroMode ? "text-yellow-500" : "text-[#1f2937]"
+                }`}
+              >
+                Loading About Section...
+              </div>
+              <div className="w-32 h-1 bg-black/10 rounded-full overflow-hidden">
+                <div className="w-full h-full bg-[#D42568] rounded-full animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        }
+      >
+        <AboutSection />
+      </Suspense>
 
       <Suspense fallback={null}>
         <Footer />
