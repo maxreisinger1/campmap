@@ -45,7 +45,7 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-10 md:px-4">
         {/* Film Title */}
         <h1
-          className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[28px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
+          className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
           style={{
             fontFamily: "Grange Heavy, sans-serif",
             fontWeight: 900,
@@ -56,11 +56,10 @@ export default function Hero() {
           Two Sleepy People
         </h1>
         <p
-          className="mt-[10px] md:mt-[22px] text-[19px] md:text-[41px] inline-block text-white tracking-wider md:tracking-widest"
+          className="mt-[10px] md:mt-[22px] text-[18px] md:text-[41px] inline-block text-white tracking-wide md:tracking-widest"
           style={{
             fontWeight: 500,
             lineHeight: "106%",
-            letterSpacing: "-17%",
           }}
         >
           THE ROAD TO
