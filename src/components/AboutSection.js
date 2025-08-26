@@ -9,23 +9,23 @@ export default function AboutSection() {
       </div>
 
       {/* Mobile Layout */}
-      <div className="flex flex-col md:hidden gap-8">
+      <div className="flex flex-col md:hidden gap-[50px]">
         {/* Mobile: Main Poster Only (centered, no stills behind) */}
-        <div className="flex justify-center">
+        <div className="flex flex-col md:hidden items-center justify-center gap-[13px]">
           <img
             src="/images/cover.jpg"
             alt="Two Sleepy People Poster"
-            className="w-72 shadow-[0_4px_6px_rgba(0,0,0,0.3)] rotate-[-3.72deg]"
+            className="w-[177.75px] border border-black rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.3)] rotate-[-3.72deg]"
           />
-        </div>
 
-        {/* Mobile: Tagline */}
-        <div className="flex justify-center">
-          <img
-            src="/images/every-night-text.png"
-            alt="Every night they're married. Every morning, they're strangers."
-            className="w-80 h-auto"
-          />
+          {/* Mobile: Tagline */}
+          <div className="flex justify-center">
+            <img
+              src="/images/every-night-text.png"
+              alt="Every night they're married. Every morning, they're strangers."
+              className="w-80 h-auto border]"
+            />
+          </div>
         </div>
 
         {/* Mobile: About Film Content */}
@@ -95,17 +95,17 @@ export default function AboutSection() {
           <img
             src="/images/still-1.jpg"
             alt="Film still"
-            className="w-64 shadow-md relative z-20"
-          />
-          <img
-            src="/images/still-2.jpg"
-            alt="Film still"
-            className="w-72 shadow-md -mt-8 relative z-10 rotate-[8deg]"
+            className="w-full border border-black rounded-[10px] shadow-md relative z-20"
           />
           <img
             src="/images/still-3.jpg"
             alt="Film still"
-            className="w-64 shadow-md -mt-8 relative z-20"
+            className="w-[286px] border border-black rounded-[10px] shadow-md -mt-2 relative z-10 rotate-[-14.37deg]"
+          />
+          <img
+            src="/images/still-2.jpg"
+            alt="Film still"
+            className="w-full border border-black rounded-[10px] shadow-md -mt-2 relative z-20"
           />
         </div>
       </div>
@@ -120,17 +120,17 @@ export default function AboutSection() {
               <img
                 src="/images/still-1.jpg"
                 alt="Film still"
-                className="w-32 md:w-36 lg:w-44 rotate-[13.27deg] shadow-md"
+                className="w-32 md:w-36 lg:w-44 border border-black rounded-[10px] rotate-[13.27deg] shadow-md"
               />
               <img
                 src="/images/still-2.jpg"
                 alt="Film still"
-                className="w-36 md:w-40 lg:w-48 shadow-md z-10"
+                className="w-36 md:w-40 lg:w-48 border border-black rounded-[10px] shadow-md z-10"
               />
               <img
                 src="/images/still-3.jpg"
                 alt="Film still"
-                className="w-32 md:w-36 lg:w-44 rotate-[-14.38deg] shadow-md"
+                className="w-32 md:w-36 lg:w-44 border border-black rounded-[10px] rotate-[-14.38deg] shadow-md"
               />
             </div>
 
@@ -138,7 +138,7 @@ export default function AboutSection() {
             <img
               src="/images/cover.jpg"
               alt="Two Sleepy People Poster"
-              className="relative z-10 w-64 md:w-72 shadow-[0_4px_6px_rgba(0,0,0,0.3)] rotate-[-3.72deg]"
+              className="relative z-10 w-64 md:w-72 border border-black rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.3)] rotate-[-3.72deg]"
             />
           </div>
 

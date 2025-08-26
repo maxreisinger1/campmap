@@ -371,7 +371,7 @@ function FanDemandGlobeInner() {
     >
       <Hero />
 
-      <div className="text-center my-6 md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
+      <div className="text-center mb-[40px] mt-[56px] md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
         <div className="mb-[28px] text-center">
           <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] max-h-[40px] max-w-[200px] text-white text-[14px] font-normal uppercase px-[15px] py-2 rounded">
             The Two Sleepy Tour
@@ -379,10 +379,10 @@ function FanDemandGlobeInner() {
         </div>
 
         <div>
-          <h2 className="text-pink-600 text-2xl md:text-5xl font-bold tracking-wider mb-[15px]">
+          <h2 className="text-pink-600 text-[26px] md:text-5xl font-bold tracking-wider  md:mb-[15px]">
             WANT TO WATCH THE FILM?
           </h2>
-          <span className="text-xs md:text-base text-black font-extralight tracking-widest">
+          <span className="text-[9.5px] md:text-base text-black font-medium md:font-extralight md:tracking-widest">
             VOTE BELOW, TO SEE IT IN A THEATER NEAR YOU{" "}
             <span className="font-bold">THIS FALL.</span>
           </span>
@@ -407,7 +407,7 @@ function FanDemandGlobeInner() {
 
       {/* Leaderboard and Globe - Side by side with equal height */}
       <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 min-h-[600px]">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-[40px] md:gap-6 min-h-[600px]">
           {/* Globe - 60% width (3/5) - First on mobile, second on desktop */}
           <div className="lg:col-span-3 flex flex-col order-1 lg:order-2">
             {/* Globe map and controls or loader */}
@@ -492,7 +492,7 @@ function FanDemandGlobeInner() {
         </div>
       </div>
 
-      <div className="w-full h-[2px] bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 my-10" />
+      <div className="w-full h-[2px] bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 my-[72px]" />
 
       <AboutSection />
 

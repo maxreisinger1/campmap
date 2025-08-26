@@ -80,7 +80,7 @@ export default function Leaderboard({
   }
   return (
     <div className="relative rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)] h-full flex flex-col">
-      <h3 className="text-3xl tracking-wider font-extrabold mb-1">
+      <h3 className="text-2xl tracking-wider font-extrabold mb-1">
         City Leaderboard
       </h3>
       <p className="text-xs mb-3">

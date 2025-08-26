@@ -34,7 +34,7 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-10 md:px-4">
         {/* Film Title */}
         <h1
-          className="bg-pink-600 border border-black border-w-[2px] max-h-[120px] text-white text-[20px] md:text-[72px] font-normal uppercase px-[76px] py-5 rounded"
+          className="bg-pink-600 border border-black border-w-[2px] max-h-[120px] text-white text-[28px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
           style={{
             fontFamily: "Grange Heavy, sans-serif",
             fontWeight: 900,
@@ -47,7 +47,7 @@ export default function Hero() {
 
         {/* Subtitle */}
         <p
-          className="mt-[22px] text-xl md:text-[41px] inline-block text-white"
+          className="mt-[10px] md:mt-[22px] text-[19px] md:text-[41px] inline-block text-white"
           style={{
             fontWeight: 500,
             lineHeight: "106%",
