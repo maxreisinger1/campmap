@@ -1,7 +1,6 @@
 export default function AboutSection() {
   return (
     <section className="max-w-7xl mx-auto pb-16 px-10 md:px-12 lg:px-16 overflow-x-hidden">
-      {/* Badge centered above BOTH columns */}
       <div className="mb-8 text-center">
         <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] max-h-[40px] max-w-[200px] text-white text-[14px] font-normal uppercase px-[15px] py-2 rounded">
           About the Film
@@ -23,7 +22,7 @@ export default function AboutSection() {
             <img
               src="/images/every-night-text.png"
               alt="Every night they're married. Every morning, they're strangers."
-              className="w-80 h-auto border]"
+              className="w-80 h-auto"
             />
           </div>
         </div>
@@ -116,21 +115,21 @@ export default function AboutSection() {
         <div className="relative mx-auto md:mx-0 flex flex-col gap-8 items-center h-full md:w-2/5">
           <div className="relative items-center justify-center">
             {/* Stacked stills in a single vertical column behind poster */}
-            <div className="absolute -left-16 md:-left-24 lg:-left-32 flex flex-col -gap-8">
+            <div className="absolute -left-6 md:-left-8 lg:-left-12 xl:-left-16 2xl:-left-24 flex flex-col -gap-8">
               <img
                 src="/images/still-1.jpg"
                 alt="Film still"
-                className="w-32 md:w-36 lg:w-44 border border-black rounded-[10px] rotate-[13.27deg] shadow-md"
+                className="w-20 md:w-24 lg:w-28 xl:w-32 2xl:w-36 border border-black rounded-[10px] rotate-[13.27deg] shadow-md"
               />
               <img
                 src="/images/still-2.jpg"
                 alt="Film still"
-                className="w-36 md:w-40 lg:w-48 border border-black rounded-[10px] shadow-md z-10"
+                className="w-24 md:w-28 lg:w-32 xl:w-36 2xl:w-40 border border-black rounded-[10px] shadow-md z-10"
               />
               <img
                 src="/images/still-3.jpg"
                 alt="Film still"
-                className="w-32 md:w-36 lg:w-44 border border-black rounded-[10px] rotate-[-14.38deg] shadow-md"
+                className="w-20 md:w-24 lg:w-28 xl:w-32 2xl:w-36 border border-black rounded-[10px] rotate-[-14.38deg] shadow-md"
               />
             </div>
 
@@ -138,7 +137,7 @@ export default function AboutSection() {
             <img
               src="/images/cover.jpg"
               alt="Two Sleepy People Poster"
-              className="relative z-10 w-64 md:w-72 border border-black rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.3)] rotate-[-3.72deg]"
+              className="relative z-10 w-32 md:w-40 lg:w-48 xl:w-56 2xl:w-64 border border-black rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.3)] rotate-[-3.72deg]"
             />
           </div>
 
