@@ -97,7 +97,7 @@ export default function Leaderboard({
           No cities yet. Be the first to drop a pin.
         </div>
       ) : (
-        <div className="flex-1 overflow-auto pr-1 space-y-2">
+        <div className="flex-1 overflow-auto pr-1 space-y-2 max-h-[500px]">
           {leaderboard.map((row, i) => {
             const onClick = () => {
               if (onCityFocus) {

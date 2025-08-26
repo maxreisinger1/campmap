@@ -21,17 +21,38 @@
  */
 export default function Footer() {
   return (
-    <div className="max-w-7xl w-full mx-auto px-8 md:px-12 lg:px-16 pb-8 mt-2 flex flex-row items-start gap-3 justify-between">
-      <div className="text-xs font-mono opacity-70">
-        © {new Date().getFullYear()} Camp Studios — All vibes reserved.
+    <div className="max-w-7xl w-full mx-auto px-8 md:px-12 lg:px-16 pb-8 mt-2">
+      {/* Mobile Layout */}
+      <div className="flex flex-col gap-4 md:hidden">
+        {/* Follow along section first on mobile */}
+        <div className="text-xs font-mono">
+          <div className="mb-2">Follow along the Camp Studios journey:</div>
+          <div className="flex flex-col gap-2">
+            <span className="font-semibold italic underline">Instagram</span>
+            <span className="font-semibold italic underline">Youtube</span>
+            <span className="font-semibold italic underline">Discord</span>
+          </div>
+        </div>
+
+        {/* Copyright text second on mobile */}
+        <div className="text-xs font-mono opacity-70">
+          © {new Date().getFullYear()} Camp Studios — All vibes reserved.
+        </div>
       </div>
-      <div className="text-xs flex flex-row font-mono">
-        <span className="mr-4">Follow along the Camp Studios journey:</span>
-        <span className="font-semibold italic underline">Instagram</span>
-        <div className="h-4 w-[2px] mx-4 bg-black" />
-        <span className="font-semibold italic underline">Youtube</span>
-        <div className="h-4 w-[2px] mx-4 bg-black" />
-        <span className="font-semibold italic underline">Discord</span>
+
+      {/* Desktop Layout */}
+      <div className="hidden md:flex flex-row items-start gap-3 justify-between">
+        <div className="text-xs font-mono opacity-70">
+          © {new Date().getFullYear()} Camp Studios — All vibes reserved.
+        </div>
+        <div className="text-xs flex flex-row font-mono">
+          <span className="mr-4">Follow along the Camp Studios journey:</span>
+          <span className="font-semibold italic underline">Instagram</span>
+          <div className="h-4 w-[2px] mx-4 bg-black" />
+          <span className="font-semibold italic underline">Youtube</span>
+          <div className="h-4 w-[2px] mx-4 bg-black" />
+          <span className="font-semibold italic underline">Discord</span>
+        </div>
       </div>
     </div>
   );

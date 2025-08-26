@@ -366,7 +366,7 @@ function FanDemandGlobeInner() {
   return (
     <div
       data-retro={retroMode ? "true" : "false"}
-      className="min-h-screen flex flex-col justify-center items-center w-full bg-[#f7f1e1] text-[#1f2937]"
+      className="min-h-screen flex flex-col justify-center items-center w-full bg-[#f7f1e1] text-[#1f2937] overflow-x-hidden"
       style={{ fontFamily: theme.fontFamily }}
     >
       <Hero />
@@ -408,21 +408,8 @@ function FanDemandGlobeInner() {
       {/* Leaderboard and Globe - Side by side with equal height */}
       <div className="max-w-7xl mx-auto px-8 md:px-12 lg:px-16 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 min-h-[600px]">
-          {/* Leaderboard - 40% width (2/5) */}
-          <div className="lg:col-span-2 flex flex-col">
-            <Suspense fallback={<div>Loading leaderboard…</div>}>
-              <Leaderboard
-                leaderboard={leaderboard}
-                theme={theme}
-                loading={lbLoading}
-                retroMode={retroMode}
-                onCityFocus={focusOnCity}
-              />
-            </Suspense>
-          </div>
-
-          {/* Globe - 60% width (3/5) */}
-          <div className="lg:col-span-3 flex flex-col">
+          {/* Globe - 60% width (3/5) - First on mobile, second on desktop */}
+          <div className="lg:col-span-3 flex flex-col order-1 lg:order-2">
             {/* Globe map and controls or loader */}
             {loading ? (
               <div className="h-full flex items-center justify-center min-h-[600px]">
@@ -488,6 +475,19 @@ function FanDemandGlobeInner() {
                 />
               </Suspense>
             )}
+          </div>
+
+          {/* Leaderboard - 40% width (2/5) - Second on mobile, first on desktop */}
+          <div className="lg:col-span-2 flex flex-col order-2 lg:order-1">
+            <Suspense fallback={<div>Loading leaderboard…</div>}>
+              <Leaderboard
+                leaderboard={leaderboard}
+                theme={theme}
+                loading={lbLoading}
+                retroMode={retroMode}
+                onCityFocus={focusOnCity}
+              />
+            </Suspense>
           </div>
         </div>
       </div>
