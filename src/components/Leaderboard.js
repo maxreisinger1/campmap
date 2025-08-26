@@ -83,7 +83,7 @@ export default function Leaderboard({
       <h3 className="text-3xl tracking-wider font-extrabold mb-1">
         City Leaderboard
       </h3>
-      <p className="text-xs mb-3 opacity-70">
+      <p className="text-xs mb-3">
         First city to <b>{CITY_GOAL}</b> signups unlocks a{" "}
         <span className="font-bold">Premiere Night</span>. Bars fill as fans
         join.
@@ -93,17 +93,15 @@ export default function Leaderboard({
           <RetroLoader text="Loading leaderboard..." retroMode={retroMode} />
         </div>
       ) : leaderboard.length === 0 ? (
-        <div className="text-sm opacity-70 flex-1 flex items-center justify-center">
+        <div className="text-sm flex-1 flex items-center justify-center">
           No cities yet. Be the first to drop a pin.
         </div>
       ) : (
         <div className="flex-1 overflow-auto pr-1 space-y-2">
           {leaderboard.map((row, i) => {
             const onClick = () => {
-              if (onCityFocus && row.lat && row.lon) {
+              if (onCityFocus) {
                 onCityFocus({
-                  lat: row.lat,
-                  lon: row.lon,
                   city: row.city_name,
                   state: row.city_state,
                 });

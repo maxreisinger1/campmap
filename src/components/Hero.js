@@ -40,9 +40,13 @@ export default function Hero() {
         />
 
         {/* Subtitle */}
-        <p className="mt-4 text-xl md:text-2xl font-semibold text-white tracking-wide">
-          THE ROAD TO{" "}
-          <span className="border border-white px-2 py-1 rounded">1000</span>{" "}
+        <p className="mt-4 text-4xl inline-block font-semibold text-white tracking-wide">
+          THE ROAD TO
+          <img
+            src="/images/counter.png"
+            alt="Two Sleepy People"
+            className="inline-block h-20"
+          />
           THEATERS
         </p>
       </div>

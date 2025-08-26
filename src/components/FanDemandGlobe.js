@@ -75,6 +75,73 @@ function FanDemandGlobeInner() {
     }
     animate();
   }
+
+  /**
+   * Enhanced city focus function that finds coordinates from submissions data.
+   * Used when clicking on cities in the leaderboard for better user experience.
+   *
+   * @function focusOnCity
+   * @param {Object} cityData - Target city data from leaderboard
+   * @param {string} cityData.city - City name
+   * @param {string} cityData.state - State/region name
+   * @param {number} [cityData.lat] - Latitude coordinate (if available)
+   * @param {number} [cityData.lon] - Longitude coordinate (if available)
+   */
+  function focusOnCity(cityData) {
+    // If we already have coordinates, use them directly
+    if (cityData.lat && cityData.lon) {
+      setAutoRotate(false);
+      setZoom(7.5); // Maximum zoom for close city view
+      animateToLocation({ lat: cityData.lat, lon: cityData.lon });
+
+      if (resumeTimer.current) clearTimeout(resumeTimer.current);
+      resumeTimer.current = setTimeout(() => setAutoRotate(true), 4000);
+      return;
+    }
+
+    // Otherwise, find coordinates from submissions data
+    const cityName = cityData.city?.toLowerCase();
+    const stateName = cityData.state?.toLowerCase();
+
+    const matchingSubmission = dedupedSubmissions.find((submission) => {
+      const submissionCity = submission.city?.toLowerCase();
+      const submissionState = submission.state?.toLowerCase();
+
+      // Try exact city match first
+      if (submissionCity === cityName) {
+        // If state is provided, match state too
+        if (stateName && submissionState) {
+          return submissionState === stateName;
+        }
+        return true;
+      }
+      return false;
+    });
+
+    if (
+      matchingSubmission &&
+      matchingSubmission.lat &&
+      matchingSubmission.lon
+    ) {
+      setAutoRotate(false);
+      setZoom(7.5); // Maximum zoom for close city view
+      animateToLocation({
+        lat: matchingSubmission.lat,
+        lon: matchingSubmission.lon,
+      });
+
+      if (resumeTimer.current) clearTimeout(resumeTimer.current);
+      resumeTimer.current = setTimeout(() => setAutoRotate(true), 4000);
+    } else {
+      // No matching submission found with coordinates
+      showToast(
+        `❌ No coordinates found for ${cityData.city}${
+          cityData.state ? `, ${cityData.state}` : ""
+        }`,
+        retroMode
+      );
+    }
+  }
   const [zoom, setZoom] = useState(1.15);
   const [cursor, setCursor] = useState("grab");
   const [fatal, setFatal] = useState("");
@@ -172,7 +239,7 @@ function FanDemandGlobeInner() {
     if (!el) return;
     const onWheel = (e) => {
       e.preventDefault();
-      setZoom((z) => clamp(z * (e.deltaY > 0 ? 0.95 : 1.05), 0.9, 2.2));
+      setZoom((z) => clamp(z * (e.deltaY > 0 ? 0.95 : 1.05), 0.9, 7.5));
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
@@ -230,10 +297,26 @@ function FanDemandGlobeInner() {
       );
       setForm({ name: "", email: "", zip: "" });
       setHasSubmitted(true);
+
+      // Show a toast notification for the submission
       showToast(
-        submitMessage || "Pinned! Thanks for raising your hand.",
+        submitMessage ||
+          "🎬 Pin dropped! Your city is now on the map. Zooming in...",
         retroMode
       );
+
+      // Animate to the submitted location for a more tangible experience
+      if (result.submission.lat && result.submission.lon) {
+        // First zoom in closer for better city view
+        setZoom(2.8);
+        // Then animate to the location
+        setTimeout(() => {
+          animateToLocation({
+            lat: result.submission.lat,
+            lon: result.submission.lon,
+          });
+        }, 300);
+      }
     } catch (err) {
       console.error("Error submitting form:", err);
       if (err.message) {
@@ -286,20 +369,11 @@ function FanDemandGlobeInner() {
       className="min-h-screen flex flex-col justify-center items-center w-full bg-[#f7f1e1] text-[#1f2937]"
       style={{ fontFamily: theme.fontFamily }}
     >
-      {/* Header and retro toggle */}
-      {/* <Suspense fallback={null}>
-        <Header
-          retroMode={retroMode}
-          setRetroMode={setRetroMode}
-          setTransitioning={setTransitioning}
-        />
-      </Suspense> */}
-
       <Hero />
 
-      <div className="text-center my-12">
+      <div className="text-center my-12 max-w-7xl mx-auto px-8 md:px-12 lg:px-16">
         <div className="mb-8 text-center">
-          <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] text-white font-semibold uppercase px-6 py-2 rounded">
+          <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] text-white font-semibold uppercase px-10 py-2 rounded">
             The Two Sleepy Tour
           </span>
         </div>
@@ -316,7 +390,7 @@ function FanDemandGlobeInner() {
       </div>
 
       {/* Signup form - Full width */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-8 md:px-12 lg:px-16 py-6">
         <Suspense fallback={<div>Loading form…</div>}>
           <SignupForm
             form={form}
@@ -332,7 +406,7 @@ function FanDemandGlobeInner() {
       <SignupsCounter count={submissions.length} />
 
       {/* Leaderboard and Globe - Side by side with equal height */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-8 md:px-12 lg:px-16 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 min-h-[600px]">
           {/* Leaderboard - 40% width (2/5) */}
           <div className="lg:col-span-2 flex flex-col">
@@ -342,7 +416,7 @@ function FanDemandGlobeInner() {
                 theme={theme}
                 loading={lbLoading}
                 retroMode={retroMode}
-                onCityFocus={animateToLocation}
+                onCityFocus={focusOnCity}
               />
             </Suspense>
           </div>
@@ -417,6 +491,8 @@ function FanDemandGlobeInner() {
           </div>
         </div>
       </div>
+
+      <div className="w-full h-[2px] bg-black/20 max-w-7xl mx-auto px-8 md:px-12 lg:px-16 my-10" />
 
       <AboutSection />
 

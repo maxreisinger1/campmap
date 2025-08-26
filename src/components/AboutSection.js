@@ -1,9 +1,9 @@
 export default function AboutSection() {
   return (
-    <section className="max-w-7xl py-16 px-6 md:px-20">
+    <section className="max-w-7xl mx-auto pb-16 px-8 md:px-12 lg:px-16">
       {/* Badge centered above BOTH columns */}
       <div className="mb-8 text-center">
-        <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] text-white font-semibold uppercase px-6 py-2 rounded">
+        <span className="inline-block bg-pink-600 border border-black border-w-[0.66px] text-white font-semibold uppercase px-10 py-2 rounded">
           About the Film
         </span>
       </div>
@@ -71,7 +71,10 @@ export default function AboutSection() {
           </p>
           <p className="text-sm leading-relaxed mb-8">
             Written &amp; directed by Baron Ryan{" "}
-            <a href="#" className="text-blue-600 underline">
+            <a
+              href="https://www.instagram.com/americanbaron/?hl=en"
+              className="text-blue-600 underline"
+            >
               (@americanbaron)
             </a>
             , this isn’t just another indie film,{" "}
@@ -86,9 +89,9 @@ export default function AboutSection() {
             <div className="relative inline-block">
               <span
                 aria-hidden
-                className="absolute inset-0 translate-x-[6px] translate-y-[6px] rounded-md bg-[#3e2a35]"
+                className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-md bg-[#3e2a35]"
               />
-              <button className="relative text-[11px] rounded-md border border-black bg-pink-600 px-16 py-3 text-white font-semibold uppercase tracking-wide">
+              <button className="relative text-[11px] rounded-md border border-black bg-pink-600 px-16 py-2 text-white font-semibold uppercase tracking-wide">
                 Trailer Coming Soon
               </button>
             </div>
@@ -97,9 +100,9 @@ export default function AboutSection() {
             <div className="relative inline-block">
               <span
                 aria-hidden
-                className="absolute inset-0 translate-x-[6px] translate-y-[6px] rounded-md bg-[#5a3b1f]"
+                className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-md bg-[#5a3b1f]"
               />
-              <button className="relative text-[11px] rounded-md border border-black bg-orange-500 px-16 py-3 text-white font-semibold uppercase tracking-wide">
+              <button className="relative text-[11px] rounded-md border border-black bg-orange-500 px-16 py-2 text-white font-semibold uppercase tracking-wide">
                 Learn More From Camp Studios
               </button>
             </div>

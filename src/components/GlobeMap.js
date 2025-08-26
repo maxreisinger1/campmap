@@ -72,6 +72,46 @@ export default function GlobeMap({
   cursor,
   hasSubmitted,
 }) {
+  // Clustering function to group nearby submissions when zoomed out
+  const clusterSubmissions = (submissions, zoom) => {
+    const CLUSTER_DISTANCE = zoom < 1.8 ? 8 : 3; // Larger clustering when zoomed out
+    const clusters = [];
+    const processed = new Set();
+
+    submissions.forEach((submission, index) => {
+      if (processed.has(index)) return;
+
+      const cluster = {
+        ...submission,
+        count: 1,
+        submissions: [submission],
+      };
+
+      // Find nearby submissions to cluster
+      submissions.forEach((other, otherIndex) => {
+        if (otherIndex === index || processed.has(otherIndex)) return;
+
+        const distance = Math.sqrt(
+          Math.pow(submission.lat - other.lat, 2) +
+            Math.pow(submission.lon - other.lon, 2)
+        );
+
+        if (distance < CLUSTER_DISTANCE) {
+          cluster.count++;
+          cluster.submissions.push(other);
+          processed.add(otherIndex);
+        }
+      });
+
+      processed.add(index);
+      clusters.push(cluster);
+    });
+
+    return clusters;
+  };
+
+  const clusters = clusterSubmissions(submissions, zoom);
+  const showClustering = zoom < 1.8; // Show clustering when zoomed out
   return (
     <div className="relative rounded-2xl border border-black bg-gradient-to-br from-[#fff9e8] via-[#f8efe0] to-[#efe3cf] shadow-[12px_12px_0_0_rgba(0,0,0,0.65)] h-full flex flex-col">
       <div className="absolute z-10 top-3 left-3 flex items-center gap-2 bg-white/85 backdrop-blur rounded-md border border-black p-2">
@@ -124,7 +164,7 @@ export default function GlobeMap({
         <input
           type="range"
           min={0.9}
-          max={2.2}
+          max={7.5}
           step={0.01}
           value={zoom}
           onChange={(e) => setZoom(Number(e.target.value))}
@@ -133,7 +173,7 @@ export default function GlobeMap({
 
       <div
         ref={containerRef}
-        className="w-full flex-1 select-none min-h-[520px] p-4"
+        className="w-full flex-1 select-none min-h-[520px]"
         style={{ cursor }}
       >
         <ComposableMap
@@ -159,48 +199,128 @@ export default function GlobeMap({
                   strokeWidth={0.3}
                   style={{
                     default: { outline: "none" },
-                    hover: { fill: retroMode ? "#00e1ba" : "#c7c7c7" },
-                    pressed: { fill: retroMode ? "#00c7a3" : "#bbb" },
+                    hover: {
+                      fill: retroMode ? "#00e1ba" : "#c7c7c7",
+                      outline: "none",
+                    },
+                    pressed: {
+                      fill: retroMode ? "#00c7a3" : "#bbb",
+                      outline: "none",
+                    },
                   }}
                 />
               ))
             }
           </Geographies>
-          {submissions.map((s, i) => (
-            <Marker
-              key={s.id}
-              coordinates={[s.lon + jitter(i) * 0.1, s.lat + jitter(i) * 0.1]}
-            >
-              <g transform="translate(-6,-6)">
-                <circle
-                  r={5.5}
-                  fill={retroMode ? "#ff00a6" : "#ef476f"}
-                  stroke={theme.stroke}
-                  strokeWidth={1.25}
-                />
-                <circle
-                  r={2}
-                  fill="#fff"
-                  stroke={theme.stroke}
-                  strokeWidth={1}
-                />
-              </g>
-              <text
-                textAnchor="start"
-                y={-10}
-                x={8}
-                style={{
-                  fontFamily: retroMode
-                    ? theme.fontFamily
-                    : "ui-monospace, Menlo, monospace",
-                  fontSize: retroMode ? 9 : 10,
-                  fontWeight: 800,
-                }}
-              >
-                {s.city}
-              </text>
-            </Marker>
-          ))}
+          {showClustering
+            ? clusters.map((cluster, i) => (
+                <Marker
+                  key={`cluster-${cluster.id}-${i}`}
+                  coordinates={[
+                    cluster.lon + jitter(i) * 0.05,
+                    cluster.lat + jitter(i) * 0.05,
+                  ]}
+                >
+                  <g transform="translate(-8,-8)">
+                    {cluster.count > 1 ? (
+                      // Cluster visualization
+                      <>
+                        <circle
+                          r={Math.min(12, 6 + cluster.count * 0.8)}
+                          fill={retroMode ? "#ff00a6" : "#ef476f"}
+                          fillOpacity={0.7}
+                          stroke={theme.stroke}
+                          strokeWidth={1.5}
+                        />
+                        <text
+                          textAnchor="middle"
+                          y={4}
+                          style={{
+                            fontFamily: retroMode
+                              ? theme.fontFamily
+                              : "ui-monospace, Menlo, monospace",
+                            fontSize: 11,
+                            fontWeight: 900,
+                            fill: "#fff",
+                          }}
+                        >
+                          {cluster.count}
+                        </text>
+                      </>
+                    ) : (
+                      // Single pin
+                      <>
+                        <circle
+                          r={5.5}
+                          fill={retroMode ? "#ff00a6" : "#ef476f"}
+                          stroke={theme.stroke}
+                          strokeWidth={1.25}
+                        />
+                        <circle
+                          r={2}
+                          fill="#fff"
+                          stroke={theme.stroke}
+                          strokeWidth={1}
+                        />
+                      </>
+                    )}
+                  </g>
+                  {cluster.count === 1 && zoom > 1.4 && (
+                    <text
+                      textAnchor="start"
+                      y={-10}
+                      x={8}
+                      style={{
+                        fontFamily: retroMode
+                          ? theme.fontFamily
+                          : "ui-monospace, Menlo, monospace",
+                        fontSize: retroMode ? 9 : 10,
+                        fontWeight: 800,
+                      }}
+                    >
+                      {cluster.city}
+                    </text>
+                  )}
+                </Marker>
+              ))
+            : submissions.map((s, i) => (
+                <Marker
+                  key={s.id}
+                  coordinates={[
+                    s.lon + jitter(i) * 0.1,
+                    s.lat + jitter(i) * 0.1,
+                  ]}
+                >
+                  <g transform="translate(-6,-6)">
+                    <circle
+                      r={5.5}
+                      fill={retroMode ? "#ff00a6" : "#ef476f"}
+                      stroke={theme.stroke}
+                      strokeWidth={1.25}
+                    />
+                    <circle
+                      r={2}
+                      fill="#fff"
+                      stroke={theme.stroke}
+                      strokeWidth={1}
+                    />
+                  </g>
+                  <text
+                    textAnchor="start"
+                    y={-10}
+                    x={8}
+                    style={{
+                      fontFamily: retroMode
+                        ? theme.fontFamily
+                        : "ui-monospace, Menlo, monospace",
+                      fontSize: retroMode ? 9 : 10,
+                      fontWeight: 800,
+                    }}
+                  >
+                    {s.city}
+                  </text>
+                </Marker>
+              ))}
         </ComposableMap>
       </div>
 

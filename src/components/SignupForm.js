@@ -49,15 +49,17 @@ export default function SignupForm({
       <div className="absolute -top-2 -left-2 h-4 w-4 bg-black" />
       <div className="absolute -bottom-2 -right-2 h-4 w-4 bg-black" />
 
-      <h2 className="text-xl md:text-2xl font-extrabold mb-3">
+      <h2 className="text-xl md:text-2xl font-extrabold mb-3 tracking-wider">
         Vote For Two Sleepy People In{" "}
         <span className="underline decoration-black">Your City:</span>
       </h2>
-      <p className="text-sm mb-4 opacity-80">
-        We’re bringing creator-made cinema to theaters nationwide, and want you
-        to be part of it. If you want to host a screening, see it with your
-        friends, or be the first to hear where we’re headed next — drop your
-        info below.
+      <p className="text-xs mb-4">
+        <span className="font-bold">
+          We’re bringing creator-made cinema to theaters nationwide, and want
+          you to be part of it
+        </span>
+        . If you want to host a screening, see it with your friends, or be the
+        first to hear where we’re headed next — drop your info below.
       </p>
       <form onSubmit={handleSubmit} className="space-y-3">
         <div>
@@ -104,7 +106,7 @@ export default function SignupForm({
               retroMode ? "blink" : ""
             }`}
           >
-            ZIP (US - MVP)
+            ZIP / Postal Code
           </label>
           <input
             className={`w-full rounded-md border ${
