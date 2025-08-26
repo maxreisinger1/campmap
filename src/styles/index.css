@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @font-face {
+  font-family: "Grange Heavy";
+  src: url("../assets/fonts/fonnts.com-Grange_Heavy.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "ITC Franklin Gothic Medium Condensed";
   src: url("../assets/fonts/ITC Franklin Gothic Medium Condensed.otf")
     format("opentype");

@@ -47,7 +47,7 @@ export default function Hero() {
         <h1
           className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
           style={{
-            fontFamily: "Grange Heavy, sans-serif",
+            fontFamily: "'Grange Heavy', sans-serif",
             fontWeight: 900,
             lineHeight: "106%",
             letterSpacing: "-1%",

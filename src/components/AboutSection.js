@@ -82,9 +82,11 @@ export default function AboutSection() {
                 aria-hidden
                 className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-md bg-[#5a3b1f]"
               />
-              <button className="relative text-[11px] rounded-md border border-black bg-orange-500 px-16 py-2 text-white font-semibold uppercase tracking-wide w-full">
-                Learn More From Camp Studios
-              </button>
+              <a href="https://campstudios.com/">
+                <button className="relative text-[11px] rounded-md border border-black bg-orange-500 px-16 py-2 text-white font-semibold uppercase tracking-wide w-full">
+                  Learn More From Camp Studios
+                </button>
+              </a>
             </div>
           </div>
         </div>
@@ -204,9 +206,11 @@ export default function AboutSection() {
                 aria-hidden
                 className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-md bg-[#5a3b1f]"
               />
-              <button className="relative text-[11px] rounded-md border border-black bg-orange-500 px-16 py-2 text-white font-semibold uppercase tracking-wide">
-                Learn More From Camp Studios
-              </button>
+              <a href="https://campstudios.com/">
+                <button className="relative text-[11px] rounded-md border border-black bg-orange-500 px-16 py-2 text-white font-semibold uppercase tracking-wide">
+                  Learn More From Camp Studios
+                </button>
+              </a>
             </div>
           </div>
         </div>
