@@ -56,20 +56,27 @@ export function useSubmitSignup() {
       throw new Error("Please enter a valid email.");
     }
     const z = String(form?.zip || "").trim();
-    if (z.length < 5) {
-      setMessage("Enter a 5-digit ZIP.");
-      throw new Error("Please enter a valid ZIP code.");
+    const country = form?.country || "US";
+    if (!z) {
+      setMessage("Enter a postal code.");
+      throw new Error("Please enter a valid postal code.");
     }
 
     setLoading(true);
     abortRef.current = new AbortController();
 
     try {
-      const info = await lookupZip(z);
+      // Pass country to lookupZip if supported
+      let lookupCode = z;
+      if (country && !z.toUpperCase().startsWith(country.toUpperCase())) {
+        lookupCode = `${country.toUpperCase()}-${z}`;
+      }
+      const info = await lookupZip(lookupCode);
       const payload = {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
         zip: z,
+        country,
         city: info.city,
         state: info.state,
         lat: Number(info.lat),

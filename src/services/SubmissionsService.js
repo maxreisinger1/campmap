@@ -83,9 +83,9 @@ export async function addSubmission(submission) {
   if (!submission || typeof submission !== "object") {
     throw new Error("Invalid submission payload");
   }
-  const { name, email, zip, city, state, lat, lon } = submission;
-  if (!name || !email || !zip) {
-    throw new Error("Missing required fields: name, email, or zip");
+  const { name, email, zip, country, city, state, lat, lon } = submission;
+  if (!name || !email || !zip || !country) {
+    throw new Error("Missing required fields: name, email, zip, or country");
   }
   if (!city || !state || typeof lat !== "number" || typeof lon !== "number") {
     throw new Error(

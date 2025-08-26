@@ -32,38 +32,88 @@
  * ```
  */
 export async function lookupZip(z) {
-  // Autodetect country from postal code
-  let country = "us";
+  // List of supported country codes by Zippopotam.us
+  const supportedCountries = [
+    "us",
+    "ar",
+    "at",
+    "au",
+    "be",
+    "bg",
+    "ca",
+    "ch",
+    "cz",
+    "de",
+    "dk",
+    "es",
+    "fi",
+    "fr",
+    "gb",
+    "hu",
+    "ie",
+    "it",
+    "jp",
+    "li",
+    "mx",
+    "nl",
+    "no",
+    "nz",
+    "pl",
+    "pt",
+    "ru",
+    "se",
+    "sk",
+    "tr",
+  ];
   let code = z.trim();
+  let country = null;
+
+  // Try to autodetect country from prefix (e.g., DE-10115)
+  const prefixMatch = code.match(/^([A-Za-z]{2})[- ]?(.*)$/);
+  if (
+    prefixMatch &&
+    supportedCountries.includes(prefixMatch[1].toLowerCase())
+  ) {
+    country = prefixMatch[1].toLowerCase();
+    code = prefixMatch[2];
+  }
+
   // US ZIP: 5 digits, optionally with 4-digit extension
   const usZipRegex = /^\d{5}(-\d{4})?$/;
   // Argentina: AR followed by 4 digits and 3 letters (e.g., AR1601ABC) or AR + 4 digits (e.g., AR1601)
   const arZipRegex = /^AR\d{4}[A-Z]{0,3}$/i;
-
-  if (arZipRegex.test(code)) {
-    country = "ar";
-    code = code.replace(/^AR/i, ""); // Remove AR prefix for API
-  } else if (usZipRegex.test(code)) {
-    country = "us";
-  } else {
-    throw new Error("Unsupported or invalid postal code format");
+  if (!country) {
+    if (arZipRegex.test(code)) {
+      country = "ar";
+      code = code.replace(/^AR/i, "");
+    } else if (usZipRegex.test(code)) {
+      country = "us";
+    }
   }
 
-  try {
-    const res = await fetch(`https://api.zippopotam.us/${country}/${code}`);
-    if (!res.ok) throw new Error("Postal code lookup failed");
-    const data = await res.json();
-    const place = data.places?.[0];
-    if (!place) throw new Error("Postal code not found");
-    return {
-      city: place["place name"],
-      state: place["state abbreviation"] || place["state"] || "",
-      country: data["country abbreviation"] || country.toUpperCase(),
-      lat: Number(place.latitude),
-      lon: Number(place.longitude),
-    };
-  } catch (error) {
-    console.error("Postal code lookup error:", error);
-    throw new Error(error.message || "Failed to lookup postal code");
+  // Try lookup for detected country, or try all supported countries
+  const countriesToTry = country ? [country] : supportedCountries;
+  let lastError = null;
+  for (const c of countriesToTry) {
+    try {
+      const res = await fetch(`https://api.zippopotam.us/${c}/${code}`);
+      if (!res.ok) continue;
+      const data = await res.json();
+      const place = data.places?.[0];
+      if (!place) continue;
+      return {
+        city: place["place name"],
+        state: place["state abbreviation"] || place["state"] || "",
+        country: data["country abbreviation"] || c.toUpperCase(),
+        lat: Number(place.latitude),
+        lon: Number(place.longitude),
+      };
+    } catch (error) {
+      lastError = error;
+      continue;
+    }
   }
+  throw new Error(
+    lastError?.message || "Postal code not found in supported countries"
+  );
 }
