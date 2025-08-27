@@ -112,6 +112,55 @@ export default function GlobeMap({
 
   const clusters = clusterSubmissions(submissions, zoom);
   const showClustering = zoom < 1.8; // Show clustering when zoomed out
+  // --- Simple label collision avoidance for city names (when not clustering) ---
+  // Only show city label if it does not overlap with another label in a lat/lon grid cell
+  // This is a fast, approximate solution for readability
+  // Micro-clustering for dense areas at higher zoom
+  // If 3+ submissions are within a small radius, show a single cluster marker and label
+  const MICRO_CLUSTER_RADIUS = 1.5; // degrees, tune as needed
+  const MICRO_CLUSTER_MIN = 3;
+  function microCluster(submissions) {
+    const clusters = [];
+    const used = new Set();
+    for (let i = 0; i < submissions.length; i++) {
+      if (used.has(i)) continue;
+      const s = submissions[i];
+      const group = [i];
+      for (let j = i + 1; j < submissions.length; j++) {
+        if (used.has(j)) continue;
+        const o = submissions[j];
+        const d = Math.sqrt(
+          Math.pow(s.lat - o.lat, 2) + Math.pow(s.lon - o.lon, 2)
+        );
+        if (d < MICRO_CLUSTER_RADIUS) {
+          group.push(j);
+        }
+      }
+      if (group.length >= MICRO_CLUSTER_MIN) {
+        // Make a cluster
+        const members = group.map(idx => submissions[idx]);
+        const avgLat = members.reduce((sum, m) => sum + m.lat, 0) / members.length;
+        const avgLon = members.reduce((sum, m) => sum + m.lon, 0) / members.length;
+        clusters.push({
+          type: 'micro',
+          lat: avgLat,
+          lon: avgLon,
+          count: members.length,
+          city: members[0].city || 'Cluster',
+        });
+        group.forEach(idx => used.add(idx));
+      } else {
+        // Not enough for a cluster, show as single
+        clusters.push({
+          type: 'single',
+          ...s,
+        });
+        used.add(i);
+      }
+    }
+    return clusters;
+  }
+
   return (
     <div className="relative rounded-2xl border border-black bg-gradient-to-br from-[#fff9e8] via-[#f8efe0] to-[#efe3cf] shadow-[12px_12px_0_0_rgba(0,0,0,0.65)] h-full flex flex-col">
       <div className="absolute z-10 top-2 left-2 right-2 md:top-3 md:left-3 md:right-auto md:w-auto flex flex-row md:items-center gap-2 bg-white/85 backdrop-blur rounded-md border border-black p-2 md:p-2">
@@ -350,44 +399,100 @@ export default function GlobeMap({
                   )}
                 </Marker>
               ))
-            : submissions.map((s, i) => (
-                <Marker
-                  key={s.id}
-                  coordinates={[
-                    s.lon + jitter(i) * 0.1,
-                    s.lat + jitter(i) * 0.1,
-                  ]}
-                >
-                  <g transform="translate(-6,-6)">
-                    <circle
-                      r={5.5}
-                      fill={retroMode ? "#ff00a6" : "#ef476f"}
-                      stroke={theme.stroke}
-                      strokeWidth={1.25}
-                    />
-                    <circle
-                      r={2}
-                      fill="#fff"
-                      stroke={theme.stroke}
-                      strokeWidth={1}
-                    />
-                  </g>
-                  <text
-                    textAnchor="start"
-                    y={-10}
-                    x={8}
-                    style={{
-                      fontFamily: retroMode
-                        ? theme.fontFamily
-                        : "ui-monospace, Menlo, monospace",
-                      fontSize: retroMode ? 9 : 10,
-                      fontWeight: 800,
-                    }}
-                  >
-                    {s.city}
-                  </text>
-                </Marker>
-              ))}
+            : microCluster(submissions).map((item, i) => {
+                if (item.type === 'micro') {
+                  return (
+                    <Marker
+                      key={`micro-${item.lat}-${item.lon}-${i}`}
+                      coordinates={[
+                        item.lon + jitter(i) * 0.1,
+                        item.lat + jitter(i) * 0.1,
+                      ]}
+                    >
+                      <g transform="translate(-8,-8)">
+                        <circle
+                          r={Math.min(12, 6 + item.count * 0.8)}
+                          fill={retroMode ? "#ff00a6" : "#ef476f"}
+                          fillOpacity={0.7}
+                          stroke={theme.stroke}
+                          strokeWidth={1.5}
+                        />
+                        <text
+                          textAnchor="middle"
+                          y={4}
+                          style={{
+                            fontFamily: retroMode
+                              ? theme.fontFamily
+                              : "ui-monospace, Menlo, monospace",
+                            fontSize: 11,
+                            fontWeight: 900,
+                            fill: "#fff",
+                          }}
+                        >
+                          {item.count}
+                        </text>
+                      </g>
+                      <text
+                        textAnchor="start"
+                        y={-14}
+                        x={12}
+                        style={{
+                          fontFamily: retroMode
+                            ? theme.fontFamily
+                            : "ui-monospace, Menlo, monospace",
+                          fontSize: retroMode ? 9 : 10,
+                          fontWeight: 800,
+                        }}
+                      >
+                        {item.city} ({item.count})
+                      </text>
+                    </Marker>
+                  );
+                } else {
+                  // Single pin
+                  const showLabel = zoom > 1.4;
+                  return (
+                    <Marker
+                      key={item.id}
+                      coordinates={[
+                        item.lon + jitter(i) * 0.1,
+                        item.lat + jitter(i) * 0.1,
+                      ]}
+                    >
+                      <g transform="translate(-6,-6)">
+                        <circle
+                          r={5.5}
+                          fill={retroMode ? "#ff00a6" : "#ef476f"}
+                          stroke={theme.stroke}
+                          strokeWidth={1.25}
+                        />
+                        <circle
+                          r={2}
+                          fill="#fff"
+                          stroke={theme.stroke}
+                          strokeWidth={1}
+                        />
+                      </g>
+                      {showLabel && (
+                        <text
+                          textAnchor="start"
+                          y={-10}
+                          x={8}
+                          style={{
+                            fontFamily: retroMode
+                              ? theme.fontFamily
+                              : "ui-monospace, Menlo, monospace",
+                            fontSize: retroMode ? 9 : 10,
+                            fontWeight: 800,
+                          }}
+                        >
+                          {item.city}
+                        </text>
+                      )}
+                    </Marker>
+                  );
+                }
+              })}
         </ComposableMap>
       </div>
 
