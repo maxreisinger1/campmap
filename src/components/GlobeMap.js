@@ -171,7 +171,7 @@ export default function GlobeMap({
           <input
             type="range"
             min={0.9}
-            max={7.5}
+            max={100}
             step={0.01}
             value={zoom}
             onChange={(e) => setZoom(Number(e.target.value))}
@@ -230,7 +230,7 @@ export default function GlobeMap({
           <input
             type="range"
             min={0.9}
-            max={7.5}
+            max={100}
             step={0.01}
             value={zoom}
             onChange={(e) => setZoom(Number(e.target.value))}
