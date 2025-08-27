@@ -3,9 +3,9 @@ export default function SignupsCounter({ count = 0 }) {
   const number = count.toString().padStart(7, "0");
 
   return (
-    <div className="max-w-7xl mx-auto md:px-12 lg:px-16 py-6">
+    <div className="max-w-7xl mx-auto md:px-12 lg:px-16 py-6 flex items-center justify-center">
       <div className="relative w-full flex items-center justify-center">
-        <div className="flex w-full max-w-sm md:max-w-4xl items-center rounded-2xl bg-black border-white border-4 md:border-8 px-3 md:px-6 py-3 md:py-4 shadow-[0_4px_6px_rgba(0,0,0,0.3)]">
+        <div className="flex w-full max-w-sm md:max-w-4xl items-center justify-center rounded-2xl bg-black border-white border-4 md:border-8 px-3 md:px-6 py-3 md:py-4 shadow-[0_4px_6px_rgba(0,0,0,0.3)]">
           {/* Digits */}
           <div className="flex divide-x divide-white border-r border-white h-full">
             {number.split("").map((digit, idx) => (
