@@ -9,6 +9,9 @@ export default function Hero() {
         autoPlay
         loop
         muted
+        playsInline
+        controls={false}
+        preload="auto"
       />
 
       {/* Overlay (optional dark fade for readability) */}
@@ -25,30 +28,19 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Desktop Top Bar */}
-      <div className="justify-between items-start p-4 md:px-[144px] md:pt-12 absolute inset-x-0 top-0 w-full hidden md:flex flex-row">
-        <div className="flex flex-row items-center space-x-2">
-          {/* Studio Logo */}
-          <img src="/images/logo.png" alt="Camp Studios" className="h-6" />
-          <span className="text-xs uppercase text-white">
-            A Camp Studios Production
-          </span>
-        </div>
-
-        {/* Top Right Badge - Hidden on mobile */}
-        <span className="bg-white rounded-full px-4 py-1 text-xs font-semibold tracking-wide uppercase">
-          In Theaters Nationwide This Fall
-        </span>
-      </div>
-
       {/* Center Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-10 md:px-4">
+        {/* Desktop: Logo and production text above film title */}
+        <div className="hidden md:flex flex-row items-center mb-[30px] gap-6">
+          <img src="/images/logo.png" alt="Camp Studios" className="h-6 mb-1" />
+          <span className="text-xs uppercase text-white tracking-widest">A Camp Studios Production</span>
+        </div>
         {/* Film Title */}
         <h1
           className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
           style={{
             fontFamily: "'Grange Heavy', sans-serif",
-            fontWeight: 900,
+            fontWeight: 700,
             lineHeight: "106%",
             letterSpacing: "-1%",
           }}
@@ -70,11 +62,21 @@ export default function Hero() {
           />
           THEATERS
         </p>
-        {/* Mobile Badge - Only visible on mobile */}
-        <div className="mt-2 md:hidden">
-          <span className="bg-white rounded-full px-10 py-1 text-[9.5px] font-semibold tracking-wide uppercase">
-            In Theaters Nationwide This Fall
-          </span>
+        {/* Badge always visible below the subtitle, now a button */}
+        <div className="mt-2 flex justify-center w-full">
+          <button
+            className="bg-white rounded-full px-10 py-1 text-[9.5px] md:text-xs font-semibold tracking-wide uppercase transition-colors duration-200 hover:bg-[#F2A268] focus:bg-[#F2A268] outline-none border-none cursor-pointer"
+            style={{ boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)' }}
+            onClick={() => {
+              const el = document.getElementById('signup-form');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }}
+            type="button"
+          >
+            Vote To Watch In A City Near You
+          </button>
         </div>
       </div>
     </section>

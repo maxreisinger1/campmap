@@ -51,6 +51,7 @@ export async function loadSubmissions() {
  * @param {string} submission.name - Fan's full name (will be trimmed)
  * @param {string} submission.email - Fan's email address (will be trimmed and lowercased)
  * @param {string} submission.zip - Fan's ZIP code for location lookup
+ * @param {string} [submission.phone] - Fan's phone number (optional)
  * @param {string} submission.city - City name from ZIP code lookup
  * @param {string} submission.state - State name from ZIP code lookup
  * @param {number} submission.lat - Latitude coordinate
@@ -78,12 +79,13 @@ export async function loadSubmissions() {
  * }
  * ```
  */
+
 export async function addSubmission(submission) {
   // Basic client-side validation to avoid bad requests to the function.
   if (!submission || typeof submission !== "object") {
     throw new Error("Invalid submission payload");
   }
-  const { name, email, zip, country, city, state, lat, lon } = submission;
+  const { name, email, phone, zip, country, city, state, lat, lon } = submission;
   if (!name || !email || !zip || !country) {
     throw new Error("Missing required fields: name, email, zip, or country");
   }

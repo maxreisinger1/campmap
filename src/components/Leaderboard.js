@@ -84,8 +84,7 @@ export default function Leaderboard({
         City Leaderboard
       </h3>
       <p className="text-xs mb-3">
-        First city to <b>{CITY_GOAL}</b> signups unlocks a{" "}
-        <span className="font-bold">Premiere Night</span>. Bars fill as fans
+        100 signups unlocks a screening near you. Bars fill as fans
         join.
       </p>
       {loading ? (
@@ -135,56 +134,56 @@ export default function Leaderboard({
               !ticketsPaused;
             return (
               <div
-                key={row.city_id}
-                className="border border-black/20 rounded-lg p-2 hover:bg-[#fff7df] cursor-pointer"
-                onClick={onClick}
+              key={row.city_id}
+              className="border border-black/20 rounded-lg p-2 hover:bg-[#fff7df] cursor-pointer truncate"
+              onClick={onClick}
               >
-                <div className="flex items-center gap-2">
-                  <div className="w-6 text-right font-black">{i + 1}</div>
-                  <div className="flex-1 font-bold">
-                    {row.city_name}
-                    {row.city_state ? `, ${row.city_state}` : ""}
-                  </div>
-                  <div className="text-xs font-mono w-20 text-right">
-                    {row.signup_count}/{row.city_threshold}
-                  </div>
-                  {!unlocked && (
-                    <span className="ml-2 text-xs font-mono opacity-70">
-                      {remaining} to go
-                    </span>
-                  )}
-                  {canShowBuy && (
-                    <a
-                      href={row.evey_event_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="ml-2 px-2 py-1 text-xs font-bold rounded bg-[#FF9D47] border border-black shadow hover:bg-[#FF9D47]/80 transition"
-                    >
-                      Buy Tickets
-                    </a>
-                  )}
+              <div className="flex items-center gap-2 truncate">
+                <div className="franklin-font w-6 text-[14px] md:text-[16px] text-right font-black truncate">{i + 1}</div>
+                <div className="franklin-font flex-1 text-[14px] md:text-[16px] font-normal truncate">
+                {row.city_name}
+                {row.city_state ? `, ${row.city_state}` : ""}
                 </div>
-                <div className="mt-2 h-4 w-full rounded-full border-2 border-black bg-gray-200 overflow-hidden relative">
-                  <div
-                    className="absolute left-0 top-0 h-full pointer-events-none"
-                    style={{
-                      width: "8px",
-                      background: "#EE4284",
-                    }}
-                  />
-                  <div
-                    className="h-full border-r-2 border-black transition-[width] duration-700 ease-out"
-                    style={{
-                      width: `${pct * 100}%`,
-                      background: "#D42568",
-                    }}
-                  />
+                <div className="text-[10px] md:text-xs font-mono w-20 text-right truncate">
+                {row.signup_count}/{row.city_threshold}
                 </div>
-                {canShowCountdown && (
-                  <span className="py-2 text-xs font-mono opacity-90">
-                    Pre-sale in {formatCountdown(prepurchaseMs)}
-                  </span>
+                {!unlocked && (
+                <span className="ml-2 w-fit text-[10px] md:text-xs font-mono opacity-70 truncate">
+                  {remaining} to go
+                </span>
                 )}
+                {canShowBuy && (
+                <a
+                  href={row.evey_event_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-2 px-2 py-1 text-xs font-bold rounded bg-[#FF9D47] border border-black shadow hover:bg-[#FF9D47]/80 transition truncate"
+                >
+                  Buy Tickets
+                </a>
+                )}
+              </div>
+              <div className="mt-2 h-4 w-full rounded-full border-2 border-black bg-gray-200 overflow-hidden relative">
+                <div
+                className="absolute left-0 top-0 h-full pointer-events-none"
+                style={{
+                  width: "8px",
+                  background: "#EE4284",
+                }}
+                />
+                <div
+                className="h-full border-r-2 border-black transition-[width] duration-700 ease-out"
+                style={{
+                  width: `${pct * 100}%`,
+                  background: "#D42568",
+                }}
+                />
+              </div>
+              {canShowCountdown && (
+                <span className="py-2 text-xs font-mono opacity-90 truncate">
+                Pre-sale in {formatCountdown(prepurchaseMs)}
+                </span>
+              )}
               </div>
             );
           })}

@@ -145,7 +145,7 @@ function FanDemandGlobeInner() {
   const [zoom, setZoom] = useState(1.15);
   const [cursor, setCursor] = useState("grab");
   const [fatal, setFatal] = useState("");
-  const [form, setForm] = useState({ name: "", email: "", zip: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", zip: "" });
   // messages are shown via ToastContext
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
@@ -295,7 +295,7 @@ function FanDemandGlobeInner() {
           ? prev
           : [result.submission, ...prev]
       );
-      setForm({ name: "", email: "", zip: "" });
+  setForm({ name: "", email: "", phone: "", zip: "" });
       setHasSubmitted(true);
 
       // Show a toast notification for the submission
@@ -390,7 +390,7 @@ function FanDemandGlobeInner() {
         <Hero />
       </Suspense>
 
-      <div className="text-center mb-[40px] mt-[56px] md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
+      <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
         <div className="mb-[28px] text-center">
           <span className="inline-block bg-[#D42568] border border-black border-w-[0.66px] max-h-[40px] max-w-[200px] text-white text-[14px] font-normal uppercase px-[15px] py-2 rounded">
             The Two Sleepy Tour
@@ -398,18 +398,24 @@ function FanDemandGlobeInner() {
         </div>
 
         <div>
-          <h2 className="text-pink-600 text-[24px] md:text-5xl font-bold tracking-wider  md:mb-[15px]">
+          <h2 className="text-pink-600 text-[24px] md:text-5xl font-bold tracking-wider uppercase md:mb-[15px]">
             WANT TO WATCH THE FILM?
           </h2>
-          <span className="text-[9.5px] md:text-base text-black font-medium md:font-extralight md:tracking-widest">
-            VOTE BELOW, TO SEE IT IN A THEATER NEAR YOU{" "}
+          <span className="text-[9.5px] md:text-base text-black uppercase font-medium md:font-extralight md:tracking-widest">
+            DROP A PIN TO SEE TWO SLEEPY PEOPLE IN A THEATER NEAR YOU{" "}
             <span className="font-bold">THIS FALL.</span>
           </span>
         </div>
       </div>
 
-      {/* Signup form - Full width */}
+      {/* Mobile: Counter before form, Desktop: after form */}
       <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6">
+        {/* Mobile only */}
+        <div className="block md:hidden mb-6">
+          <Suspense fallback={<div>Loading counter…</div>}>
+            <SignupsCounter count={submissions.length} />
+          </Suspense>
+        </div>
         <Suspense fallback={<div>Loading form…</div>}>
           <SignupForm
             form={form}
@@ -420,27 +426,13 @@ function FanDemandGlobeInner() {
             loading={loading}
           />
         </Suspense>
+        {/* Desktop only */}
+        <div className="hidden md:block mt-6">
+          <Suspense fallback={<div>Loading counter…</div>}>
+            <SignupsCounter count={submissions.length} />
+          </Suspense>
+        </div>
       </div>
-
-      <Suspense
-        fallback={
-          <div className="h-12 flex items-center justify-center py-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-2 h-2 bg-[#D42568] rounded-full animate-pulse"></div>
-              <div
-                className={`text-xs font-mono uppercase tracking-wider ${
-                  retroMode ? "text-yellow-500" : "text-[#1f2937]"
-                }`}
-              >
-                Loading Counter...
-              </div>
-              <div className="w-2 h-2 bg-[#D42568] rounded-full animate-pulse delay-75"></div>
-            </div>
-          </div>
-        }
-      >
-        <SignupsCounter count={submissions.length} />
-      </Suspense>
 
       {/* Leaderboard and Globe - Side by side with equal height */}
       <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6">

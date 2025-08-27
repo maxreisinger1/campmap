@@ -7,7 +7,7 @@
 /**
  * Signup form component for collecting user information and ZIP code.
  *
- * Provides input fields for name, email, and ZIP code with form validation
+ * Provides input fields for name, email, phone, and ZIP code with form validation
  * and submission handling. The form adapts its styling based on retro mode
  * and displays appropriate loading and error states.
  *
@@ -17,6 +17,7 @@
  * @param {string} props.form.name - User's name
  * @param {string} props.form.email - User's email
  * @param {string} props.form.zip - User's ZIP code
+ * @param {string} [props.form.phone] - User's phone number (optional)
  * @param {Function} props.setForm - Function to update form data
  * @param {Function} props.handleSubmit - Form submission handler
  * @param {string|null} props.fatal - Fatal error message if any
@@ -101,7 +102,7 @@ export default function SignupForm({
   }
 
   return (
-    <div className="relative max-w-4xl rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]">
+    <div id="signup-form" className="relative max-w-4xl rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]">
       <div className="absolute -top-2 -left-2 h-4 w-4 bg-black" />
       <div className="absolute -bottom-2 -right-2 h-4 w-4 bg-black" />
 
@@ -111,11 +112,13 @@ export default function SignupForm({
       </h2>
       <p className="text-xs py-[24px]">
         <span className="font-bold">
-          We’re bringing creator-made cinema to theaters worldwide, and want you
-          to be part of it
+          We’re bringing internet-cinema to theaters across the US, and want you to be part of it.
         </span>
-        . If you want to host a screening, see it with your friends, or be the
-        first to hear where we’re headed next — drop your info below.
+        If you want to see this film in a theater near you or receive updates - drop your info below.
+      </p>
+
+      <p className="text-xs mb-[24px]">
+        * Note: We’re only able to release the film in US theaters this Fall. But, we want to bring it everyone someday. So, if your country is available in the dropdown below - you can still leave your postal code!
       </p>
       <form
         onSubmit={(e) => {
@@ -173,6 +176,30 @@ export default function SignupForm({
             onChange={(e) =>
               setForm({ ...form, email: e.target.value, fatal: null })
             }
+          />
+        </div>
+        <div>
+          <label
+            className={`block text-xs font-bold uppercase mb-1 ${
+              retroMode ? "blink" : ""
+            }`}
+          >
+            Phone (optional)
+          </label>
+          <input
+            className={`w-full rounded-md border ${
+              retroMode
+                ? "border-black bg-[#fffef4]"
+                : "border-black/40 bg-[#fffcf5]"
+            } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+            placeholder="e.g. +1 555 123 4567"
+            value={form.phone || ""}
+            onChange={(e) =>
+              setForm({ ...form, phone: e.target.value, fatal: null })
+            }
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
           />
         </div>
         <div>
@@ -263,7 +290,7 @@ export default function SignupForm({
           <button
             type="button"
             onClick={() => {
-              setForm({ name: "", email: "", zip: "", country: "US" });
+              setForm({ name: "", email: "", phone: "", zip: "", country: "US" });
             }}
             className={`rounded-md border-2 border-black px-3 py-2 font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
               retroMode

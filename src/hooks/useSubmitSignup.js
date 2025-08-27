@@ -75,6 +75,7 @@ export function useSubmitSignup() {
       const payload = {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
+        phone: form.phone ? form.phone.trim() : undefined,
         zip: z,
         country,
         city: info.city,
