@@ -117,9 +117,9 @@ export default function SignupForm({
         If you want to see this film in a theater near you or receive updates - drop your info below.
       </p>
 
-      <p className="text-xs mb-[24px]">
+      {/* <p className="text-xs mb-[24px]">
         * Note: We’re only able to release the film in US theaters this Fall. But, we want to bring it everyone someday. So, if your country is available in the dropdown below - you can still leave your postal code!
-      </p>
+      </p> */}
       <form
         onSubmit={(e) => {
           e.preventDefault();

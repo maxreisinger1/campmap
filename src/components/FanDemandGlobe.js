@@ -391,19 +391,19 @@ function FanDemandGlobeInner() {
       </Suspense>
 
       <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
-        <div className="mb-[28px] text-center">
-          <span className="inline-block bg-[#D42568] border border-black border-w-[0.66px] max-h-[40px] max-w-[200px] text-white text-[14px] font-normal uppercase px-[15px] py-2 rounded">
-            The Two Sleepy Tour
-          </span>
-        </div>
-
         <div>
           <h2 className="text-pink-600 text-[24px] md:text-5xl font-bold tracking-wider uppercase md:mb-[15px]">
             WANT TO WATCH THE FILM?
           </h2>
-          <span className="text-[9.5px] md:text-base text-black uppercase font-medium md:font-extralight md:tracking-widest">
-            DROP A PIN TO SEE TWO SLEEPY PEOPLE IN A THEATER NEAR YOU{" "}
-            <span className="font-bold">THIS FALL.</span>
+          {/* Mobile: special text, Desktop: original text */}
+          <span className="text-[10px] md:text-base text-black uppercase font-medium md:font-extralight md:tracking-widest">
+            <span className="block md:hidden uppercase">
+              Drop A Pin To sEE IT in A Theater Near YoU.
+            </span>
+            <span className="hidden md:inline uppercase">
+              DROP A PIN TO SEE TWO SLEEPY PEOPLE IN A THEATER NEAR YOU{" "}
+              <span className="font-bold">THIS FALL.</span>
+            </span>
           </span>
         </div>
       </div>
