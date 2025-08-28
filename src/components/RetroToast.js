@@ -52,7 +52,7 @@ export default function RetroToast({ message, show, onClose, retroMode }) {
       }}
     >
       <span role="img" aria-label="alert" className="text-2xl">
-        �
+        🍿
       </span>
       <div className="font-bold">{message}</div>
       <button

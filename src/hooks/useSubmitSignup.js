@@ -89,7 +89,7 @@ export function useSubmitSignup() {
       return result;
     } catch (err) {
       setError(err);
-      if (!message) setMessage(err?.message || "Submission failed");
+      if (!message) setMessage("Submission failed! Please try again later.");
       throw err;
     } finally {
       setLoading(false);

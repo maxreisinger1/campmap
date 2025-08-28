@@ -73,6 +73,14 @@ export function useLiveSubmissions(initial = []) {
           );
         }
       )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "submissions_public" },
+        (payload) => {
+          const deletedId = payload.old.id;
+          setSubs((prev) => prev.filter((s) => s.id !== deletedId));
+        }
+      )
       .subscribe();
 
     channels.push(channel);
