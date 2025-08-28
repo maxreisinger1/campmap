@@ -154,7 +154,7 @@ function FanDemandGlobeInner() {
   const [loading, setLoading] = useState(false);
   const resumeTimer = useRef(null);
   const RESUME_AFTER = 1500;
-  const [submissions, setSubmissions] = useLiveSubmissions([]);
+  const [submissions, setSubmissions, { hasMore: hasMoreSubs, loading: loadingSubs, loadMore: loadMoreSubs }] = useLiveSubmissions([]);
   const { leaderboard, loading: lbLoading } = useLeaderboard();
 
   const containerRef = useRef(null);
@@ -167,21 +167,6 @@ function FanDemandGlobeInner() {
   });
   const { showToast } = useToast();
   const { submit, message: submitMessage } = useSubmitSignup();
-
-  // Load submissions from Supabase on component mount
-  useEffect(() => {
-    const loadSubmissionsOnMount = async () => {
-      try {
-        const data = await loadSubmissions();
-        setSubmissions(data);
-      } catch (error) {
-        setFatal(String(error.message || error));
-      }
-    };
-
-    loadSubmissionsOnMount();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // setSubmissions is stable from hook, safe to omit
 
   useEffect(() => {
     const onErr = (e) => setFatal(String(e?.message || e));

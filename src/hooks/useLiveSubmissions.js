@@ -40,24 +40,68 @@ import { loadSubmissions } from "../services/SubmissionsService";
  */
 export function useLiveSubmissions(initial = []) {
   const [subs, setSubs] = useState(initial);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const PAGE_SIZE = 100;
   const mounted = useRef(true);
 
+  // Fetch a page of submissions
+  const fetchPage = async (pageNum = 0) => {
+    setLoading(true);
+    try {
+      const data = await loadSubmissions({ limit: PAGE_SIZE, offset: pageNum * PAGE_SIZE });
+      if (mounted.current) {
+        if (pageNum === 0) {
+          setSubs(data || []);
+        } else {
+          setSubs((prev) => [...prev, ...(data || [])]);
+        }
+        setHasMore((data?.length || 0) === PAGE_SIZE);
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn("Could not load submissions:", err?.message || err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initial fetch: keep loading pages until all submissions are loaded
   useEffect(() => {
     mounted.current = true;
-
-    // Initial fetch to populate UI quickly
-    (async () => {
-      try {
-        const initialData = await loadSubmissions();
-        if (mounted.current) setSubs(initialData || []);
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.warn(
-          "Could not load initial submissions:",
-          err?.message || err
-        );
+    let cancelled = false;
+    async function fetchAll() {
+      let pageNum = 0;
+      let all = [];
+      let keepGoing = true;
+      while (keepGoing && !cancelled) {
+        setLoading(true);
+        try {
+          const data = await loadSubmissions({ limit: PAGE_SIZE, offset: pageNum * PAGE_SIZE });
+          if (!data || data.length === 0) {
+            keepGoing = false;
+            break;
+          }
+          all = [...all, ...data];
+          setSubs([...all]);
+          if (data.length < PAGE_SIZE) {
+            keepGoing = false;
+          } else {
+            pageNum++;
+          }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.warn("Could not load submissions:", err?.message || err);
+          keepGoing = false;
+        } finally {
+          setLoading(false);
+        }
       }
-    })();
+      setHasMore(false);
+      setPage(pageNum);
+    }
+    fetchAll();
 
     const channels = [];
 
@@ -86,6 +130,7 @@ export function useLiveSubmissions(initial = []) {
     channels.push(channel);
 
     return () => {
+      cancelled = true;
       mounted.current = false;
       // Remove channels created by this hook only
       channels.forEach((ch) => {
@@ -100,5 +145,12 @@ export function useLiveSubmissions(initial = []) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return [subs, setSubs];
+  // Load next page
+  const loadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchPage(nextPage);
+  };
+
+  return [subs, setSubs, { hasMore, loading, loadMore }];
 }

@@ -8,29 +8,33 @@ import { parseError } from "../utils/errorParser";
 import { supabase, invokeEdgeFunction } from "./supabase";
 
 /**
- * Loads all public submissions from the database, ordered by creation date.
+ * Loads a page of public submissions from the database, ordered by creation date.
  *
  * @async
  * @function loadSubmissions
+ * @param {Object} [options] - Pagination options
+ * @param {number} [options.limit=100] - Number of submissions per page
+ * @param {number} [options.offset=0] - Offset for pagination
  * @returns {Promise<Array>} Array of submission objects from submissions_public view
  * @throws {Error} When the database query fails
  *
  * @example
  * ```javascript
  * try {
- *   const submissions = await loadSubmissions();
+ *   const submissions = await loadSubmissions({ limit: 100, offset: 0 });
  *   console.log(`Loaded ${submissions.length} submissions`);
  * } catch (error) {
  *   console.error('Failed to load submissions:', error.message);
  * }
  * ```
  */
-export async function loadSubmissions() {
+export async function loadSubmissions({ limit = 100, offset = 0 } = {}) {
   try {
     const { data, error } = await supabase
       .from("submissions_public")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .range(offset, offset + limit - 1);
     if (error) throw error;
     return data;
   } catch (error) {
