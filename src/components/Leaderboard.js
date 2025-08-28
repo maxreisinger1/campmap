@@ -84,7 +84,7 @@ export default function Leaderboard({
         City Leaderboard
       </h3>
       <p className="text-xs mb-3">
-        100 signups unlocks a screening near you. Bars fill as fans
+        250 signups unlocks a screening near you. Bars fill as fans
         join.
       </p>
       {loading ? (
