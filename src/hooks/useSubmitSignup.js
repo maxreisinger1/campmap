@@ -47,6 +47,7 @@ export function useSubmitSignup() {
     setError(null);
     setMessage("");
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
     if (!form?.name?.trim()) {
       setMessage("Please enter your name.");
       throw new Error("Please enter a valid name.");
@@ -66,12 +67,9 @@ export function useSubmitSignup() {
     abortRef.current = new AbortController();
 
     try {
-      // Pass country to lookupZip if supported
-      let lookupCode = z;
-      if (country && !z.toUpperCase().startsWith(country.toUpperCase())) {
-        lookupCode = `${country.toUpperCase()}-${z}`;
-      }
-      const info = await lookupZip(lookupCode);
+      // Just call lookupZip with code + country
+      const info = await lookupZip(z, country);
+
       const payload = {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
@@ -79,7 +77,8 @@ export function useSubmitSignup() {
         zip: z,
         country,
         city: info.city,
-        state: info.state,
+        // Fallback to 'N/A' if state/province is missing or empty
+        state: info.state && info.state.trim() ? info.state : "N/A",
         lat: Number(info.lat),
         lon: Number(info.lon),
       };
