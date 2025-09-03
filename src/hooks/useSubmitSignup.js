@@ -5,7 +5,6 @@
  */
 
 import { useState, useRef } from "react";
-// import { lookupZip } from "../utils/zipLookup";
 import { addSubmission } from "../services/SubmissionsService";
 
 /**
@@ -67,9 +66,6 @@ export function useSubmitSignup() {
     abortRef.current = new AbortController();
 
     try {
-      // Just call lookupZip with code + country
-      // const info = await lookupZip(z, country);
-
       const payload = {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
