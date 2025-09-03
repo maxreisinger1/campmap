@@ -5,10 +5,11 @@
  * @date 2025-08-25
  */
 
-import { lazy, Suspense } from "react";
+import { lazy, Suspense } from 'react';
+import { Analytics } from '@vercel/analytics/next';
 
 // Lazy load the main globe component for better performance
-const FanDemandGlobe = lazy(() => import("./components/FanDemandGlobe"));
+const FanDemandGlobe = lazy(() => import('./components/FanDemandGlobe'));
 
 /**
  * Main App component that serves as the entry point for the Creator Camp Map application.
@@ -28,33 +29,34 @@ const FanDemandGlobe = lazy(() => import("./components/FanDemandGlobe"));
  */
 export default function App() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-black text-green-400 font-mono">
-          <div className="mb-4 text-4xl animate-pulse">CREATOR CAMP</div>
-          <div className="flex space-x-2 mb-2">
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce"></span>
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce delay-150"></span>
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce delay-300"></span>
+    <>
+      <Suspense
+        fallback={
+          <div className="min-h-screen w-full flex flex-col items-center justify-center bg-black text-green-400 font-mono">
+            <div className="mb-4 text-4xl animate-pulse">CREATOR CAMP</div>
+            <div className="flex space-x-2 mb-2">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce"></span>
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce delay-150"></span>
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce delay-300"></span>
+            </div>
+            <div className="text-lg tracking-widest animate-blink">LOADING...</div>
+            <style>
+              {`
+                @keyframes blink {
+                  0%, 100% { opacity: 1; }
+                  50% { opacity: 0.3; }
+                }
+                .animate-blink {
+                  animation: blink 1s steps(2, start) infinite;
+                }
+              `}
+            </style>
           </div>
-          <div className="text-lg tracking-widest animate-blink">
-            LOADING...
-          </div>
-          <style>
-            {`
-              @keyframes blink {
-                0%, 100% { opacity: 1; }
-                50% { opacity: 0.3; }
-              }
-              .animate-blink {
-                animation: blink 1s steps(2, start) infinite;
-              }
-            `}
-          </style>
-        </div>
-      }
-    >
-      <FanDemandGlobe />
-    </Suspense>
+        }
+      >
+        <FanDemandGlobe />
+      </Suspense>
+      <Analytics />
+    </>
   );
 }
