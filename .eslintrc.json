@@ -3,11 +3,10 @@
     "react-app",
     "react-app/jest",
     "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "prettier"
   ],
-  "plugins": ["react", "react-hooks", "import"],
+  "plugins": ["react", "import"],
   "parser": "babel-eslint"
 }
