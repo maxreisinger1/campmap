@@ -5,10 +5,11 @@
  * @date 2025-08-25
  */
 
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 // Lazy load the main globe component for better performance
-const FanDemandGlobe = lazy(() => import('./components/FanDemandGlobe'));
+const FanDemandGlobe = lazy(() => import("./components/FanDemandGlobe"));
 
 /**
  * Main App component that serves as the entry point for the Creator Camp Map application.
@@ -38,7 +39,9 @@ export default function App() {
               <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce delay-150"></span>
               <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce delay-300"></span>
             </div>
-            <div className="text-lg tracking-widest animate-blink">LOADING...</div>
+            <div className="text-lg tracking-widest animate-blink">
+              LOADING...
+            </div>
             <style>
               {`
                 @keyframes blink {
@@ -54,6 +57,7 @@ export default function App() {
         }
       >
         <FanDemandGlobe />
+        <Analytics />
       </Suspense>
     </>
   );
