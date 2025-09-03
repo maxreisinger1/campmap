@@ -1,6 +1,0 @@
-{
-  "scripts": {
-    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --quiet",
-    "typecheck": "tsc --noEmit"
-  }
-}
