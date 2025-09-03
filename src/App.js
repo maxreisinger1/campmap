@@ -6,7 +6,6 @@
  */
 
 import { lazy, Suspense } from 'react';
-import { Analytics } from '@vercel/analytics/next';
 
 // Lazy load the main globe component for better performance
 const FanDemandGlobe = lazy(() => import('./components/FanDemandGlobe'));
@@ -56,7 +55,6 @@ export default function App() {
       >
         <FanDemandGlobe />
       </Suspense>
-      <Analytics />
     </>
   );
 }
