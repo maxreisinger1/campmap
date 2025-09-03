@@ -5,7 +5,7 @@
  */
 
 import { useState, useRef } from "react";
-import { lookupZip } from "../utils/zipLookup";
+// import { lookupZip } from "../utils/zipLookup";
 import { addSubmission } from "../services/SubmissionsService";
 
 /**
@@ -68,19 +68,14 @@ export function useSubmitSignup() {
 
     try {
       // Just call lookupZip with code + country
-      const info = await lookupZip(z, country);
+      // const info = await lookupZip(z, country);
 
       const payload = {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
         phone: form.phone ? form.phone.trim() : undefined,
         zip: z,
-        country,
-        city: info.city,
-        // Fallback to 'N/A' if state/province is missing or empty
-        state: info.state && info.state.trim() ? info.state : "N/A",
-        lat: Number(info.lat),
-        lon: Number(info.lon),
+        country_code: country,
       };
 
       const result = await addSubmission(payload);
