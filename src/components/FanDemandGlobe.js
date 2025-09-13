@@ -7,7 +7,6 @@
 import { useState, useRef, useEffect, useMemo, lazy, Suspense } from "react";
 import { ToastProvider, useToast } from "../context/ToastContext";
 import { clamp } from "../utils/helpers";
-import { loadSubmissions } from "../services/SubmissionsService";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 import { useLeaderboard } from "../hooks/useLeaderboard";
 import { useSubmitSignup } from "../hooks/useSubmitSignup";
@@ -154,7 +153,11 @@ function FanDemandGlobeInner() {
   const [loading, setLoading] = useState(false);
   const resumeTimer = useRef(null);
   const RESUME_AFTER = 1500;
-  const [submissions, setSubmissions, { hasMore: hasMoreSubs, loading: loadingSubs, loadMore: loadMoreSubs }] = useLiveSubmissions([]);
+  const [
+    submissions,
+    setSubmissions,
+    { hasMore: hasMoreSubs, loading: loadingSubs, loadMore: loadMoreSubs },
+  ] = useLiveSubmissions([]);
   const { leaderboard, loading: lbLoading } = useLeaderboard();
 
   const containerRef = useRef(null);
@@ -269,8 +272,18 @@ function FanDemandGlobeInner() {
     };
   }, []);
 
+  // Basic ZIP code validation (US and international, 3-10 chars, alphanumeric)
+  function isValidZip(zip) {
+    return typeof zip === "string" && /^[A-Za-z0-9\- ]{3,10}$/.test(zip.trim());
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
+    // Client-side ZIP code validation
+    if (!isValidZip(form.zip)) {
+      showToast("Please enter a valid postal/ZIP code.", retroMode);
+      return;
+    }
     setLoading(true);
     try {
       const result = await submit(form);
@@ -280,7 +293,7 @@ function FanDemandGlobeInner() {
           ? prev
           : [result.submission, ...prev]
       );
-  setForm({ name: "", email: "", phone: "", zip: "" });
+      setForm({ name: "", email: "", phone: "", zip: "" });
       setHasSubmitted(true);
 
       // Show a toast notification for the submission
@@ -304,8 +317,24 @@ function FanDemandGlobeInner() {
       }
     } catch (err) {
       console.error("Error submitting form:", err);
+      // Show user-friendly error messages for common backend errors
       if (err.message) {
-        showToast(err.message, retroMode);
+        if (err.message.toLowerCase().includes("postal code not found")) {
+          showToast(
+            "Sorry, we couldn't find that postal/ZIP code. Please check and try again.",
+            retroMode
+          );
+        } else if (
+          err.message.toLowerCase().includes("too many submissions") ||
+          err.message.toLowerCase().includes("rate limit")
+        ) {
+          showToast(
+            "You've submitted too many times. Please wait before trying again.",
+            retroMode
+          );
+        } else {
+          showToast(err.message, retroMode);
+        }
       } else {
         setFatal("Submission failed");
       }
