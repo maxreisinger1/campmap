@@ -96,7 +96,7 @@ export async function addSubmission(submission) {
 
   try {
     const data = await invokeEdgeFunction("submit_signup", submission, {
-      timeout: 10000,
+      timeout: 30000,
     });
     return data;
   } catch (err) {
