@@ -31,12 +31,28 @@ export default function Hero() {
       {/* Center Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-10 md:px-4">
         {/* Desktop: Logo and production text above film title */}
-        <div className="hidden md:flex flex-row items-center mb-[30px] gap-6">
+        {/* <div className="hidden md:flex flex-row items-center mb-[30px] gap-6">
           <img src="/images/logo.png" alt="Camp Studios" className="h-6 mb-1" />
-          <span className="text-xs uppercase text-white tracking-widest">A Camp Studios Production</span>
-        </div>
+          <span className="text-xs uppercase text-white tracking-widest">
+            A Camp Studios Production
+          </span>
+        </div> */}
         {/* Film Title */}
-        <h1
+        <img
+          src="/images/Two Sleepy Favicon-New.png"
+          alt="Two Sleepy People"
+          className="max-w-[300px] h-[100px] md:h-auto"
+          style={{ transform: "rotate(-3deg)" }}
+        />
+        {/* Mobile: Only show shorter heading */}
+        <h1 className="my-4 text-white text-[16px] font-normal uppercase md:hidden">
+          In Theaters This November
+        </h1>
+        {/* Desktop: Only show full heading */}
+        <h1 className="my-8 text-white text-[30px] font-normal uppercase hidden md:block">
+          Baron Ryan’s Debut Film In Theaters This November
+        </h1>
+        {/* <h1
           className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
           style={{
             fontFamily: "'Grange Heavy', sans-serif",
@@ -61,22 +77,28 @@ export default function Hero() {
             className="inline-block h-12 md:h-20"
           />
           THEATERS
-        </p>
-        {/* Badge always visible below the subtitle, now a button */}
-        <div className="mt-2 flex justify-center w-full">
-          <button
-            className="bg-white rounded-full px-10 py-1 text-[9.5px] md:text-xs font-semibold tracking-wide uppercase transition-colors duration-200 hover:bg-[#F2A268] focus:bg-[#F2A268] outline-none border-none cursor-pointer"
-            style={{ boxShadow: '0 2px 8px 0 rgba(0,0,0,0.04)' }}
-            onClick={() => {
-              const el = document.getElementById('signup-form');
-              if (el) {
-                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }
-            }}
-            type="button"
-          >
-            Vote To Watch In A City Near You
-          </button>
+        </p> */}
+        <div
+          className="flex flex-col md:flex-row gap-4 justify-center w-full"
+          style={{ fontFamily: "'Inter', sans-serif" }}
+        >
+          <a href="https://luma.com/user/campstudios?fbclid=PAZXh0bgNhZW0CMTEAAacMmCGn-1gD5YctVP26FvGSnkgV-ymsx9XecPu4t-0foFiol0dYvIQUA2UYdQ_aem_o2Fgqc02z1QGsFiT083Lgg">
+            <button
+              className="py-[10px] px-[28px] md:py-[12px] md:px-[45px] text-[12px] md:text-[16px] font-semibold bg-white rounded-[10px] border-2 border-black"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Buy Premiere Tickets
+            </button>
+          </a>
+          <a href="https://twosleepypeople.com/where-to-watch/">
+            <button
+              className="py-[10px] px-[28px] md:py-[12px] md:px-[45px] text-[12px] md:text-[16px] font-semibold bg-white rounded-[10px] border-2 border-black"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Where Can I Watch?
+            </button>
+          </a>
+          {/* <button ...existing code... */}
         </div>
       </div>
     </section>

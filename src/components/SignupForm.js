@@ -1,5 +1,36 @@
 import countries from "world-countries";
 
+// Reusable component for stacked stills
+// Flexible stacked stills component for 3 images
+function StackedStills({ images, flip = false }) {
+  // Optionally add some rotation for collage effect
+  const rotations = ["rotate-[13.27deg]", "", "rotate-[-14.38deg]"];
+  return (
+    <div
+      className={`relative flex flex-col gap-14 items-center h-full w-64 ${
+        flip ? "scale-x-[-1]" : ""
+      }`}
+      style={{ minWidth: "12rem" }}
+    >
+      <div className="relative items-center justify-center">
+        <div className="absolute -left-12 md:-left-20 lg:-left-28 xl:-left-36 2xl:-left-44 flex flex-col -gap-14">
+          {images.map((img, idx) => (
+            <img
+              key={img.src}
+              src={img.src}
+              alt={img.alt}
+              className={`w-48 md:w-64 lg:w-80 xl:w-96 2xl:w-[32rem] border border-black shadow-md ${
+                rotations[idx] || ""
+              } ${idx === 1 ? "z-10" : ""}`}
+              style={{ objectFit: "cover", aspectRatio: "4/3" }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /**
  * @fileoverview Signup form component for user registration and location input
  * @author Creator Camp Team
@@ -63,212 +94,244 @@ export default function SignupForm({
     return code.trim().length > 0;
   }
 
+  // Define 3 unique images for each side
+  const leftImages = [
+    { src: "/images/still-1.jpg", alt: "Audience 1" },
+    { src: "/images/still-2.jpg", alt: "Audience 2" },
+    { src: "/images/still-3.jpg", alt: "Audience 3" },
+  ];
+  const rightImages = [
+    {
+      src: "/images/still-4.png",
+      alt: "City Postcard LA",
+    },
+    {
+      src: "/images/still-5.png",
+      alt: "City Postcard NY",
+    },
+    {
+      src: "/images/still-6.jpg",
+      alt: "City Postcard Seattle",
+    },
+  ];
+
   return (
-    <div
-      id="signup-form"
-      className="relative max-w-4xl rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]"
-    >
-      <div className="absolute -top-2 -left-2 h-4 w-4 bg-black" />
-      <div className="absolute -bottom-2 -right-2 h-4 w-4 bg-black" />
-
-      <h2 className="text-2xl md:text-2xl font-extrabold mb-3 tracking-wider">
-        Vote For Two Sleepy People In{" "}
-        <span className="underline decoration-black">Your City:</span>
-      </h2>
-      <p className="text-xs py-[24px]">
-        <span className="font-bold">
-          We’re bringing internet-cinema to theaters across the world, and want
-          you to be part of it.
-        </span>{" "}
-        Drop your info below to vote for your city.
-      </p>
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (!validatePostalCode(form.zip)) {
-            setForm({
-              ...form,
-              fatal: "Please enter a valid postal code.",
-            });
-            return;
-          }
-          if (form.fatal) setForm({ ...form, fatal: null });
-          handleSubmit(e);
-        }}
-        className="flex flex-col gap-[16px] mb-[40px]"
+    <div className="flex flex-row items-stretch justify-center gap-4 w-full">
+      {/* Left stacked stills */}
+      <div className="hidden md:flex items-center">
+        <StackedStills images={leftImages} />
+      </div>
+      {/* Signup form */}
+      <div
+        id="signup-form"
+        className="relative max-w-4xl rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)] flex-1"
       >
-        {/* Name */}
-        <div>
-          <label
-            className={`block text-xs font-bold uppercase mb-1 ${
-              retroMode ? "blink" : ""
-            }`}
-          >
-            Name
-          </label>
-          <input
-            className={`w-full rounded-md border ${
-              retroMode
-                ? "border-black bg-[#fffef4]"
-                : "border-black/40 bg-[#fffcf5]"
-            } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
-            placeholder="Jane Doe"
-            value={form.name}
-            onChange={(e) =>
-              setForm({ ...form, name: e.target.value, fatal: null })
-            }
-          />
-        </div>
+        <div className="absolute -top-2 -left-2 h-4 w-4 bg-black" />
+        <div className="absolute -bottom-2 -right-2 h-4 w-4 bg-black" />
 
-        {/* Email */}
-        <div>
-          <label
-            className={`block text-xs font-bold uppercase mb-1 ${
-              retroMode ? "blink" : ""
-            }`}
-          >
-            Email
-          </label>
-          <input
-            className={`w-full rounded-md border ${
-              retroMode
-                ? "border-black bg-[#fffef4]"
-                : "border-black/40 bg-[#fffcf5]"
-            } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
-            placeholder="jane@example.com"
-            value={form.email}
-            onChange={(e) =>
-              setForm({ ...form, email: e.target.value, fatal: null })
-            }
-          />
-        </div>
+        <h2 className="text-2xl md:text-2xl font-extrabold mb-3 tracking-wider">
+          Drop A Pin To Bring The Film To{" "}
+          <span className="underline decoration-black">More Cities:</span>
+        </h2>
+        <p className="text-xs py-[24px]">
+          <span className="font-bold">
+            We’re bringing internet-cinema to theaters across the world, and
+            want you to be part of it.
+          </span>{" "}
+          Drop your info below to vote for your city.
+        </p>
 
-        {/* Phone */}
-        <div>
-          <label
-            className={`block text-xs font-bold uppercase mb-1 ${
-              retroMode ? "blink" : ""
-            }`}
-          >
-            Phone (optional)
-          </label>
-          <input
-            className={`w-full rounded-md border ${
-              retroMode
-                ? "border-black bg-[#fffef4]"
-                : "border-black/40 bg-[#fffcf5]"
-            } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
-            placeholder="e.g. +1 555 123 4567"
-            value={form.phone || ""}
-            onChange={(e) =>
-              setForm({ ...form, phone: e.target.value, fatal: null })
-            }
-            type="tel"
-            inputMode="tel"
-            autoComplete="tel"
-          />
-        </div>
-
-        {/* Country */}
-        <div>
-          <label
-            className={`block text-xs font-bold uppercase mb-1 ${
-              retroMode ? "blink" : ""
-            }`}
-          >
-            Country
-          </label>
-          <select
-            className={`w-full rounded-md border ${
-              retroMode
-                ? "border-black bg-[#fffef4]"
-                : "border-black/40 bg-[#fffcf5]"
-            } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
-            value={selectedCountry}
-            onChange={(e) =>
-              setForm({ ...form, country: e.target.value, fatal: null })
-            }
-          >
-            {countryOptions.map((c) => (
-              <option key={c.code} value={c.code}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* ZIP / Postal Code */}
-        <div>
-          <label
-            className={`block text-xs font-bold uppercase mb-1 ${
-              retroMode ? "blink" : ""
-            }`}
-          >
-            ZIP / Postal Code
-          </label>
-          <input
-            className={`w-full rounded-md border ${
-              retroMode
-                ? "border-black bg-[#fffef4]"
-                : "border-black/40 bg-[#fffcf5]"
-            } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
-            placeholder="Enter your postal code"
-            value={form.zip}
-            onChange={(e) =>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!validatePostalCode(form.zip)) {
               setForm({
                 ...form,
-                zip: e.target.value,
-                fatal: null,
-              })
-            }
-          />
-        </div>
-
-        {/* Buttons */}
-        <div className="flex items-center gap-2 pt-1">
-          <button
-            type="submit"
-            disabled={loading}
-            className={`rounded-md border-2 border-black px-4 py-2 font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-2 ${
-              retroMode
-                ? "bg-[#00ffd1] hover:bg-[#00e1ba] text-black"
-                : "bg-[#D42568] hover:bg-[#A61D4D] text-white"
-            } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
-          >
-            {loading && (
-              <span className="inline-block w-4 h-4 border-2 border-t-2 border-t-transparent border-black rounded-full animate-spin"></span>
-            )}
-            {loading ? "Processing..." : "Drop Pin"}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setForm({
-                name: "",
-                email: "",
-                phone: "",
-                zip: "",
-                country: "US",
+                fatal: "Please enter a valid postal code.",
               });
-            }}
-            className={`rounded-md border-2 border-black px-3 py-2 font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
-              retroMode
-                ? "bg-white hover:bg-amber-50"
-                : "bg-white hover:bg-gray-50"
-            }`}
-          >
-            Clear
-          </button>
-        </div>
-
-        {/* Errors */}
-        {fatal && (
-          <div className="mt-2 text-xs font-mono text-rose-700">
-            Error: {fatal}
+              return;
+            }
+            if (form.fatal) setForm({ ...form, fatal: null });
+            handleSubmit(e);
+          }}
+          className="flex flex-col gap-[16px] mb-[40px]"
+        >
+          {/* Name */}
+          <div>
+            <label
+              className={`block text-xs font-bold uppercase mb-1 ${
+                retroMode ? "blink" : ""
+              }`}
+            >
+              Name
+            </label>
+            <input
+              className={`w-full rounded-md border ${
+                retroMode
+                  ? "border-black bg-[#fffef4]"
+                  : "border-black/40 bg-[#fffcf5]"
+              } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+              placeholder="Jane Doe"
+              value={form.name}
+              onChange={(e) =>
+                setForm({ ...form, name: e.target.value, fatal: null })
+              }
+            />
           </div>
-        )}
-      </form>
+
+          {/* Email */}
+          <div>
+            <label
+              className={`block text-xs font-bold uppercase mb-1 ${
+                retroMode ? "blink" : ""
+              }`}
+            >
+              Email
+            </label>
+            <input
+              className={`w-full rounded-md border ${
+                retroMode
+                  ? "border-black bg-[#fffef4]"
+                  : "border-black/40 bg-[#fffcf5]"
+              } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+              placeholder="jane@example.com"
+              value={form.email}
+              onChange={(e) =>
+                setForm({ ...form, email: e.target.value, fatal: null })
+              }
+            />
+          </div>
+
+          {/* Phone */}
+          <div>
+            <label
+              className={`block text-xs font-bold uppercase mb-1 ${
+                retroMode ? "blink" : ""
+              }`}
+            >
+              Phone (optional)
+            </label>
+            <input
+              className={`w-full rounded-md border ${
+                retroMode
+                  ? "border-black bg-[#fffef4]"
+                  : "border-black/40 bg-[#fffcf5]"
+              } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+              placeholder="e.g. +1 555 123 4567"
+              value={form.phone || ""}
+              onChange={(e) =>
+                setForm({ ...form, phone: e.target.value, fatal: null })
+              }
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+            />
+          </div>
+
+          {/* Country */}
+          <div>
+            <label
+              className={`block text-xs font-bold uppercase mb-1 ${
+                retroMode ? "blink" : ""
+              }`}
+            >
+              Country
+            </label>
+            <select
+              className={`w-full rounded-md border ${
+                retroMode
+                  ? "border-black bg-[#fffef4]"
+                  : "border-black/40 bg-[#fffcf5]"
+              } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+              value={selectedCountry}
+              onChange={(e) =>
+                setForm({ ...form, country: e.target.value, fatal: null })
+              }
+            >
+              {countryOptions.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* ZIP / Postal Code */}
+          <div>
+            <label
+              className={`block text-xs font-bold uppercase mb-1 ${
+                retroMode ? "blink" : ""
+              }`}
+            >
+              ZIP / Postal Code
+            </label>
+            <input
+              className={`w-full rounded-md border ${
+                retroMode
+                  ? "border-black bg-[#fffef4]"
+                  : "border-black/40 bg-[#fffcf5]"
+              } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+              placeholder="Enter your postal code"
+              value={form.zip}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  zip: e.target.value,
+                  fatal: null,
+                })
+              }
+            />
+          </div>
+
+          {/* Buttons */}
+          <div className="flex items-center gap-2 pt-1">
+            <button
+              type="submit"
+              disabled={loading}
+              className={`rounded-md border-2 border-black px-4 py-2 font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-2 ${
+                retroMode
+                  ? "bg-[#00ffd1] hover:bg-[#00e1ba] text-black"
+                  : "bg-[#D42568] hover:bg-[#A61D4D] text-white"
+              } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+            >
+              {loading && (
+                <span className="inline-block w-4 h-4 border-2 border-t-2 border-t-transparent border-black rounded-full animate-spin"></span>
+              )}
+              {loading ? "Processing..." : "Drop Pin"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setForm({
+                  name: "",
+                  email: "",
+                  phone: "",
+                  zip: "",
+                  country: "US",
+                });
+              }}
+              className={`rounded-md border-2 border-black px-3 py-2 font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
+                retroMode
+                  ? "bg-white hover:bg-amber-50"
+                  : "bg-white hover:bg-gray-50"
+              }`}
+            >
+              Clear
+            </button>
+          </div>
+
+          {/* Errors */}
+          {fatal && (
+            <div className="mt-2 text-xs font-mono text-rose-700">
+              Error: {fatal}
+            </div>
+          )}
+        </form>
+      </div>
+      {/* Right stacked stills (flipped) */}
+      <div className="hidden md:flex items-center">
+        <StackedStills images={rightImages} flip />
+      </div>
     </div>
   );
 }

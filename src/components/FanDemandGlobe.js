@@ -20,6 +20,8 @@ const Footer = lazy(() => import("./Footer"));
 const RetroLoader = lazy(() => import("./RetroLoader"));
 const GlobeMap = lazy(() => import("./GlobeMap"));
 const RetroEffects = lazy(() => import("./RetroEffects"));
+const NewAboutSection = lazy(() => import("./NewAboutSection"));
+const MoviePremiere = lazy(() => import("./MoviePremiere"));
 
 /**
  * Inner component containing the main globe functionality.
@@ -404,24 +406,62 @@ function FanDemandGlobeInner() {
         <Hero />
       </Suspense>
 
+      {/* New About Section */}
+      <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
+              Loading About Section...
+            </div>
+          </div>
+        }
+      >
+        <NewAboutSection />
+      </Suspense>
+
+      <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
+              Loading Movie Premiere Section...
+            </div>
+          </div>
+        }
+      >
+        <MoviePremiere />
+      </Suspense>
+
       <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
         <div>
-          <h2 className="text-pink-600 text-[24px] md:text-5xl font-bold tracking-wider uppercase md:mb-[15px]">
-            WANT TO WATCH THE FILM?
+          <h2 className="text-pink-600 text-[28px] md:text-3xl font-extrabold leading-tight tracking-wider uppercase mb-4 md:mb-[15px]">
+            NOT In Those CitieS? Help us bring the movie to more theaters
           </h2>
           {/* Mobile: special text, Desktop: original text */}
-          <span className="text-[10px] md:text-base text-black uppercase font-medium md:font-extralight md:tracking-widest">
-            <span className="block md:hidden uppercase">
-              Drop A Pin To sEE IT in A Theater Near YoU.
-            </span>
-            <span className="hidden md:inline uppercase">
-              DROP A PIN TO SEE TWO SLEEPY PEOPLE IN A THEATER NEAR YOU{" "}
-              <span className="font-bold">THIS FALL.</span>
-            </span>
+          <span className="text-[12px] md:text-base text-black uppercase font-medium md:font-extralight md:tracking-widest">
+            sign up Below to unlock Screenings across the country, IN A THEATER
+            NEAR YOU. you’re Helping US show theaters there’s a real audience in
+            your city.
           </span>
         </div>
       </div>
-
       {/* Mobile: Counter before form, Desktop: after form */}
       <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6">
         {/* Mobile only */}
@@ -447,7 +487,6 @@ function FanDemandGlobeInner() {
           </Suspense>
         </div>
       </div>
-
       {/* Leaderboard and Globe - Side by side with equal height */}
       <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-[40px] md:gap-6 min-h-[600px]">
@@ -534,40 +573,10 @@ function FanDemandGlobeInner() {
           </div>
         </div>
       </div>
-
       <div className="w-full h-[2px] bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 my-[72px]" />
-
-      <Suspense
-        fallback={
-          <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-16">
-            <div className="flex flex-col items-center justify-center space-y-6">
-              <div className="flex space-x-1">
-                <div className="w-4 h-4 bg-[#D42568] rounded-sm animate-pulse"></div>
-                <div className="w-4 h-4 bg-[#D42568] rounded-sm animate-pulse delay-75"></div>
-                <div className="w-4 h-4 bg-[#D42568] rounded-sm animate-pulse delay-150"></div>
-                <div className="w-4 h-4 bg-[#D42568] rounded-sm animate-pulse delay-225"></div>
-              </div>
-              <div
-                className={`text-sm font-mono uppercase tracking-wider ${
-                  retroMode ? "text-yellow-500" : "text-[#1f2937]"
-                }`}
-              >
-                Loading About Section...
-              </div>
-              <div className="w-32 h-1 bg-black/10 rounded-full overflow-hidden">
-                <div className="w-full h-full bg-[#D42568] rounded-full animate-pulse"></div>
-              </div>
-            </div>
-          </div>
-        }
-      >
-        <AboutSection />
-      </Suspense>
-
       <Suspense fallback={null}>
         <Footer />
       </Suspense>
-
       {/* Retro overlays and effects (lazy loaded) */}
       <Suspense fallback={null}>
         <RetroEffects retroMode={retroMode} hasSubmitted={hasSubmitted} />
