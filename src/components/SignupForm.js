@@ -7,24 +7,36 @@ function StackedStills({ images, flip = false }) {
   const rotations = ["rotate-[13.27deg]", "", "rotate-[-14.38deg]"];
   return (
     <div
-      className={`relative flex flex-col gap-14 items-center h-full w-64 ${
+      className={`relative flex flex-col gap-20 items-center h-full w-full ${
         flip ? "scale-x-[-1]" : ""
       }`}
-      style={{ minWidth: "12rem" }}
+      style={{ minWidth: "20rem" }}
     >
-      <div className="relative items-center justify-center">
-        <div className="absolute -left-12 md:-left-20 lg:-left-28 xl:-left-36 2xl:-left-44 flex flex-col -gap-14">
-          {images.map((img, idx) => (
-            <img
-              key={img.src}
-              src={img.src}
-              alt={img.alt}
-              className={`w-48 md:w-64 lg:w-80 xl:w-96 2xl:w-[32rem] border border-black shadow-md ${
-                rotations[idx] || ""
-              } ${idx === 1 ? "z-10" : ""}`}
-              style={{ objectFit: "cover", aspectRatio: "4/3" }}
-            />
-          ))}
+      <div className="relative items-center justify-center w-full">
+        <div
+          className="absolute flex flex-col -gap-20"
+          style={{ left: "-40px" }}
+        >
+          {images.map((img, idx) => {
+            // Middle image goes further out
+            const extraLeft = idx === 1 ? (flip ? -80 : -80) : 0;
+            return (
+              <img
+                key={img.src}
+                src={img.src}
+                alt={img.alt}
+                className={`w-64 border border-black shadow-md ${
+                  rotations[idx] || ""
+                } ${idx === 1 ? "z-10" : ""}`}
+                style={{
+                  objectFit: "cover",
+                  aspectRatio: "4/3",
+                  position: "relative",
+                  left: extraLeft,
+                }}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

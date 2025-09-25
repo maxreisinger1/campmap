@@ -24,7 +24,7 @@ export default function AboutSection() {
         </div>
         {/* Trailer */}
         <div
-          className="w-full overflow-hidden border border-black mb-4"
+          className="w-full overflow-hidden border-2 border-black mb-4"
           style={{ height: 220 }}
         >
           <iframe
@@ -33,7 +33,7 @@ export default function AboutSection() {
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-            className="w-full h-full"
+            className="w-full h-full border-2 border-black"
           />
         </div>
         {/* Story Box */}
@@ -62,7 +62,7 @@ export default function AboutSection() {
       </div>
 
       {/* Desktop layout: keep original, hide on mobile */}
-      <div className="hidden md:block w-1/2 mx-auto" ref={leftBoxRef}>
+      <div className="hidden md:block w-[40%] mx-auto" ref={leftBoxRef}>
         <div className="relative mb-8 text-center w-full">
           <span
             aria-hidden
@@ -97,7 +97,7 @@ export default function AboutSection() {
         </div>
       </div>
 
-      <div className="hidden md:flex w-1/2 mx-auto flex-col">
+      <div className="hidden md:flex w-[60%] mx-auto flex-col">
         <div className="relative mb-8 text-center w-full">
           <span
             aria-hidden

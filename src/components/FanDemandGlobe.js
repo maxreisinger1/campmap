@@ -450,16 +450,17 @@ function FanDemandGlobeInner() {
       </Suspense>
 
       <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
-        <div>
-          <h2 className="text-pink-600 text-[28px] md:text-3xl font-extrabold leading-tight tracking-wider uppercase mb-4 md:mb-[15px]">
+        <div className="w-full">
+          <h2 className="text-pink-600 text-[28px] md:text-4xl font-extrabold leading-tight tracking-wider uppercase mb-4 md:mb-[15px]">
             NOT In Those CitieS? Help us bring the movie to more theaters
           </h2>
-          {/* Mobile: special text, Desktop: original text */}
-          <span className="text-[12px] md:text-base text-black uppercase font-medium md:font-extralight md:tracking-widest">
-            sign up Below to unlock Screenings across the country, IN A THEATER
-            NEAR YOU. you’re Helping US show theaters there’s a real audience in
-            your city.
-          </span>
+          <div className="max-w-4xl mx-auto">
+            <span className="text-[12px] md:text-base text-black uppercase font-medium md:font-extralight md:tracking-widest">
+              sign up Below to unlock Screenings across the country, IN A
+              THEATER NEAR YOU. you’re Helping US show theaters there’s a real
+              audience in your city.
+            </span>
+          </div>
         </div>
       </div>
       {/* Mobile: Counter before form, Desktop: after form */}
@@ -573,7 +574,7 @@ function FanDemandGlobeInner() {
           </div>
         </div>
       </div>
-      <div className="w-full h-[2px] bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 my-[72px]" />
+      <div className="w-full h-[2px] md:block hidden bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 mt-[72px]" />
       <Suspense fallback={null}>
         <Footer />
       </Suspense>

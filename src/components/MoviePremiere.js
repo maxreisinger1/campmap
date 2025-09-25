@@ -29,17 +29,17 @@ export default function MoviePremiere() {
   return (
     <section className="max-w-7xl w-full mx-auto px-4 md:px-12 lg:px-16 overflow-x-hidden">
       {/* Mobile layout: grid of postcards, button below, hide desktop elements */}
-      <div className="block md:hidden w-full py-12">
-        <h2 className="text-3xl tracking-wider font-extrabold text-pink-600 mb-2 text-center">
+      <div className="block md:hidden border-t border-black border-b w-full py-12">
+        <h2 className="text-3xl tracking-wider font-extrabold text-[#D42568] mb-2 text-center">
           HOW TO WATCH THE MOVIE?
         </h2>
-        <p className="text-gray-800 mb-6 text-sm font-medium text-center">
+        <p className="text-gray-800 mb-6 text-xs font-medium text-center">
           WE’RE STARTING WITH 4 EARLY PREMIERE SCREENINGS!{" "}
           <span className="ml-1">🎟️</span>
         </p>
         <div className="px-[40px]">
           {/* 2-column grid for postcards */}
-          <div className="grid grid-cols-2 gap-4 mb-8">
+          <div className="grid grid-cols-2 gap-4 mb-12">
             <a
               href={screenings[2].link}
               target="_blank"
@@ -111,11 +111,10 @@ export default function MoviePremiere() {
       <div className="w-full relative flex-row gap-10 hidden md:flex">
         {/* Top dashed border */}
         <div className="absolute top-0 left-0 w-full border-t-2 border-dashed border-pink-200" />
-
         <div className="mx-auto w-full flex flex-row gap-12 items-start relative z-10 py-24">
           {/* Left Column: Heading + Tickets */}
           <div className="w-1/2 px-6">
-            <h2 className="text-2xl font-extrabold text-pink-600 mb-2">
+            <h2 className="text-2xl font-extrabold text-[#D42568] mb-2">
               HOW TO WATCH THE MOVIE?
             </h2>
             <p className="text-gray-800 mb-6 font-medium">
@@ -128,9 +127,11 @@ export default function MoviePremiere() {
               {screenings.map((s, i) => (
                 <div
                   key={i}
-                  className="flex flex-row items-center justify-between border-b border-[#F7BED3] pt-4 h-fit py-2"
+                  className="flex flex-row items-center justify-between border-b border-[#F7BED3] pt-4 h-fit py-3"
                 >
-                  <p className="text-pink-600 text-base font-bold">{s.date}</p>
+                  <p className="text-[#D42568] text-base font-semibold">
+                    {s.date}
+                  </p>
                   <p className="text-base font-semibold text-gray-900">
                     {s.city}
                   </p>

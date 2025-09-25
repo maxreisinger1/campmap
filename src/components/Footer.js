@@ -21,7 +21,7 @@
  */
 export default function Footer() {
   return (
-    <div className="max-w-7xl w-full mx-auto px-8 md:px-12 lg:px-16 pb-8 mt-2">
+    <div className="max-w-7xl w-full mx-auto px-8 md:px-12 lg:px-16 pb-8 my-[72px]">
       {/* Mobile Layout */}
       <div className="flex flex-col gap-4 md:hidden">
         {/* Follow along section first on mobile */}
