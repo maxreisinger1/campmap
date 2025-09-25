@@ -27,7 +27,7 @@ export default function MoviePremiere() {
   ];
 
   return (
-    <section className="max-w-7xl w-full mx-auto px-4 md:px-12 lg:px-16 overflow-x-hidden">
+    <section className="max-w-7xl w-full mx-auto px-4 md:px-12 lg:px-16 overflow-x-hidden" id="where-to-watch">
       {/* Mobile layout: grid of postcards, button below, hide desktop elements */}
       <div className="block md:hidden border-t border-black border-b w-full py-12">
         <h2 className="text-3xl tracking-wider font-extrabold text-[#D42568] mb-2 text-center">

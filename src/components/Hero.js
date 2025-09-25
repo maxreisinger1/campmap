@@ -1,4 +1,13 @@
+import { useCallback } from "react";
+
 export default function Hero() {
+  const handleWhereToWatchClick = useCallback((e) => {
+    e.preventDefault();
+    const el = document.getElementById("where-to-watch");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
   return (
     <section className="relative w-full h-[389px] md:h-[800px] overflow-hidden">
       {/* Background Image */}
@@ -50,7 +59,8 @@ export default function Hero() {
         </h1>
         {/* Desktop: Only show full heading */}
         <h1 className="mb-6 mt-8 text-white text-[30px] tracking-wider font-normal uppercase hidden md:block">
-          <span className="font-semibold">Baron Ryan’s</span> Debut Film In Theaters <span className="font-semibold">This November</span>
+          <span className="font-semibold">Baron Ryan’s</span> Debut Film In
+          Theaters <span className="font-semibold">This November</span>
         </h1>
         {/* <h1
           className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
@@ -84,16 +94,17 @@ export default function Hero() {
         >
           <a href="https://luma.com/user/campstudios?fbclid=PAZXh0bgNhZW0CMTEAAacMmCGn-1gD5YctVP26FvGSnkgV-ymsx9XecPu4t-0foFiol0dYvIQUA2UYdQ_aem_o2Fgqc02z1QGsFiT083Lgg">
             <button
-              className="py-[10px] px-[28px] md:py-[12px] md:px-[36px] text-[12px] md:text-[16px] font-semibold bg-white rounded-[10px] border-2 border-black"
+              className="py-[10px] px-[28px] md:py-[12px] md:px-[36px] text-[12px] md:text-[16px] font-semibold bg-white hover:bg-[#F2A268] transition-colors duration-200 rounded-[10px] border-2 border-black"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Buy Premiere Tickets
             </button>
           </a>
-          <a href="https://twosleepypeople.com/where-to-watch/">
+          <a href="#where-to-watch">
             <button
-              className="py-[10px] px-[28px] md:py-[12px] md:px-[36px] text-[12px] md:text-[16px] font-semibold bg-white rounded-[10px] border-2 border-black"
+              className="py-[10px] px-[28px] md:py-[12px] md:px-[36px] text-[12px] md:text-[16px] font-semibold bg-white hover:bg-[#F2A268] rounded-[10px] border-2 border-black"
               style={{ fontFamily: "'Inter', sans-serif" }}
+              onClick={handleWhereToWatchClick}
             >
               Where Can I Watch?
             </button>
