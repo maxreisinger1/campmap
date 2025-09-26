@@ -27,14 +27,17 @@ export default function MoviePremiere() {
   ];
 
   return (
-    <section className="max-w-7xl w-full mx-auto px-4 md:px-12 lg:px-16 overflow-x-hidden" id="where-to-watch">
+    <section
+      className="max-w-7xl w-full mx-auto px-4 md:px-12 lg:px-16 overflow-x-hidden"
+      id="where-to-watch"
+    >
       {/* Mobile layout: grid of postcards, button below, hide desktop elements */}
       <div className="block md:hidden border-t border-black border-b w-full py-12">
-        <h2 className="text-3xl tracking-wider font-extrabold text-[#D42568] mb-2 text-center">
+        <h2 className="text-[1.5rem] tracking-wider font-extrabold text-[#D42568] mb-2 text-center">
           HOW TO WATCH THE MOVIE?
         </h2>
-        <p className="text-gray-800 mb-6 text-xs font-medium text-center">
-          WE’RE STARTING WITH 4 EARLY PREMIERE SCREENINGS!{" "}
+        <p className="text-gray-800 mb-6 text-[0.75rem] font-medium text-center">
+          WE’RE STARTING WITH 4 EARLY PREMIERE SCREENINGS!
           <span className="ml-1">🎟️</span>
         </p>
         <div className="px-[40px]">
@@ -88,7 +91,7 @@ export default function MoviePremiere() {
           {/* Centered Buy Tickets button */}
           <div className="flex justify-center mb-4 w-full">
             <a
-              href="https://luma.com/d8ysy36d"
+              href="https://luma.com/user/campstudios"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full"

@@ -19,7 +19,7 @@ export default function AboutSection() {
         {/* About label */}
         <div className="relative md:mb-4 text-center md:w-full w-fit flex items-center justify-center h-full mb-10">
           <div className="bg-[#D42568] relative text-[11px] rounded-md border border-black px-8 py-2 text-white font-semibold uppercase tracking-wide">
-            About Two Sleepy People
+            About The Film
           </div>
         </div>
         {/* Trailer */}
@@ -69,7 +69,7 @@ export default function AboutSection() {
             className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-md bg-black"
           />
           <div className="bg-[#D42568] relative text-[11px] rounded-md border border-black px-8 py-2 text-white font-semibold uppercase tracking-wide">
-            About the film
+            About The Film
           </div>
         </div>
         {/* Story Box */}
