@@ -141,16 +141,13 @@ export default function SignupForm({
         <div className="absolute -top-2 -left-2 h-4 w-4 bg-black" />
         <div className="absolute -bottom-2 -right-2 h-4 w-4 bg-black" />
 
-        <h2 className="text-2xl md:text-2xl font-extrabold mb-3 tracking-wider">
-          Drop A Pin To Bring The Film To{" "}
+        <h2 className="text-2xl md:text-2xl font-extrabold tracking-wider">
+          Sign up to watch Two Sleepy People in{" "}
           <span className="underline decoration-black">More Cities:</span>
         </h2>
-        <p className="text-xs py-[24px]">
-          <span className="font-bold">
-            We’re bringing internet-cinema to theaters across the world, and
-            want you to be part of it.
-          </span>{" "}
-          Drop your info below to vote for your city.
+        <p className="text-xs pb-[24px] pt-[12px]">
+          We’ll notify you of when & where the showings will be soon. Every pin
+          counts!
         </p>
 
         <form

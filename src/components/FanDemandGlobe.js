@@ -452,13 +452,12 @@ function FanDemandGlobeInner() {
       <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
         <div className="w-full">
           <h2 className="text-pink-600 text-[28px] md:text-4xl font-extrabold leading-tight tracking-wider uppercase mb-4 md:mb-[15px]">
-            NOT In Those CitieS? Help us bring the movie to more theaters
+            Not In Those Cities? Reserve Your Ticket For November 14th
           </h2>
           <div className="max-w-4xl mx-auto">
             <span className="text-[12px] md:text-base text-black uppercase font-medium md:font-extralight md:tracking-widest">
-              sign up Below to unlock Screenings across the country, IN A
-              THEATER NEAR YOU. you’re Helping US show theaters there’s a real
-              audience in your city.
+              Sign up below to unlock screenings in a theater near you this
+              Fall.
             </span>
           </div>
         </div>
