@@ -143,7 +143,7 @@ export default function SignupForm({
 
         <h2 className="text-2xl md:text-2xl font-extrabold tracking-wider">
           Sign up to watch Two Sleepy People in{" "}
-          <span className="underline decoration-black">More Cities:</span>
+          <span className="underline decoration-black">Your City:</span>
         </h2>
         <p className="text-xs pb-[24px] pt-[12px]">
           We’ll notify you of when & where the showings will be soon. Every pin

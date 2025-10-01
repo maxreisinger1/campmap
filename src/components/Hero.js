@@ -55,12 +55,12 @@ export default function Hero() {
         />
         {/* Mobile: Only show shorter heading */}
         <h1 className="my-4 text-white text-[16px] font-normal uppercase md:hidden">
-          In Theaters This November
+          In Theaters On November 14th
         </h1>
         {/* Desktop: Only show full heading */}
         <h1 className="mb-6 mt-8 text-white text-[30px] tracking-wider font-normal uppercase hidden md:block">
           <span className="font-semibold">Baron Ryan’s</span> Debut Film In
-          Theaters <span className="font-semibold">This November</span>
+          Theaters <span className="font-semibold">On November 14th</span>
         </h1>
         {/* <h1
           className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
