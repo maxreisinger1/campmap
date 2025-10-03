@@ -1,45 +1,77 @@
 <!-- public/index.html -->
-<!doctype html>
-<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/images/favicon.ico" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+<title>Two Sleepy People (2025) – Official Film</title>
+<meta name="description" content="Official site for Two Sleepy People (2025), a feature film by American Baron and Caroline Grossman. Trailer, cast, screenings, and news.">
+<link rel="canonical" href="https://twosleepypeople.com">
 
-    <title>Two Sleepy People | Official Site</title>
-    <meta
-      name="description"
-      content="Two Sleepy People—an indie romantic dramedy by Baron Ryan, starring Caroline Konstnar. Internet Cinema’s debut from Creator Camp and Camp Studios."
-    />
+<!-- Favicon / PWA -->
+<link rel="icon" href="/images/favicon.ico">
+<link rel="apple-touch-icon" href="/images/logo192.png">
+<link rel="manifest" href="/manifest.json">
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.twosleepypeople.com/" />
-    <meta property="og:site_name" content="Two Sleepy People" />
-    <meta property="og:title" content="Two Sleepy People | Official Site" />
-    <meta
-      property="og:description"
-      content="Two Sleepy People—an indie romantic dramedy by Baron Ryan, starring Caroline Konstnar. Internet Cinema’s debut from Creator Camp and Camp Studios."
-    />
-    <meta property="og:image" content="%PUBLIC_URL%/og.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+<!-- Open Graph -->
+<meta property="og:type" content="video.movie">
+<meta property="og:site_name" content="Two Sleepy People">
+<meta property="og:title" content="Two Sleepy People (2025) – Official Film">
+<meta property="og:description" content="Official site. Trailer, cast, screenings, and news.">
+<meta property="og:url" content="https://twosleepypeople.com/">
+<meta property="og:image" content="https://twosleepypeople.com/images/poster.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<!-- (Optional but nice) embed the trailer as an OG video -->
+<meta property="og:video" content="https://www.youtube.com/embed/TWpm8baVm9g">
+<meta property="og:video:type" content="text/html">
+<meta property="og:video:width" content="1280">
+<meta property="og:video:height" content="720">
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Two Sleepy People | Official Site" />
-    <meta
-      name="twitter:description"
-      content="Two Sleepy People—an indie romantic dramedy by Baron Ryan, starring Caroline Konstnar. Internet Cinema’s debut from Creator Camp and Camp Studios."
-    />
-    <meta name="twitter:image" content="%PUBLIC_URL%/og.jpg" />
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Two Sleepy People (2025) – Official Film">
+<meta name="twitter:description" content="Official site. Trailer, cast, screenings, and news.">
+<meta name="twitter:image" content="https://twosleepypeople.com/images/poster.jpg">
 
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-  </body>
-</html>
+<!-- Movie structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Movie",
+  "name": "Two Sleepy People",
+  "alternateName": "TSP",
+  "url": "https://twosleepypeople.com",
+  "image": "https://twosleepypeople.com/images/poster.jpg",
+  "description": "2025 feature film by American Baron and Caroline Grossman.",
+  "datePublished": "2025-04-26",
+  "director": {
+    "@type": "Person",
+    "name": "American Baron",
+    "sameAs": ["https://www.instagram.com/americanbaron/"]
+  },
+  "actor": [
+    {
+      "@type": "Person",
+      "name": "Caroline Grossman",
+      "sameAs": ["https://www.instagram.com/caroline_konstnar/"]
+    }
+  ],
+  "productionCompany": {
+    "@type": "Organization",
+    "name": "Camp Studios",
+    "url": "https://campstudios.com",
+    "sameAs": ["https://www.instagram.com/_campstudios/", "https://creatorcamp.co"]
+  },
+  "sameAs": [
+    "https://wikidata.org/wiki/Q136433703",
+    "https://www.instagram.com/twosleepymovie/"
+  ],
+  "trailer": {
+    "@type": "VideoObject",
+    "name": "Two Sleepy People — Official Trailer",
+    "description": "Official trailer for the feature film Two Sleepy People.",
+    "url": "https://www.youtube.com/watch?v=TWpm8baVm9g",
+    "embedUrl": "https://www.youtube.com/embed/TWpm8baVm9g",
+    "thumbnailUrl": "https://img.youtube.com/vi/TWpm8baVm9g/maxresdefault.jpg"
+  }
+}
+</script>
