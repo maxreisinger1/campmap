@@ -37,6 +37,19 @@ export async function getCityLeaderboard() {
 }
 
 /**
+ * Fetch aggregated city pins suitable for map rendering.
+ * Only returns cities with at least 2 signups and valid centroids.
+ */
+export async function getCityPins() {
+  const { data, error } = await supabase
+    .from("city_pins_public")
+    .select("*")
+    .order("count", { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
+/**
  * Subscribes to real-time changes in city leaderboard data.
  *
  * Sets up three separate channels to monitor:

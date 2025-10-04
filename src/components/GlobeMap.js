@@ -138,21 +138,23 @@ export default function GlobeMap({
       }
       if (group.length >= MICRO_CLUSTER_MIN) {
         // Make a cluster
-        const members = group.map(idx => submissions[idx]);
-        const avgLat = members.reduce((sum, m) => sum + m.lat, 0) / members.length;
-        const avgLon = members.reduce((sum, m) => sum + m.lon, 0) / members.length;
+        const members = group.map((idx) => submissions[idx]);
+        const avgLat =
+          members.reduce((sum, m) => sum + m.lat, 0) / members.length;
+        const avgLon =
+          members.reduce((sum, m) => sum + m.lon, 0) / members.length;
         clusters.push({
-          type: 'micro',
+          type: "micro",
           lat: avgLat,
           lon: avgLon,
           count: members.length,
-          city: members[0].city || 'Cluster',
+          city: members[0].city || "Cluster",
         });
-        group.forEach(idx => used.add(idx));
+        group.forEach((idx) => used.add(idx));
       } else {
         // Not enough for a cluster, show as single
         clusters.push({
-          type: 'single',
+          type: "single",
           ...s,
         });
         used.add(i);
@@ -331,7 +333,9 @@ export default function GlobeMap({
           {showClustering
             ? clusters.map((cluster, i) => (
                 <Marker
-                  key={`cluster-${cluster.id}-${i}`}
+                  key={`cluster-${
+                    cluster.id || `${cluster.lat}-${cluster.lon}`
+                  }-${i}`}
                   coordinates={[
                     cluster.lon + jitter(i) * 0.05,
                     cluster.lat + jitter(i) * 0.05,
@@ -400,7 +404,7 @@ export default function GlobeMap({
                 </Marker>
               ))
             : microCluster(submissions).map((item, i) => {
-                if (item.type === 'micro') {
+                if (item.type === "micro") {
                   return (
                     <Marker
                       key={`micro-${item.lat}-${item.lon}-${i}`}
@@ -453,7 +457,7 @@ export default function GlobeMap({
                   const showLabel = zoom > 1.4;
                   return (
                     <Marker
-                      key={item.id}
+                      key={item.id || `${item.lat}-${item.lon}-${i}`}
                       coordinates={[
                         item.lon + jitter(i) * 0.1,
                         item.lat + jitter(i) * 0.1,
@@ -487,6 +491,9 @@ export default function GlobeMap({
                           }}
                         >
                           {item.city}
+                          {typeof item.count === "number"
+                            ? ` (${item.count})`
+                            : ""}
                         </text>
                       )}
                     </Marker>

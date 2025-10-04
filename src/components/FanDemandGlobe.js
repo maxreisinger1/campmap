@@ -9,6 +9,7 @@ import { ToastProvider, useToast } from "../context/ToastContext";
 import { clamp } from "../utils/helpers";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 import { useLeaderboard } from "../hooks/useLeaderboard";
+import { useCityPins } from "../hooks/useCityPins";
 import { useSubmitSignup } from "../hooks/useSubmitSignup";
 
 const Hero = lazy(() => import("./Hero"));
@@ -161,6 +162,7 @@ function FanDemandGlobeInner() {
     { hasMore: hasMoreSubs, loading: loadingSubs, loadMore: loadMoreSubs },
   ] = useLiveSubmissions([]);
   const { leaderboard, loading: lbLoading } = useLeaderboard();
+  const { pins: dbPins, loading: pinsLoading } = useCityPins();
 
   const containerRef = useRef(null);
   const dragRef = useRef({
@@ -367,12 +369,14 @@ function FanDemandGlobeInner() {
     };
   }, [retroMode]);
 
-  // Deduplicate submissions by city (first occurrence only)
+  // Deduplicate submissions by city+state (first occurrence only) — used for focus fallback only
   const dedupedSubmissions = useMemo(() => {
     const seen = new Set();
     return submissions.filter((s) => {
       if (!s.city) return false;
-      const key = s.city.toLowerCase();
+      const cityKey = s.city?.toLowerCase?.() || "";
+      const stateKey = s.state?.toLowerCase?.() || "";
+      const key = `${cityKey}|${stateKey}`;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -493,7 +497,7 @@ function FanDemandGlobeInner() {
           {/* Globe - 60% width (3/5) - First on mobile, second on desktop */}
           <div className="lg:col-span-3 flex flex-col order-1 lg:order-2">
             {/* Globe map and controls or loader */}
-            {loading ? (
+            {lbLoading || pinsLoading ? (
               <div className="h-full flex items-center justify-center min-h-[600px]">
                 <Suspense fallback={<div>Loading…</div>}>
                   <RetroLoader
@@ -502,7 +506,7 @@ function FanDemandGlobeInner() {
                   />
                 </Suspense>
               </div>
-            ) : dedupedSubmissions.length === 0 ? (
+            ) : dbPins.length === 0 ? (
               <Suspense
                 fallback={
                   <div className="h-full flex items-center justify-center min-h-[600px]">
@@ -522,7 +526,7 @@ function FanDemandGlobeInner() {
                   setZoom={setZoom}
                   retroMode={retroMode}
                   theme={theme}
-                  submissions={[]}
+                  submissions={dbPins}
                   jitter={jitter}
                   containerRef={containerRef}
                   cursor={cursor}
@@ -549,7 +553,7 @@ function FanDemandGlobeInner() {
                   setZoom={setZoom}
                   retroMode={retroMode}
                   theme={theme}
-                  submissions={dedupedSubmissions}
+                  submissions={dbPins}
                   jitter={jitter}
                   containerRef={containerRef}
                   cursor={cursor}
