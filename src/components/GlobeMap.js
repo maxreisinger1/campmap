@@ -370,9 +370,19 @@ export default function GlobeMap({
                         const list = (c.members || [])
                           .slice()
                           .sort((a, b) => (b.count || 0) - (a.count || 0))
-                          .map((m) => `${m.city || ""}${m.state ? ", " + m.state : ""} (${m.count ?? 0})`);
-                        const more = list.length > topN ? `\n+${list.length - topN} more…` : "";
-                        return `${header}\n${list.slice(0, topN).join("\n")}${more}`;
+                          .map(
+                            (m) =>
+                              `${m.city || ""}${
+                                m.state ? ", " + m.state : ""
+                              } (${m.count ?? 0})`
+                          );
+                        const more =
+                          list.length > topN
+                            ? `\n+${list.length - topN} more…`
+                            : "";
+                        return `${header}\n${list
+                          .slice(0, topN)
+                          .join("\n")}${more}`;
                       })()}
                     </title>
                     <circle
