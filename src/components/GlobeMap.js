@@ -21,11 +21,11 @@ const GEO_URL =
   "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 /**
- * Interactive globe map component with rotation, zoom, and submission markers.
+ * Interactive globe map component with rotation, zoom, city pin markers, and zoom-in clustering.
  *
- * Renders a 3D globe using react-simple-maps with world geography, submission
- * markers, and interactive controls. Supports different visual themes, zoom
- * levels, and rotation states with smooth animations.
+ * Renders a 3D globe using react-simple-maps with world geography and city pins
+ * from the database. Each pin shows its city label and aggregated count at the
+ * exact coordinates. All clustering logic has been removed as requested.
  *
  * @component
  * @param {Object} props - Component props
@@ -35,8 +35,9 @@ const GEO_URL =
  * @param {Function} props.setZoom - Function to update zoom level
  * @param {boolean} props.retroMode - Whether retro styling is enabled
  * @param {string} props.theme - Visual theme for styling
- * @param {Array} props.submissions - Array of user submissions with coordinates
- * @param {number} props.jitter - Amount of position jittering for markers
+ * @param {Array} props.submissions - Array of city pins with coordinates
+ *   Expected shape: { id, city, state, lat, lon, count }
+ * @param {number} props.jitter - (unused) Amount of position jittering for markers
  * @param {React.RefObject} props.containerRef - Reference to container element
  * @param {string} props.cursor - CSS cursor style
  * @param {boolean} props.hasSubmitted - Whether user has submitted
@@ -72,94 +73,72 @@ export default function GlobeMap({
   cursor,
   hasSubmitted,
 }) {
-  // Clustering function to group nearby submissions when zoomed out
-  const clusterSubmissions = (submissions, zoom) => {
-    const CLUSTER_DISTANCE = zoom < 1.8 ? 8 : 3; // Larger clustering when zoomed out
+  // Clustering across all zoom levels: group nearby pins by on-screen proximity
+  // so dense areas remain readable. The proximity is a constant screen radius
+  // in pixels, converted to degrees given current zoom/projection. As you zoom
+  // out, the degree radius grows (bigger clusters). As you zoom in, it shrinks
+  // (smaller clusters until singles).
+
+  // Compute an angular (degree) radius approximating a fixed pixel radius at current zoom
+  // For d3-geo orthographic: pixels per degree ~ scale * PI/180, where scale = 200 * zoom
+  function degreesRadiusForPixels(px, zoomVal) {
+    const pixelsPerDegree = 200 * zoomVal * (Math.PI / 180);
+    return px / Math.max(1e-6, pixelsPerDegree);
+  }
+
+  function clusterOnZoomIn(points, zoomVal, targetPx = 18) {
+    if (!Array.isArray(points) || points.length === 0) return [];
+    const radiusDeg = degreesRadiusForPixels(targetPx, zoomVal);
+
+    const used = new Array(points.length).fill(false);
     const clusters = [];
-    const processed = new Set();
 
-    submissions.forEach((submission, index) => {
-      if (processed.has(index)) return;
-
-      const cluster = {
-        ...submission,
-        count: 1,
-        submissions: [submission],
-      };
-
-      // Find nearby submissions to cluster
-      submissions.forEach((other, otherIndex) => {
-        if (otherIndex === index || processed.has(otherIndex)) return;
-
-        const distance = Math.sqrt(
-          Math.pow(submission.lat - other.lat, 2) +
-            Math.pow(submission.lon - other.lon, 2)
-        );
-
-        if (distance < CLUSTER_DISTANCE) {
-          cluster.count++;
-          cluster.submissions.push(other);
-          processed.add(otherIndex);
-        }
-      });
-
-      processed.add(index);
-      clusters.push(cluster);
-    });
-
-    return clusters;
-  };
-
-  const clusters = clusterSubmissions(submissions, zoom);
-  const showClustering = zoom < 1.8; // Show clustering when zoomed out
-  // --- Simple label collision avoidance for city names (when not clustering) ---
-  // Only show city label if it does not overlap with another label in a lat/lon grid cell
-  // This is a fast, approximate solution for readability
-  // Micro-clustering for dense areas at higher zoom
-  // If 3+ submissions are within a small radius, show a single cluster marker and label
-  const MICRO_CLUSTER_RADIUS = 1.5; // degrees, tune as needed
-  const MICRO_CLUSTER_MIN = 3;
-  function microCluster(submissions) {
-    const clusters = [];
-    const used = new Set();
-    for (let i = 0; i < submissions.length; i++) {
-      if (used.has(i)) continue;
-      const s = submissions[i];
-      const group = [i];
-      for (let j = i + 1; j < submissions.length; j++) {
-        if (used.has(j)) continue;
-        const o = submissions[j];
-        const d = Math.sqrt(
-          Math.pow(s.lat - o.lat, 2) + Math.pow(s.lon - o.lon, 2)
-        );
-        if (d < MICRO_CLUSTER_RADIUS) {
-          group.push(j);
+    for (let i = 0; i < points.length; i++) {
+      if (used[i]) continue;
+      const a = points[i];
+      const groupIdx = [i];
+      used[i] = true;
+      for (let j = i + 1; j < points.length; j++) {
+        if (used[j]) continue;
+        const b = points[j];
+        const dLat = a.lat - b.lat;
+        const dLon = a.lon - b.lon;
+        const distDeg = Math.hypot(dLat, dLon);
+        if (distDeg <= radiusDeg) {
+          used[j] = true;
+          groupIdx.push(j);
         }
       }
-      if (group.length >= MICRO_CLUSTER_MIN) {
-        // Make a cluster
-        const members = group.map((idx) => submissions[idx]);
-        const avgLat =
-          members.reduce((sum, m) => sum + m.lat, 0) / members.length;
-        const avgLon =
-          members.reduce((sum, m) => sum + m.lon, 0) / members.length;
-        clusters.push({
-          type: "micro",
-          lat: avgLat,
-          lon: avgLon,
-          count: members.length,
-          city: members[0].city || "Cluster",
-        });
-        group.forEach((idx) => used.add(idx));
+
+      if (groupIdx.length === 1) {
+        const p = points[i];
+        clusters.push({ type: "single", item: p });
       } else {
-        // Not enough for a cluster, show as single
+        // Aggregate group: average position and sum counts
+        let sumLat = 0;
+        let sumLon = 0;
+        let totalCount = 0;
+        const members = [];
+        for (const idx of groupIdx) {
+          const p = points[idx];
+          sumLat += p.lat;
+          sumLon += p.lon;
+          totalCount += Number(p.count || 0);
+          members.push(p);
+        }
+        const lat = sumLat / groupIdx.length;
+        const lon = sumLon / groupIdx.length;
         clusters.push({
-          type: "single",
-          ...s,
+          type: "cluster",
+          lat,
+          lon,
+          totalCount,
+          size: groupIdx.length,
+          members,
         });
-        used.add(i);
       }
     }
+
     return clusters;
   }
 
@@ -330,116 +309,41 @@ export default function GlobeMap({
               ))
             }
           </Geographies>
-          {showClustering
-            ? clusters.map((cluster, i) => (
-                <Marker
-                  key={`cluster-${
-                    cluster.id || `${cluster.lat}-${cluster.lon}`
-                  }-${i}`}
-                  coordinates={[
-                    cluster.lon + jitter(i) * 0.05,
-                    cluster.lat + jitter(i) * 0.05,
-                  ]}
-                >
-                  <g transform="translate(-8,-8)">
-                    {cluster.count > 1 ? (
-                      // Cluster visualization
-                      <>
-                        <circle
-                          r={Math.min(12, 6 + cluster.count * 0.8)}
-                          fill={retroMode ? "#ff00a6" : "#ef476f"}
-                          fillOpacity={0.7}
-                          stroke={theme.stroke}
-                          strokeWidth={1.5}
-                        />
-                        <text
-                          textAnchor="middle"
-                          y={4}
-                          style={{
-                            fontFamily: retroMode
-                              ? theme.fontFamily
-                              : "ui-monospace, Menlo, monospace",
-                            fontSize: 11,
-                            fontWeight: 900,
-                            fill: "#fff",
-                          }}
-                        >
-                          {cluster.count}
-                        </text>
-                      </>
-                    ) : (
-                      // Single pin
-                      <>
-                        <circle
-                          r={5.5}
-                          fill={retroMode ? "#ff00a6" : "#ef476f"}
-                          stroke={theme.stroke}
-                          strokeWidth={1.25}
-                        />
-                        <circle
-                          r={2}
-                          fill="#fff"
-                          stroke={theme.stroke}
-                          strokeWidth={1}
-                        />
-                      </>
-                    )}
-                  </g>
-                  {cluster.count === 1 && zoom > 1.4 && (
-                    <text
-                      textAnchor="start"
-                      y={-10}
-                      x={8}
-                      style={{
-                        fontFamily: retroMode
-                          ? theme.fontFamily
-                          : "ui-monospace, Menlo, monospace",
-                        fontSize: retroMode ? 9 : 10,
-                        fontWeight: 800,
-                      }}
-                    >
-                      {cluster.city}
-                    </text>
-                  )}
-                </Marker>
-              ))
-            : microCluster(submissions).map((item, i) => {
-                if (item.type === "micro") {
-                  return (
-                    <Marker
-                      key={`micro-${item.lat}-${item.lon}-${i}`}
-                      coordinates={[
-                        item.lon + jitter(i) * 0.1,
-                        item.lat + jitter(i) * 0.1,
-                      ]}
-                    >
-                      <g transform="translate(-8,-8)">
-                        <circle
-                          r={Math.min(12, 6 + item.count * 0.8)}
-                          fill={retroMode ? "#ff00a6" : "#ef476f"}
-                          fillOpacity={0.7}
-                          stroke={theme.stroke}
-                          strokeWidth={1.5}
-                        />
-                        <text
-                          textAnchor="middle"
-                          y={4}
-                          style={{
-                            fontFamily: retroMode
-                              ? theme.fontFamily
-                              : "ui-monospace, Menlo, monospace",
-                            fontSize: 11,
-                            fontWeight: 900,
-                            fill: "#fff",
-                          }}
-                        >
-                          {item.count}
-                        </text>
-                      </g>
+          {Array.isArray(submissions) &&
+            submissions.length > 0 &&
+            clusterOnZoomIn(submissions, zoom).map((c, i) => {
+              if (c.type === "single") {
+                const item = c.item;
+                const lat = Number(item.lat);
+                const lon = Number(item.lon);
+                if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+                const key = item.id || `${lat}-${lon}-s-${i}`;
+                const label = `${item.city || ""}${
+                  item.state ? ", " + item.state : ""
+                } (${item.count ?? 0})`;
+                const showLabel = zoom >= 1.4; // hide labels when very zoomed out to reduce clutter
+                return (
+                  <Marker key={key} coordinates={[lon, lat]}>
+                    <g transform="translate(-6,-6)">
+                      <title>{label}</title>
+                      <circle
+                        r={5.5}
+                        fill={retroMode ? "#ff00a6" : "#ef476f"}
+                        stroke={theme.stroke}
+                        strokeWidth={1.25}
+                      />
+                      <circle
+                        r={2}
+                        fill="#fff"
+                        stroke={theme.stroke}
+                        strokeWidth={1}
+                      />
+                    </g>
+                    {showLabel && (
                       <text
                         textAnchor="start"
-                        y={-14}
-                        x={12}
+                        y={-10}
+                        x={8}
                         style={{
                           fontFamily: retroMode
                             ? theme.fontFamily
@@ -448,58 +352,54 @@ export default function GlobeMap({
                           fontWeight: 800,
                         }}
                       >
-                        {item.city} ({item.count})
+                        {label}
                       </text>
-                    </Marker>
-                  );
-                } else {
-                  // Single pin
-                  const showLabel = zoom > 1.4;
-                  return (
-                    <Marker
-                      key={item.id || `${item.lat}-${item.lon}-${i}`}
-                      coordinates={[
-                        item.lon + jitter(i) * 0.1,
-                        item.lat + jitter(i) * 0.1,
-                      ]}
+                    )}
+                  </Marker>
+                );
+              }
+              // cluster bubble
+              const key = `c-${c.lat}-${c.lon}-${i}`;
+              return (
+                <Marker key={key} coordinates={[c.lon, c.lat]}>
+                  <g transform="translate(-8,-8)">
+                    <title>
+                      {(() => {
+                        const header = `${c.size} cities • ${c.totalCount} signups`;
+                        const topN = 6;
+                        const list = (c.members || [])
+                          .slice()
+                          .sort((a, b) => (b.count || 0) - (a.count || 0))
+                          .map((m) => `${m.city || ""}${m.state ? ", " + m.state : ""} (${m.count ?? 0})`);
+                        const more = list.length > topN ? `\n+${list.length - topN} more…` : "";
+                        return `${header}\n${list.slice(0, topN).join("\n")}${more}`;
+                      })()}
+                    </title>
+                    <circle
+                      r={Math.min(14, 6 + Math.sqrt(c.totalCount) * 1.2)}
+                      fill={retroMode ? "#ff00a6" : "#ef476f"}
+                      fillOpacity={0.78}
+                      stroke={theme.stroke}
+                      strokeWidth={1.5}
+                    />
+                    <text
+                      textAnchor="middle"
+                      y={4}
+                      style={{
+                        fontFamily: retroMode
+                          ? theme.fontFamily
+                          : "ui-monospace, Menlo, monospace",
+                        fontSize: 11,
+                        fontWeight: 900,
+                        fill: "#fff",
+                      }}
                     >
-                      <g transform="translate(-6,-6)">
-                        <circle
-                          r={5.5}
-                          fill={retroMode ? "#ff00a6" : "#ef476f"}
-                          stroke={theme.stroke}
-                          strokeWidth={1.25}
-                        />
-                        <circle
-                          r={2}
-                          fill="#fff"
-                          stroke={theme.stroke}
-                          strokeWidth={1}
-                        />
-                      </g>
-                      {showLabel && (
-                        <text
-                          textAnchor="start"
-                          y={-10}
-                          x={8}
-                          style={{
-                            fontFamily: retroMode
-                              ? theme.fontFamily
-                              : "ui-monospace, Menlo, monospace",
-                            fontSize: retroMode ? 9 : 10,
-                            fontWeight: 800,
-                          }}
-                        >
-                          {item.city}
-                          {typeof item.count === "number"
-                            ? ` (${item.count})`
-                            : ""}
-                        </text>
-                      )}
-                    </Marker>
-                  );
-                }
-              })}
+                      {c.totalCount}
+                    </text>
+                  </g>
+                </Marker>
+              );
+            })}
         </ComposableMap>
       </div>
 

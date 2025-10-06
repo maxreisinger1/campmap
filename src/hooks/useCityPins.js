@@ -17,9 +17,9 @@ export function useCityPins() {
     let cancelled = false;
     setLoading(true);
     getCityPins()
-      .then((data) => {
-        console.log("Fetched city pins:", data);
-        if (!cancelled) setPins(data ?? []);
+      .then((pinData) => {
+        if (cancelled) return;
+        setPins(pinData ?? []);
       })
       .catch((err) => {
         if (!cancelled) setError(err.message || String(err));
@@ -30,8 +30,8 @@ export function useCityPins() {
 
     // Reuse leaderboard realtime channels to refresh pins on changes
     const unsub = subscribeToCityLeaderboard(() => {
-      getCityPins().then((data) => {
-        if (!cancelled) setPins(data ?? []);
+      getCityPins().then((pinData) => {
+        if (!cancelled) setPins(pinData ?? []);
       });
     });
 
@@ -43,8 +43,8 @@ export function useCityPins() {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "submissions" },
         () => {
-          getCityPins().then((data) => {
-            if (!cancelled) setPins(data ?? []);
+          getCityPins().then((pinData) => {
+            if (!cancelled) setPins(pinData ?? []);
           });
         }
       )

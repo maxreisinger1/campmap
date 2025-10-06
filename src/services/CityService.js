@@ -50,6 +50,23 @@ export async function getCityPins() {
 }
 
 /**
+ * Fetch the list of major city candidates. These act as aggregation anchors
+ * for nearby places within a 25 mile radius on the globe.
+ *
+ * @async
+ * @function getMajorCityCandidates
+ * @returns {Promise<Array>} Array of major city objects with centroids
+ *   Shape: { id, name, state, centroid_lat, centroid_lon }
+ */
+export async function getMajorCityCandidates() {
+  const { data, error } = await supabase
+    .from("major_city_candidates")
+    .select("id,name,state,centroid_lat,centroid_lon");
+  if (error) throw error;
+  return data || [];
+}
+
+/**
  * Subscribes to real-time changes in city leaderboard data.
  *
  * Sets up three separate channels to monitor:

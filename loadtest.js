@@ -5,8 +5,7 @@ import { check, sleep } from "k6";
 
 const SUPABASE_FUNCTION_URL =
   "https://isjntifmljeogvygwisd.supabase.co/functions/v1/submit_signup";
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlzam50aWZtbGplb2d2eWd3aXNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwMzk3MjYsImV4cCI6MjA3MDYxNTcyNn0.5u_4vZAI8KFo7LpMphLZ72Mbh6EMMMqbz-rK1tn88MM";
+const SUPABASE_ANON_KEY = "---REPLACE-WITH-YOUR-OWN-ANON-KEY---";
 
 export let options = {
   stages: [
