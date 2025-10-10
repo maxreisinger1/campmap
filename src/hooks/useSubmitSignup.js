@@ -6,6 +6,7 @@
 
 import { useState, useRef } from "react";
 import { addSubmission } from "../services/SubmissionsService";
+import { toUserFriendlyMessage } from "../utils/errorParser";
 
 /**
  * Custom hook for handling fan signup form submissions.
@@ -62,6 +63,16 @@ export function useSubmitSignup() {
       throw new Error("Please enter a valid postal code.");
     }
 
+    // Quick offline check to avoid confusing network errors
+    if (typeof navigator !== "undefined" && navigator.onLine === false) {
+      const offlineMsg =
+        "You appear to be offline. Please check your connection and try again.";
+      setMessage(offlineMsg);
+      const err = new Error(offlineMsg);
+      setError(err);
+      throw err;
+    }
+
     setLoading(true);
     abortRef.current = new AbortController();
 
@@ -79,8 +90,11 @@ export function useSubmitSignup() {
       return result;
     } catch (err) {
       setError(err);
-      if (!message) setMessage(err?.message || "Submission failed");
-      throw err;
+      const friendly = toUserFriendlyMessage(err?.message || "");
+      if (!message) setMessage(friendly);
+      const wrapped = new Error(friendly);
+      wrapped.cause = err;
+      throw wrapped;
     } finally {
       setLoading(false);
       abortRef.current = null;

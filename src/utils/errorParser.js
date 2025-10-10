@@ -63,3 +63,41 @@ export async function parseError(error) {
 
   return msg || "Unknown error occurred";
 }
+
+/**
+ * Maps low-level network/CORS/timeout errors to concise, user-friendly messages.
+ * Use this when presenting messages to end users (e.g., in a toast), while keeping
+ * console logs with the original error for debugging.
+ *
+ * @param {string} message - Raw error message
+ * @returns {string} User-friendly error message
+ */
+export function toUserFriendlyMessage(message) {
+  const msg = (message || "").toLowerCase();
+
+  // Common browser/network errors
+  if (
+    msg.includes("failed to fetch") ||
+    msg.includes("networkerror") ||
+    msg.includes("err_network") ||
+    msg.includes("econn") ||
+    msg.includes("enotfound") ||
+    msg.includes("edge function") // e.g. "Failed to send a request to the Edge Function"
+  ) {
+    return "We couldn’t reach our servers. Please check your internet connection and try again. If you use an ad blocker or VPN, try disabling it for this site.";
+  }
+
+  if (msg.includes("timed out") || msg.includes("timeout")) {
+    return "This is taking longer than expected. Please try again in a moment.";
+  }
+
+  if (
+    msg.includes("cors") ||
+    msg.includes("preflight") ||
+    msg.includes("blocked by client")
+  ) {
+    return "Your browser blocked the request. If you use an ad blocker, tracking protection, or VPN, try disabling it for this site and retry.";
+  }
+
+  return message || "Something went wrong. Please try again.";
+}
