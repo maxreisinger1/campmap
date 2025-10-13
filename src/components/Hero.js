@@ -9,7 +9,7 @@ export default function Hero() {
     }
   }, []);
   return (
-    <section className="relative w-full h-[389px] md:h-[800px] overflow-hidden">
+    <section className="relative w-full h-[420px] md:h-[800px] overflow-hidden">
       {/* Background Image */}
       <video
         src="/images/twosleepymontage2.mp4"
@@ -109,7 +109,83 @@ export default function Hero() {
               Where Can I Watch?
             </button>
           </a>
-          {/* <button ...existing code... */}
+        </div>
+      </div>
+
+      <div className="hidden absolute bottom-0 md:flex items-end w-full p-4 md:p-8 z-50">
+        <div className="flex flex-row w-full items-center max-w-7xl mx-auto">
+          <div className="flex flex-1 items-center justify-around gap-6">
+            {/* Left logos */}
+            <a href="https://www.notion.so/">
+              <img
+                src="/images/partners/notion_logo.svg"
+                alt="Partner 1"
+                className="max-h-8 h-auto w-auto"
+              />
+            </a>
+            <a href="https://www.epidemicsound.com/campaign/ambassador-sign-up/?_us=Affiliate&_usx=cc2spNOV25&utm_source=ambassador&utm_medium=affiliate&utm_campaign=cc2spNOV25&utm_content=cam_NOV_25">
+              <img
+                src="/images/partners/epidemic_sound_logo.svg"
+                alt="Partner 2"
+                className="max-h-6 h-auto w-auto"
+              />
+            </a>
+          </div>
+          <div className="flex flex-col justify-center items-center px-8">
+            <span className="text-white text-xs md:text-base font-medium uppercase text-center">
+              THE PARTNERS HELPING BRING OUR TOUR TO LIFE
+            </span>
+          </div>
+          <div className="flex flex-1 items-center justify-around gap-6">
+            {/* Right logos */}
+            <a href="https://shopusa.fujifilm-x.com/?srsltid=AfmBOoqoFWwV">
+              <img
+                src="/images/partners/fujifilm_logo.svg"
+                alt="Partner 3"
+                className="max-h-6 h-auto w-auto"
+              />
+            </a>
+            <a href="https://www.rivian.com/">
+              <img
+                src="/images/partners/rivian_logo.svg"
+                alt="Partner 4"
+                className="max-h-6 h-auto w-auto"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="md:hidden absolute bottom-0 flex items-end w-full p-4 z-50">
+        <div className="flex flex-row w-full items-center max-w-7xl mx-auto justify-around">
+          <a href="https://www.notion.so/">
+            <img
+              src="/images/partners/notion_logo.svg"
+              alt="Partner 1"
+              className="max-h-3 h-auto w-auto"
+            />
+          </a>
+          <a href="https://www.epidemicsound.com/campaign/ambassador-sign-up/?_us=Affiliate&_usx=cc2spNOV25&utm_source=ambassador&utm_medium=affiliate&utm_campaign=cc2spNOV25&utm_content=cam_NOV_25">
+            <img
+              src="/images/partners/epidemic_sound_logo.svg"
+              alt="Partner 2"
+              className="max-h-3 h-auto w-auto"
+            />
+          </a>
+          <a href="https://shopusa.fujifilm-x.com/?srsltid=AfmBOoqoFWwV">
+            <img
+              src="/images/partners/fujifilm_logo.svg"
+              alt="Partner 3"
+              className="max-h-3 h-auto w-auto"
+            />
+          </a>
+          <a href="https://www.rivian.com/">
+            <img
+              src="/images/partners/rivian_logo.svg"
+              alt="Partner 4"
+              className="max-h-3 h-auto w-auto"
+            />
+          </a>
         </div>
       </div>
     </section>
