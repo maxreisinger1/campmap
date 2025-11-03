@@ -8,7 +8,6 @@ import { useState, useRef, useEffect, useMemo, lazy, Suspense } from "react";
 import { ToastProvider, useToast } from "../context/ToastContext";
 import { clamp } from "../utils/helpers";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
-import { useLeaderboard } from "../hooks/useLeaderboard";
 import { useCityPins } from "../hooks/useCityPins";
 import { useSubmitSignup } from "../hooks/useSubmitSignup";
 
@@ -16,13 +15,13 @@ const Hero = lazy(() => import("./Hero"));
 const AboutSection = lazy(() => import("./AboutSection"));
 const SignupsCounter = lazy(() => import("./SignupsCounter"));
 const SignupForm = lazy(() => import("./SignupForm"));
-const Leaderboard = lazy(() => import("./Leaderboard"));
 const Footer = lazy(() => import("./Footer"));
 const RetroLoader = lazy(() => import("./RetroLoader"));
 const GlobeMap = lazy(() => import("./GlobeMap"));
 const RetroEffects = lazy(() => import("./RetroEffects"));
 const NewAboutSection = lazy(() => import("./NewAboutSection"));
-const MoviePremiere = lazy(() => import("./MoviePremiere"));
+const BuyTicketsSection = lazy(() => import("./v6/BuyTicketsSection"));
+const FAQSection = lazy(() => import("./v6/FAQSection"));
 
 /**
  * Inner component containing the main globe functionality.
@@ -78,72 +77,6 @@ function FanDemandGlobeInner() {
     animate();
   }
 
-  /**
-   * Enhanced city focus function that finds coordinates from submissions data.
-   * Used when clicking on cities in the leaderboard for better user experience.
-   *
-   * @function focusOnCity
-   * @param {Object} cityData - Target city data from leaderboard
-   * @param {string} cityData.city - City name
-   * @param {string} cityData.state - State/region name
-   * @param {number} [cityData.lat] - Latitude coordinate (if available)
-   * @param {number} [cityData.lon] - Longitude coordinate (if available)
-   */
-  function focusOnCity(cityData) {
-    // If we already have coordinates, use them directly
-    if (cityData.lat && cityData.lon) {
-      setAutoRotate(false);
-      setZoom(7.5); // Maximum zoom for close city view
-      animateToLocation({ lat: cityData.lat, lon: cityData.lon });
-
-      if (resumeTimer.current) clearTimeout(resumeTimer.current);
-      resumeTimer.current = setTimeout(() => setAutoRotate(true), 4000);
-      return;
-    }
-
-    // Otherwise, find coordinates from submissions data
-    const cityName = cityData.city?.toLowerCase();
-    const stateName = cityData.state?.toLowerCase();
-
-    const matchingSubmission = dedupedSubmissions.find((submission) => {
-      const submissionCity = submission.city?.toLowerCase();
-      const submissionState = submission.state?.toLowerCase();
-
-      // Try exact city match first
-      if (submissionCity === cityName) {
-        // If state is provided, match state too
-        if (stateName && submissionState) {
-          return submissionState === stateName;
-        }
-        return true;
-      }
-      return false;
-    });
-
-    if (
-      matchingSubmission &&
-      matchingSubmission.lat &&
-      matchingSubmission.lon
-    ) {
-      setAutoRotate(false);
-      setZoom(7.5); // Maximum zoom for close city view
-      animateToLocation({
-        lat: matchingSubmission.lat,
-        lon: matchingSubmission.lon,
-      });
-
-      if (resumeTimer.current) clearTimeout(resumeTimer.current);
-      resumeTimer.current = setTimeout(() => setAutoRotate(true), 4000);
-    } else {
-      // No matching submission found with coordinates
-      showToast(
-        `❌ No coordinates found for ${cityData.city}${
-          cityData.state ? `, ${cityData.state}` : ""
-        }`,
-        retroMode
-      );
-    }
-  }
   const [zoom, setZoom] = useState(1.15);
   const [cursor, setCursor] = useState("grab");
   const [fatal, setFatal] = useState("");
@@ -161,7 +94,6 @@ function FanDemandGlobeInner() {
     setSubmissions,
     { hasMore: hasMoreSubs, loading: loadingSubs, loadMore: loadMoreSubs },
   ] = useLiveSubmissions([]);
-  const { leaderboard, loading: lbLoading } = useLeaderboard();
   const { pins: dbPins, loading: pinsLoading } = useCityPins();
 
   const containerRef = useRef(null);
@@ -369,20 +301,6 @@ function FanDemandGlobeInner() {
     };
   }, [retroMode]);
 
-  // Deduplicate submissions by city+state (first occurrence only) — used for focus fallback only
-  const dedupedSubmissions = useMemo(() => {
-    const seen = new Set();
-    return submissions.filter((s) => {
-      if (!s.city) return false;
-      const cityKey = s.city?.toLowerCase?.() || "";
-      const stateKey = s.state?.toLowerCase?.() || "";
-      const key = `${cityKey}|${stateKey}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-  }, [submissions]);
-
   return (
     <div
       data-retro={retroMode ? "true" : "false"}
@@ -408,6 +326,27 @@ function FanDemandGlobeInner() {
         }
       >
         <Hero />
+      </Suspense>
+
+      <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
+              Loading Movie Premiere Section...
+            </div>
+          </div>
+        }
+      >
+        <BuyTicketsSection />
       </Suspense>
 
       {/* New About Section */}
@@ -445,59 +384,81 @@ function FanDemandGlobeInner() {
                 retroMode ? "text-yellow-500" : "text-[#1f2937]"
               }`}
             >
+              Loading About Section...
+            </div>
+          </div>
+        }
+      >
+        <FAQSection />
+      </Suspense>
+
+      {/* <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
               Loading Movie Premiere Section...
             </div>
           </div>
         }
       >
         <MoviePremiere />
-      </Suspense>
+      </Suspense> */}
 
       <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
         <div className="w-full">
-          <h2 className="text-pink-600 text-[28px] md:text-4xl font-extrabold leading-tight tracking-wider uppercase mb-4 md:mb-[15px]">
-            Not In Those Cities? Reserve Your Ticket For November 14th
+          <h2 className="text-pink-600 text-[28px] md:text-3xl font-extrabold leading-tight tracking-wider uppercase mb-4 md:mb-[2px]">
+            We Want To Take This Film International. SIGN UP BELOW TO Bring TSP
+            TO YOUR CITY.{" "}
           </h2>
-          <div className="max-w-4xl mx-auto">
-            <span className="text-[12px] md:text-base text-black uppercase font-medium md:font-extralight md:tracking-widest">
-              Sign up below to unlock screenings in a theater near you this
-              Fall.
+          <div className="max-w-5xl mx-auto">
+            <span className="text-[12px] md:text-[13px] text-black uppercase font-medium md:font-extralight tracking-wider">
+              Over The Next Few Weeks, We’ll Be Working With International
+              Theaters To Screen The Movie In Cities With The Most Votes.
             </span>
           </div>
         </div>
       </div>
-      {/* Mobile: Counter before form, Desktop: after form */}
-      <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6">
-        {/* Mobile only */}
+
+      {/* Globe and Signup Form - Side by side */}
+      <div
+        id="signup"
+        className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6"
+      >
+        {/* Mobile: Counter before form */}
         <div className="block md:hidden mb-6">
           <Suspense fallback={<div>Loading counter…</div>}>
             <SignupsCounter count={submissions.length} />
           </Suspense>
         </div>
-        <Suspense fallback={<div>Loading form…</div>}>
-          <SignupForm
-            form={form}
-            setForm={setForm}
-            handleSubmit={handleSubmit}
-            fatal={fatal}
-            retroMode={retroMode}
-            loading={loading}
-          />
-        </Suspense>
-        {/* Desktop only */}
-        <div className="hidden md:block mt-6">
-          <Suspense fallback={<div>Loading counter…</div>}>
-            <SignupsCounter count={submissions.length} />
-          </Suspense>
-        </div>
-      </div>
-      {/* Leaderboard and Globe - Side by side with equal height */}
-      <div className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-[40px] md:gap-6 min-h-[600px]">
-          {/* Globe - 60% width (3/5) - First on mobile, second on desktop */}
-          <div className="lg:col-span-3 flex flex-col order-1 lg:order-2">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[40px] md:gap-6 min-h-[600px]">
+          {/* Signup Form - 50% width */}
+          <div className="flex flex-col">
+            <Suspense fallback={<div>Loading form…</div>}>
+              <SignupForm
+                form={form}
+                setForm={setForm}
+                handleSubmit={handleSubmit}
+                fatal={fatal}
+                retroMode={retroMode}
+                loading={loading}
+              />
+            </Suspense>
+          </div>
+
+          {/* Globe - 50% width */}
+          <div className="flex flex-col">
             {/* Globe map and controls or loader */}
-            {lbLoading || pinsLoading ? (
+            {pinsLoading ? (
               <div className="h-full flex items-center justify-center min-h-[600px]">
                 <Suspense fallback={<div>Loading…</div>}>
                   <RetroLoader
@@ -562,19 +523,13 @@ function FanDemandGlobeInner() {
               </Suspense>
             )}
           </div>
+        </div>
 
-          {/* Leaderboard - 40% width (2/5) - Second on mobile, first on desktop */}
-          <div className="lg:col-span-2 flex flex-col order-2 lg:order-1">
-            <Suspense fallback={<div>Loading leaderboard…</div>}>
-              <Leaderboard
-                leaderboard={leaderboard}
-                theme={theme}
-                loading={lbLoading}
-                retroMode={retroMode}
-                onCityFocus={focusOnCity}
-              />
-            </Suspense>
-          </div>
+        {/* Desktop: Counter after grid */}
+        <div className="hidden md:block mt-6">
+          <Suspense fallback={<div>Loading counter…</div>}>
+            <SignupsCounter count={submissions.length} />
+          </Suspense>
         </div>
       </div>
       <div className="w-full h-[2px] md:block hidden bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 mt-[72px]" />

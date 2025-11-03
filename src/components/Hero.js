@@ -9,7 +9,7 @@ export default function Hero() {
     }
   }, []);
   return (
-    <section className="relative w-full h-[420px] md:h-[800px] overflow-hidden">
+    <section className="relative w-full h-screen min-h-[600px] md:h-[800px] overflow-hidden pt-20">
       {/* Background Image */}
       <video
         src="/images/twosleepymontage2.mp4"
@@ -22,21 +22,9 @@ export default function Hero() {
         controls={false}
         preload="auto"
       />
-
       {/* Overlay (optional dark fade for readability) */}
       <div className="absolute inset-0 bg-black/30"></div>
-
       {/* Mobile Top Bar - Centered */}
-      <div className="flex md:hidden justify-center items-center pt-[25px] px-4 absolute inset-x-0 top-0 w-full">
-        <div className="flex flex-row items-center space-x-2">
-          {/* Studio Logo */}
-          <img src="/images/logo.png" alt="Camp Studios" className="h-[12px]" />
-          <span className="text-[7px] uppercase text-white">
-            A Camp Studios Production
-          </span>
-        </div>
-      </div>
-
       {/* Center Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-10 md:px-4">
         {/* Desktop: Logo and production text above film title */}
@@ -50,17 +38,20 @@ export default function Hero() {
         <img
           src="/images/Two Sleepy Favicon-New.png"
           alt="Two Sleepy People"
-          className="max-w-[300px] h-[100px] md:h-auto"
+          className="max-w-[250px] md:max-w-[300px] h-auto w-full"
           style={{ transform: "rotate(-3deg)" }}
         />
         {/* Mobile: Only show shorter heading */}
-        <h1 className="my-4 text-white text-[16px] font-normal uppercase md:hidden">
-          In Theaters On November 14th
+        <h1 className="my-8 text-white text-xl font-normal uppercase md:hidden">
+          <span className="font-semibold">American Baron’s Debut Film</span>
+          <br />
+          In Select Theaters Nationwide Theaters{" "}
         </h1>
         {/* Desktop: Only show full heading */}
         <h1 className="mb-6 mt-8 text-white text-[30px] tracking-wider font-normal uppercase hidden md:block">
-          <span className="font-semibold">Baron Ryan’s</span> Debut Film In
-          Theaters <span className="font-semibold">On November 14th</span>
+          <span className="font-semibold">American Baron’s Debut Film</span>
+          <br />
+          In Select Theaters Nationwide Theaters{" "}
         </h1>
         {/* <h1
           className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
@@ -89,102 +80,24 @@ export default function Hero() {
           THEATERS
         </p> */}
         <div
-          className="flex flex-col md:flex-row gap-4 justify-center w-full"
+          className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center w-full px-4 md:px-0"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          <a href="https://luma.com/user/campstudios?fbclid=PAZXh0bgNhZW0CMTEAAacMmCGn-1gD5YctVP26FvGSnkgV-ymsx9XecPu4t-0foFiol0dYvIQUA2UYdQ_aem_o2Fgqc02z1QGsFiT083Lgg">
+          <a
+            href="https://luma.com/user/campstudios?fbclid=PAZXh0bgNhZW0CMTEAAacMmCGn-1gD5YctVP26FvGSnkgV-ymsx9XecPu4t-0foFiol0dYvIQUA2UYdQ_aem_o2Fgqc02z1QGsFiT083Lgg"
+            className="w-full sm:w-auto"
+          >
             <button
-              className="py-[10px] px-[28px] md:py-[12px] md:px-[36px] text-[12px] md:text-[16px] font-semibold bg-white hover:bg-[#F2A268] transition-colors duration-200 rounded-[10px] border-2 border-black"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              Buy Premiere Tickets
-            </button>
-          </a>
-          <a href="#where-to-watch">
-            <button
-              className="py-[10px] px-[28px] md:py-[12px] md:px-[36px] text-[12px] md:text-[16px] font-semibold bg-white hover:bg-[#F2A268] rounded-[10px] border-2 border-black"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] rounded-full border-2 border-black transition-colors duration-200"
               onClick={handleWhereToWatchClick}
             >
               Where Can I Watch?
             </button>
           </a>
-        </div>
-      </div>
-
-      <div className="hidden absolute bottom-0 md:flex items-end w-full p-4 md:p-8 z-50">
-        <div className="flex flex-row w-full items-center max-w-7xl mx-auto">
-          <div className="flex flex-1 items-center justify-around gap-6">
-            {/* Left logos */}
-            <a href="https://www.notion.so/">
-              <img
-                src="/images/partners/notion_logo.svg"
-                alt="Partner 1"
-                className="max-h-8 h-auto w-auto"
-              />
-            </a>
-            <a href="https://www.epidemicsound.com/campaign/ambassador-sign-up/?_us=Affiliate&_usx=cc2spNOV25&utm_source=ambassador&utm_medium=affiliate&utm_campaign=cc2spNOV25&utm_content=cam_NOV_25">
-              <img
-                src="/images/partners/epidemic_sound_logo.svg"
-                alt="Partner 2"
-                className="max-h-6 h-auto w-auto"
-              />
-            </a>
-          </div>
-          <div className="flex flex-col justify-center items-center px-8">
-            <span className="text-white text-xs md:text-base font-medium uppercase text-center">
-              THE PARTNERS HELPING BRING OUR TOUR TO LIFE
-            </span>
-          </div>
-          <div className="flex flex-1 items-center justify-around gap-6">
-            {/* Right logos */}
-            <a href="https://shopusa.fujifilm-x.com/?srsltid=AfmBOoqoFWwV">
-              <img
-                src="/images/partners/fujifilm_logo.svg"
-                alt="Partner 3"
-                className="max-h-6 h-auto w-auto"
-              />
-            </a>
-            <a href="https://www.rivian.com/">
-              <img
-                src="/images/partners/rivian_logo.svg"
-                alt="Partner 4"
-                className="max-h-6 h-auto w-auto"
-              />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div className="md:hidden absolute bottom-0 flex items-end w-full p-4 z-50">
-        <div className="flex flex-row w-full items-center max-w-7xl mx-auto justify-around">
-          <a href="https://www.notion.so/">
-            <img
-              src="/images/partners/notion_logo.svg"
-              alt="Partner 1"
-              className="max-h-3 h-auto w-auto"
-            />
-          </a>
-          <a href="https://www.epidemicsound.com/campaign/ambassador-sign-up/?_us=Affiliate&_usx=cc2spNOV25&utm_source=ambassador&utm_medium=affiliate&utm_campaign=cc2spNOV25&utm_content=cam_NOV_25">
-            <img
-              src="/images/partners/epidemic_sound_logo.svg"
-              alt="Partner 2"
-              className="max-h-3 h-auto w-auto"
-            />
-          </a>
-          <a href="https://shopusa.fujifilm-x.com/?srsltid=AfmBOoqoFWwV">
-            <img
-              src="/images/partners/fujifilm_logo.svg"
-              alt="Partner 3"
-              className="max-h-3 h-auto w-auto"
-            />
-          </a>
-          <a href="https://www.rivian.com/">
-            <img
-              src="/images/partners/rivian_logo.svg"
-              alt="Partner 4"
-              className="max-h-3 h-auto w-auto"
-            />
+          <a href="#faq" className="w-full sm:w-auto">
+            <button className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] transition-colors duration-200 rounded-full border-2 border-black">
+              Frequently Asked Q's
+            </button>
           </a>
         </div>
       </div>
