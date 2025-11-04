@@ -1,7 +1,16 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleSmoothScroll = useCallback((e, targetId) => {
+    e.preventDefault();
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      setIsMenuOpen(false); // Close mobile menu after clicking
+    }
+  }, []);
 
   return (
     <nav className="h-20 border-b-2 border-black fixed z-50 w-full flex items-center justify-between px-4 md:px-8 text-white bg-[#D42568] shadow-md">
@@ -30,12 +39,14 @@ export default function Navbar() {
         </a>
         <a
           href="#about-the-film"
+          onClick={(e) => handleSmoothScroll(e, "about-the-film")}
           className="bg-white border border-black rounded-full px-8 py-1 text-black underline font-semibold hover:bg-gray-200 transition"
         >
           About The Film
         </a>
         <a
           href="#buy-tickets"
+          onClick={(e) => handleSmoothScroll(e, "buy-tickets")}
           className="bg-white border border-black rounded-full px-8 py-1 text-black underline font-semibold hover:bg-gray-200 transition"
         >
           Buy Tickets Now
@@ -84,15 +95,15 @@ export default function Navbar() {
           </a>
           <a
             href="#about-the-film"
+            onClick={(e) => handleSmoothScroll(e, "about-the-film")}
             className="bg-white border border-black rounded-full px-8 py-3 text-black underline font-semibold hover:bg-gray-200 transition text-center"
-            onClick={() => setIsMenuOpen(false)}
           >
             About The Film
           </a>
           <a
             href="#buy-tickets"
+            onClick={(e) => handleSmoothScroll(e, "buy-tickets")}
             className="bg-white border border-black rounded-full px-8 py-3 text-black underline font-semibold hover:bg-gray-200 transition text-center"
-            onClick={() => setIsMenuOpen(false)}
           >
             Buy Tickets Now
           </a>

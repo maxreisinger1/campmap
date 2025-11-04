@@ -1,7 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 export default function BuyTicketsSection() {
   const mapContainerRef = useRef(null);
+
+  const handleSignupClick = useCallback((e) => {
+    e.preventDefault();
+    const el = document.getElementById("signup");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
 
   useEffect(() => {
     const injectWidgetScript = (container, src, slug) => {
@@ -60,10 +68,8 @@ export default function BuyTicketsSection() {
           <span className="font-semibold">
             You’ve Helped Unlock 24 Screenings Across the US!
           </span>{" "}
-          Browse the list of Limited active screenings Below To Buy Tickets, Or
-          Enter Your Location To find A Screening near To You on the map And
-          Select A Pin. Fill Up These ScreenIngS To Help Us Get INto Even More
-          Theaters WorldWide! 🎟️
+          Fill These ScreenIngS To Help Us Get INto Even More Theaters
+          WorldWide! 🎟️
         </p>
       </div>
       <div className="w-full flex flex-col lg:flex-row justify-between gap-6 lg:gap-4">
@@ -92,8 +98,11 @@ export default function BuyTicketsSection() {
               </button>
             </a>
             <a href="#signup">
-              <button className="mt-4 sm:ml-4 py-3 px-6 hover:bg-[#436fa5] transition rounded-[10px] border-2 text-white border-black text-xs font-semibold shadow-md bg-[#598CCC] w-full sm:w-auto">
-                How Can I Watch Internationally?
+              <button
+                className="mt-4 sm:ml-4 py-3 px-6 hover:bg-[#436fa5] transition rounded-[10px] border-2 text-white border-black text-xs font-semibold shadow-md bg-[#598CCC] w-full sm:w-auto"
+                onClick={handleSignupClick}
+              >
+                Don't See Showings Near Your City?
               </button>
             </a>
           </div>

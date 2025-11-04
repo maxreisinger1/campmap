@@ -416,13 +416,12 @@ function FanDemandGlobeInner() {
       <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
         <div className="w-full">
           <h2 className="text-pink-600 text-[28px] md:text-3xl font-extrabold leading-tight tracking-wider uppercase mb-4 md:mb-[2px]">
-            We Want To Take This Film International. SIGN UP BELOW TO Bring TSP
-            TO YOUR CITY.{" "}
+            No Screening In Your City Yet? SIGN UP BELOW TO Bring TSP TO YOU.
           </h2>
           <div className="max-w-5xl mx-auto">
             <span className="text-[12px] md:text-[13px] text-black uppercase font-medium md:font-extralight tracking-wider">
-              Over The Next Few Weeks, We’ll Be Working With International
-              Theaters To Screen The Movie In Cities With The Most Votes.
+              Over The Next Few Weeks, We’ll Be Working With Theaters
+              internationally To Screen The Movie In Cities With The Most Votes.
             </span>
           </div>
         </div>

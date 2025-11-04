@@ -3,11 +3,20 @@ import { useCallback } from "react";
 export default function Hero() {
   const handleWhereToWatchClick = useCallback((e) => {
     e.preventDefault();
-    const el = document.getElementById("where-to-watch");
+    const el = document.getElementById("buy-tickets");
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
   }, []);
+
+  const handleFAQClick = useCallback((e) => {
+    e.preventDefault();
+    const el = document.getElementById("faq");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
   return (
     <section className="relative w-full h-screen min-h-[600px] md:h-[800px] overflow-hidden pt-20">
       {/* Background Image */}
@@ -45,13 +54,13 @@ export default function Hero() {
         <h1 className="my-8 text-white text-xl font-normal uppercase md:hidden">
           <span className="font-semibold">American Baron’s Debut Film</span>
           <br />
-          In Select Theaters Nationwide Theaters{" "}
+          In Select Theaters Nationwide{" "}
         </h1>
         {/* Desktop: Only show full heading */}
         <h1 className="mb-6 mt-8 text-white text-[30px] tracking-wider font-normal uppercase hidden md:block">
           <span className="font-semibold">American Baron’s Debut Film</span>
           <br />
-          In Select Theaters Nationwide Theaters{" "}
+          In Select Theaters Nationwide{" "}
         </h1>
         {/* <h1
           className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
@@ -83,10 +92,7 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center w-full px-4 md:px-0"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          <a
-            href="https://luma.com/user/campstudios?fbclid=PAZXh0bgNhZW0CMTEAAacMmCGn-1gD5YctVP26FvGSnkgV-ymsx9XecPu4t-0foFiol0dYvIQUA2UYdQ_aem_o2Fgqc02z1QGsFiT083Lgg"
-            className="w-full sm:w-auto"
-          >
+          <a href="#buy-tickets" className="w-full sm:w-auto">
             <button
               className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] rounded-full border-2 border-black transition-colors duration-200"
               onClick={handleWhereToWatchClick}
@@ -95,7 +101,10 @@ export default function Hero() {
             </button>
           </a>
           <a href="#faq" className="w-full sm:w-auto">
-            <button className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] transition-colors duration-200 rounded-full border-2 border-black">
+            <button
+              className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] transition-colors duration-200 rounded-full border-2 border-black"
+              onClick={handleFAQClick}
+            >
               Frequently Asked Q's
             </button>
           </a>
