@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback } from "react";
+import TheaterTable from "./TheaterTable";
 
 export default function BuyTicketsSection() {
   const mapContainerRef = useRef(null);
@@ -61,12 +62,12 @@ export default function BuyTicketsSection() {
     >
       <div>
         <h2 className="text-start text-[#D7266A] font-bold text-xl md:text-2xl lg:text-3xl tracking-wide uppercase">
-          Buy Your Tickets Below! - In Theaters For ONE-NIGHT-ONLY (November
-          14th)
+          Buy Your Tickets Below! - In Theaters on{" "}
+          <span className="underline">November 14th</span> For ONE-NIGHT-ONLY
         </h2>
         <p className="text-gray-800 text-xs md:text-sm my-4 font-medium uppercase leading-relaxed">
           <span className="font-semibold">
-            You’ve Helped Unlock 24 Screenings Across the US!
+            You’ve Helped Unlock 30 Screenings Across the US!
           </span>{" "}
           Fill These ScreenIngS To Help Us Get INto Even More Theaters
           WorldWide! 🎟️
@@ -78,7 +79,7 @@ export default function BuyTicketsSection() {
             className="w-full bg-[#3C4959] rounded-lg border border-black overflow-hidden h-[500px] lg:flex-1"
             style={{ minHeight: "400px" }}
           >
-            <iframe
+            {/* <iframe
               src="https://gathr.com/widgets/films/two-sleepy-people/list?embed=1"
               className="w-full h-full"
               style={{
@@ -86,7 +87,8 @@ export default function BuyTicketsSection() {
                 borderRadius: "5px",
               }}
               title="Gathr Film List"
-            />
+            /> */}
+            <TheaterTable />
           </div>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-0">
             <a
