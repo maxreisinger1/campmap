@@ -40,17 +40,18 @@ export default function BuyTicketsSection() {
       };
     };
 
+    const currentContainer = mapContainerRef.current;
     injectWidgetScript(
-      mapContainerRef.current,
+      currentContainer,
       "https://gathr.com/assets/widgets/films/map.js",
       "two-sleepy-people"
     );
 
     // Cleanup in case the component unmounts (e.g., route changes, HMR)
     return () => {
-      if (mapContainerRef.current) {
-        mapContainerRef.current.innerHTML = "";
-        delete mapContainerRef.current.dataset.widgetLoaded;
+      if (currentContainer) {
+        currentContainer.innerHTML = "";
+        delete currentContainer.dataset.widgetLoaded;
       }
     };
   }, []);
@@ -94,6 +95,7 @@ export default function BuyTicketsSection() {
             <a
               href="https://www.fandango.com/two-sleepy-people-2025-243090/movie-overview"
               target="_blank"
+              rel="noreferrer"
             >
               <button className="mt-4 py-3 px-6 hover:bg-[#bd6826] transition rounded-[10px] underline border-2 text-white border-black text-xs font-semibold shadow-md bg-[#E1701C] w-full sm:w-auto">
                 Find Showings On Fandango

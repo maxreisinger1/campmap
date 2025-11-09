@@ -3,3 +3,4 @@
 .env
 /coverage
 supabase/sql/*
+/build

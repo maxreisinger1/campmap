@@ -33,6 +33,7 @@ export default function Navbar() {
         <a
           href="https://campstudios.com/"
           target="_blank"
+          rel="noreferrer"
           className="bg-white border border-black rounded-full px-8 py-1 text-black underline font-semibold hover:bg-gray-200 transition"
         >
           Camp Studios
@@ -88,6 +89,7 @@ export default function Navbar() {
           <a
             href="https://campstudios.com/"
             target="_blank"
+            rel="noreferrer"
             className="bg-white border border-black rounded-full px-8 py-3 text-black underline font-semibold hover:bg-gray-200 transition text-center"
             onClick={() => setIsMenuOpen(false)}
           >

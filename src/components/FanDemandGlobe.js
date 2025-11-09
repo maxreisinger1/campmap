@@ -12,7 +12,6 @@ import { useCityPins } from "../hooks/useCityPins";
 import { useSubmitSignup } from "../hooks/useSubmitSignup";
 
 const Hero = lazy(() => import("./Hero"));
-const AboutSection = lazy(() => import("./AboutSection"));
 const SignupsCounter = lazy(() => import("./SignupsCounter"));
 const SignupForm = lazy(() => import("./SignupForm"));
 const Footer = lazy(() => import("./Footer"));
@@ -89,11 +88,7 @@ function FanDemandGlobeInner() {
   const [loading, setLoading] = useState(false);
   const resumeTimer = useRef(null);
   const RESUME_AFTER = 1500;
-  const [
-    submissions,
-    setSubmissions,
-    { hasMore: hasMoreSubs, loading: loadingSubs, loadMore: loadMoreSubs },
-  ] = useLiveSubmissions([]);
+  const [submissions, setSubmissions] = useLiveSubmissions([]);
   const { pins: dbPins, loading: pinsLoading } = useCityPins();
 
   const containerRef = useRef(null);
