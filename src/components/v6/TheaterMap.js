@@ -245,7 +245,7 @@ export default function TheaterMap({ retroMode = false }) {
   // Start with a zoomed-in view focused on US/Canada
   const [position, setPosition] = useState({
     coordinates: [-98, 39],
-    zoom: 1.9,
+    zoom: 2,
   });
   const [tooltipContent, setTooltipContent] = useState("");
 
@@ -259,73 +259,19 @@ export default function TheaterMap({ retroMode = false }) {
       : "inherit",
   };
 
-  // Improved clustering logic based on zoom level
-  function clusterTheaters(theaters, zoom) {
-    // At higher zoom levels, show individual theaters
-    if (zoom >= 3) {
-      return theaters.map((t) => ({ type: "single", theater: t }));
-    }
+  // Calculate pin size based on zoom level (inverse scaling: smaller when zoomed in deeper)
+  // Keeps pins readable at wide view while reducing clutter at close zoom
+  const getPinRadius = (zoom) => {
+    // Base inverse scaling formula
+    const raw = 6 / zoom; // zoom grows -> radius shrinks
+    // Clamp to sensible bounds
+    return Math.max(2.2, Math.min(4.2, raw));
+  };
 
-    // Calculate clustering radius based on zoom (larger radius = more clustering at lower zoom)
-    // Adjusted to be more aggressive at lower zoom levels
-    const clusterRadius = zoom < 1.5 ? 12 : zoom < 2 ? 8 : zoom < 2.5 ? 5 : 3;
-
-    const clusters = [];
-    const used = new Set();
-
-    // Sort theaters to process them in a consistent order
-    const sortedTheaters = theaters.map((t, idx) => ({
-      ...t,
-      originalIndex: idx,
-    }));
-
-    sortedTheaters.forEach((theater, i) => {
-      const originalIdx = theater.originalIndex;
-      if (used.has(originalIdx)) return;
-
-      const nearby = [originalIdx];
-      used.add(originalIdx);
-
-      sortedTheaters.forEach((other, j) => {
-        const otherIdx = other.originalIndex;
-        if (i === j || used.has(otherIdx)) return;
-
-        const distance = Math.sqrt(
-          Math.pow(theater.coordinates[0] - other.coordinates[0], 2) +
-            Math.pow(theater.coordinates[1] - other.coordinates[1], 2)
-        );
-
-        if (distance < clusterRadius) {
-          nearby.push(otherIdx);
-          used.add(otherIdx);
-        }
-      });
-
-      if (nearby.length === 1) {
-        clusters.push({ type: "single", theater });
-      } else {
-        // Calculate cluster center
-        const centerLon =
-          nearby.reduce((sum, idx) => sum + theaters[idx].coordinates[0], 0) /
-          nearby.length;
-        const centerLat =
-          nearby.reduce((sum, idx) => sum + theaters[idx].coordinates[1], 0) /
-          nearby.length;
-
-        clusters.push({
-          type: "cluster",
-          coordinates: [centerLon, centerLat],
-          count: nearby.length,
-          theaters: nearby.map((idx) => theaters[idx]),
-        });
-      }
-    });
-
-    return clusters;
-  }
+  const pinRadius = getPinRadius(position.zoom);
 
   function handleZoomIn() {
-    if (position.zoom >= 16) return;
+    if (position.zoom >= 25) return;
     setPosition((pos) => ({ ...pos, zoom: pos.zoom * 1.5 }));
   }
 
@@ -343,36 +289,147 @@ export default function TheaterMap({ retroMode = false }) {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
-  function handleClusterClick(e, cluster) {
-    e.stopPropagation();
-    // Zoom in and center on cluster
-    setPosition({
-      coordinates: cluster.coordinates,
-      zoom: position.zoom * 2,
-    });
-  }
-
   function handleResetView() {
-    setPosition({ coordinates: [-98, 39], zoom: 1.3 });
+    setPosition({ coordinates: [-98, 39], zoom: 2 });
   }
-
-  const clusteredMarkers = clusterTheaters(theaters, position.zoom);
 
   // Calculate label font size based on zoom level
-  // Smaller at low zoom, larger as you zoom in
+  // Smaller at low zoom, moderate at high zoom to reduce clutter
   const getLabelFontSize = (zoom) => {
-    if (zoom < 1.5) return 6;
-    if (zoom < 2) return 7;
-    if (zoom < 3) return 8;
-    if (zoom < 4) return 9;
-    if (zoom < 6) return 10;
-    return 11;
+    if (zoom < 1) return 9;
+    if (zoom < 2) return 8;
+    if (zoom < 3) return 7;
+    if (zoom < 4) return 6;
+    if (zoom < 6) return 5;
+    return 4; // keep slightly smaller at max zoom
+  };
+
+  // Determine if labels should be shown based on zoom level
+  const shouldShowLabels = (zoom) => {
+    return zoom >= 2.5; // Only show labels when zoomed in enough
   };
 
   const labelFontSize = getLabelFontSize(position.zoom);
+  const showLabels = true; //shouldShowLabels(position.zoom);
+
+  // Calculate which labels to show to avoid overlap
+  // Uses a greedy algorithm to prioritize labels with more space
+  const getVisibleLabels = (theaterList, zoom) => {
+    if (!showLabels) return new Set();
+    // At higher zooms, show all labels (we'll stack-offset them instead)
+    if (zoom >= 5) return new Set(theaterList.map((t) => t.name));
+
+    const visible = new Set();
+
+    // Distance in degrees for label spacing (approximate)
+    const minDistance = zoom < 3 ? 3 : zoom < 4 ? 2.5 : zoom < 6 ? 2 : 1.5;
+
+    // Sort by longitude (west to east) for consistent rendering
+    const sorted = [...theaterList].sort(
+      (a, b) => a.coordinates[0] - b.coordinates[0]
+    );
+
+    sorted.forEach((theater, idx) => {
+      const coords = theater.coordinates;
+      let tooClose = false;
+
+      // Check against already visible labels
+      for (const visibleIdx of visible) {
+        const otherCoords = sorted[visibleIdx].coordinates;
+        const distance = Math.sqrt(
+          Math.pow(coords[0] - otherCoords[0], 2) +
+            Math.pow(coords[1] - otherCoords[1], 2)
+        );
+
+        if (distance < minDistance) {
+          tooClose = true;
+          break;
+        }
+      }
+
+      if (!tooClose) {
+        visible.add(idx);
+      }
+    });
+
+    // Create a map of theater names to visibility
+    const visibilityMap = new Set();
+    visible.forEach((idx) => {
+      visibilityMap.add(sorted[idx].name);
+    });
+
+    return visibilityMap;
+  };
+
+  // For close-by theaters at high zoom, compute vertical stacking offsets for labels
+  const getGroupingThreshold = (zoom) => {
+    if (zoom < 3) return 3.5;
+    if (zoom < 5) return 2.5;
+    if (zoom < 8) return 1.5;
+    return 1.0; // tight threshold at very high zoom
+  };
+
+  const computeLabelOffsets = (theaterList, zoom, baseLineHeight) => {
+    const threshold = getGroupingThreshold(zoom);
+    const assigned = new Array(theaterList.length).fill(false);
+    const groups = [];
+
+    // Build groups of nearby theaters by degree distance
+    for (let i = 0; i < theaterList.length; i++) {
+      if (assigned[i]) continue;
+      assigned[i] = true;
+      const group = [i];
+      const a = theaterList[i].coordinates;
+      for (let j = i + 1; j < theaterList.length; j++) {
+        if (assigned[j]) continue;
+        const b = theaterList[j].coordinates;
+        const dist = Math.sqrt(
+          Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2)
+        );
+        if (dist <= threshold) {
+          assigned[j] = true;
+          group.push(j);
+        }
+      }
+      groups.push(group);
+    }
+
+    // Build offset map
+    const offsets = new Map();
+    const unit = Math.max(baseLineHeight + 2, 10); // pixels between stacked labels
+
+    groups.forEach((idxs) => {
+      if (idxs.length === 1) {
+        offsets.set(theaterList[idxs[0]].name, 0);
+        return;
+      }
+      // Sort within group by latitude (north to south) for consistent stacking
+      idxs.sort(
+        (i1, i2) =>
+          theaterList[i2].coordinates[1] - theaterList[i1].coordinates[1]
+      );
+
+      // Centered stacking: e.g., for 3 -> [-unit, 0, +unit]; for 4 -> [-1.5u, -0.5u, +0.5u, +1.5u]
+      const n = idxs.length;
+      for (let k = 0; k < n; k++) {
+        const centeredIndex = k - (n - 1) / 2;
+        const offsetPx = centeredIndex * unit;
+        offsets.set(theaterList[idxs[k]].name, offsetPx);
+      }
+    });
+
+    return offsets; // Map<theater.name, offsetPx>
+  };
+
+  const visibleLabels = getVisibleLabels(theaters, position.zoom);
+  const labelOffsets = computeLabelOffsets(
+    theaters,
+    position.zoom,
+    getLabelFontSize(position.zoom)
+  );
 
   return (
-    <div className="relative rounded-2xl border border-black bg-gradient-to-br from-[#fff9e8] via-[#f8efe0] to-[#efe3cf] h-full flex flex-col">
+    <div className="relative rounded-2xl border border-black bg-gradient-to-br from-[#fff9e8] via-[#f8efe0] to-[#efe3cf] h-[500px] lg:h-full flex flex-col">
       {/* Controls */}
       <div className="absolute z-10 top-2 left-2 right-2 md:top-3 md:left-3 md:right-auto md:w-auto flex flex-row md:items-center gap-2 bg-white/85 backdrop-blur rounded-md border border-black p-2 md:p-2">
         <div className="flex items-center gap-2">
@@ -413,7 +470,7 @@ export default function TheaterMap({ retroMode = false }) {
       </div>
 
       {/* Map */}
-      <div className="w-full flex-1 select-none min-h-[520px]">
+      <div className="w-full flex-1 select-none">
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{
@@ -462,109 +519,64 @@ export default function TheaterMap({ retroMode = false }) {
               }
             </Geographies>
 
-            {/* Theater Markers with Clustering */}
-            {clusteredMarkers.map((item, i) => {
-              if (item.type === "single") {
-                const theater = item.theater;
-                return (
-                  <Marker key={`single-${i}`} coordinates={theater.coordinates}>
-                    <g
-                      transform="translate(-6,-6)"
-                      style={{ cursor: "pointer" }}
-                      onClick={(e) => handlePinClick(e, theater.url)}
-                      onMouseEnter={() => setTooltipContent(theater.name)}
-                      onMouseLeave={() => setTooltipContent("")}
-                    >
-                      <title>{`${theater.name}\n${theater.date}\nClick to buy tickets`}</title>
-                      {/* Pin drop shape */}
-                      <g>
-                        <circle
-                          r={5}
-                          fill={theme.pinFill}
-                          stroke={theme.stroke}
-                          strokeWidth={1.5}
-                          className="transition-all hover:r-6"
-                        />
-                        <circle
-                          r={2}
-                          fill="#fff"
-                          stroke={theme.stroke}
-                          strokeWidth={0.8}
-                        />
-                      </g>
+            {/* Theater Markers - All Individual Pins */}
+            {theaters.map((theater, i) => {
+              const innerRadius = Math.max(1, pinRadius * 0.45);
+              return (
+                <Marker key={`theater-${i}`} coordinates={theater.coordinates}>
+                  <g
+                    transform={`translate(-${pinRadius},-${pinRadius})`}
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => handlePinClick(e, theater.url)}
+                    onMouseEnter={() => setTooltipContent(theater.name)}
+                    onMouseLeave={() => setTooltipContent("")}
+                  >
+                    <title>{`${theater.name}\n${theater.date}\nClick to buy tickets`}</title>
+                    {/* Pin drop shape that scales with zoom */}
+                    <g>
+                      <circle
+                        r={pinRadius}
+                        fill={theme.pinFill}
+                        stroke={theme.stroke}
+                        strokeWidth={Math.max(0.6, pinRadius * 0.28)}
+                        className="transition-all"
+                      />
+                      <circle
+                        r={innerRadius}
+                        fill="#fff"
+                        stroke={theme.stroke}
+                        strokeWidth={Math.max(0.4, pinRadius * 0.14)}
+                      />
                     </g>
-                    {/* City labels that scale with zoom */}
+                  </g>
+                  {/* City labels that scale with zoom - only show when zoomed in and not overlapping */}
+                  {showLabels && visibleLabels.has(theater.name) && (
                     <text
                       textAnchor="start"
-                      y={-8}
-                      x={6}
+                      y={
+                        (-20 + (labelOffsets.get(theater.name) || 0)) /
+                        position.zoom
+                      }
+                      x={12 / position.zoom}
                       style={{
                         fontFamily: retroMode
                           ? theme.fontFamily
                           : "ui-monospace, Menlo, monospace",
                         fontSize: labelFontSize,
-                        fontWeight: 700,
+                        fontWeight: 600,
                         fill: theme.stroke,
                         pointerEvents: "none",
+                        paintOrder: "stroke",
+                        stroke: "#fff",
+                        strokeWidth: 2,
+                        strokeLinejoin: "round",
                       }}
                     >
                       {theater.city}
                     </text>
-                  </Marker>
-                );
-              } else {
-                // Cluster marker
-                const cluster = item;
-                const radius = Math.min(14, 8 + cluster.count * 1.5);
-                return (
-                  <Marker
-                    key={`cluster-${i}`}
-                    coordinates={cluster.coordinates}
-                  >
-                    <g
-                      transform="translate(-8,-8)"
-                      style={{ cursor: "pointer" }}
-                      onClick={(e) => handleClusterClick(e, cluster)}
-                      onMouseEnter={() =>
-                        setTooltipContent(
-                          `${cluster.count} theaters\nClick to zoom in`
-                        )
-                      }
-                      onMouseLeave={() => setTooltipContent("")}
-                    >
-                      <title>
-                        {`${cluster.count} theaters:\n${cluster.theaters
-                          .map((t) => t.city)
-                          .join("\n")}\n\nClick to zoom in`}
-                      </title>
-                      {/* Cluster circle */}
-                      <circle
-                        r={radius}
-                        fill={theme.pinFill}
-                        fillOpacity={0.85}
-                        stroke={theme.stroke}
-                        strokeWidth={2}
-                      />
-                      {/* Count text */}
-                      <text
-                        textAnchor="middle"
-                        y={5}
-                        style={{
-                          fontFamily: retroMode
-                            ? theme.fontFamily
-                            : "ui-monospace, Menlo, monospace",
-                          fontSize: 11,
-                          fontWeight: 900,
-                          fill: "#fff",
-                          pointerEvents: "none",
-                        }}
-                      >
-                        {cluster.count}
-                      </text>
-                    </g>
-                  </Marker>
-                );
-              }
+                  )}
+                </Marker>
+              );
             })}
           </ZoomableGroup>
         </ComposableMap>
