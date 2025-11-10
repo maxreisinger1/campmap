@@ -257,7 +257,7 @@ export default function TheaterTable() {
                       />
                       <a href={t.url} target="_blank" rel="noopener noreferrer">
                         <button
-                          className={`relative px-10 py-1.5 rounded-[6px] border-2 border-black text-[8px] font-semibold underline uppercase ${palette.bg} ${palette.text} hover:opacity-90 transition`}
+                          className={`relative px-4 sm:px-10 py-1.5 rounded-[6px] border-2 border-black text-[8px] font-semibold underline uppercase ${palette.bg} ${palette.text} hover:opacity-90 transition`}
                         >
                           Buy Tickets
                         </button>

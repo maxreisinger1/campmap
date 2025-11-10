@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 import TheaterTable from "./TheaterTable";
+import TheaterMap from "./TheaterMap";
 
 export default function BuyTicketsSection() {
   const mapContainerRef = useRef(null);
@@ -112,11 +113,12 @@ export default function BuyTicketsSection() {
           </div>
         </div>
         <div className="flex flex-col w-full lg:w-1/2">
-          <div
+          {/* <div
             ref={mapContainerRef}
             className="rounded-lg border border-black overflow-hidden h-[500px] lg:h-[600px]"
             style={{ minHeight: "400px" }}
-          />
+          /> */}
+          <TheaterMap retroMode={false} />
         </div>
       </div>
     </section>
