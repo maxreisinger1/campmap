@@ -305,9 +305,9 @@ export default function TheaterMap({ retroMode = false }) {
   };
 
   // Determine if labels should be shown based on zoom level
-  const shouldShowLabels = (zoom) => {
-    return zoom >= 2.5; // Only show labels when zoomed in enough
-  };
+  // const shouldShowLabels = (zoom) => {
+  //   return zoom >= 2.5; // Only show labels when zoomed in enough
+  // };
 
   const labelFontSize = getLabelFontSize(position.zoom);
   const showLabels = true; //shouldShowLabels(position.zoom);
