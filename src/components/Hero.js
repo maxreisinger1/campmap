@@ -9,13 +9,13 @@ export default function Hero() {
     }
   }, []);
 
-  const handleFAQClick = useCallback((e) => {
-    e.preventDefault();
-    const el = document.getElementById("faq");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  }, []);
+  // const handleFAQClick = useCallback((e) => {
+  //   e.preventDefault();
+  //   const el = document.getElementById("faq");
+  //   if (el) {
+  //     el.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // }, []);
 
   return (
     <section className="relative w-full h-screen min-h-[600px] md:h-[800px] overflow-hidden pt-20">
@@ -54,13 +54,17 @@ export default function Hero() {
         <h1 className="my-8 text-white text-xl font-normal uppercase md:hidden">
           <span className="font-semibold">American Baron’s Debut Film</span>
           <br />
-          IN Select Theaters on <span className="underline">November 14th</span>{" "}
+          IN Select Theaters on <span className="underline">
+            November 14th
+          </span>{" "}
         </h1>
         {/* Desktop: Only show full heading */}
         <h1 className="mb-6 mt-8 text-white text-[30px] tracking-wider font-normal uppercase hidden md:block">
           <span className="font-semibold">American Baron’s Debut Film</span>
           <br />
-          IN Select Theaters on <span className="underline">November 14th</span>{" "}
+          IN Select Theaters on <span className="underline">
+            November 14th
+          </span>{" "}
         </h1>
         {/* <h1
           className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
@@ -100,12 +104,12 @@ export default function Hero() {
               Where Can I Watch?
             </button>
           </a>
-          <a href="#faq" className="w-full sm:w-auto">
+          <a href="https://creatorcamp.store/" className="w-full sm:w-auto">
             <button
               className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] transition-colors duration-200 rounded-full border-2 border-black"
-              onClick={handleFAQClick}
+              // onClick={handleFAQClick}
             >
-              Frequently Asked Q's
+              Merch
             </button>
           </a>
         </div>
