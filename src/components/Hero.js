@@ -109,7 +109,7 @@ export default function Hero() {
               className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] transition-colors duration-200 rounded-full border-2 border-black"
               // onClick={handleFAQClick}
             >
-              Merch
+              Exclusive Merch
             </button>
           </a>
         </div>
