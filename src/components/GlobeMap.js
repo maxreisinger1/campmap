@@ -143,7 +143,7 @@ export default function GlobeMap({
   }
 
   return (
-    <div className="relative rounded-2xl border border-black bg-gradient-to-br from-[#fff9e8] via-[#f8efe0] to-[#efe3cf] shadow-[12px_12px_0_0_rgba(0,0,0,0.65)] h-full flex flex-col">
+    <div className="relative rounded-2xl border border-black bg-gradient-to-br from-[#fff9e8] via-[#f8efe0] to-[#efe3cf] shadow-[6px_6px_0_0_rgba(0,0,0,0.6)] md:shadow-[8px_8px_0_0_rgba(0,0,0,0.6)] h-full flex flex-col">
       <div className="absolute z-10 top-2 left-2 right-2 md:top-3 md:left-3 md:right-auto md:w-auto flex flex-row md:items-center gap-2 bg-white/85 backdrop-blur rounded-md border border-black p-2 md:p-2">
         {/* Mobile: Rotation controls in a single horizontal line */}
         <div className="flex md:hidden">
@@ -270,7 +270,7 @@ export default function GlobeMap({
 
       <div
         ref={containerRef}
-        className="w-full flex-1 select-none min-h-[520px]"
+        className="w-full flex-1 select-none min-h-[400px] md:min-h-[520px]"
         style={{ cursor }}
       >
         <ComposableMap

@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 
 export default function Hero() {
-  const handleWhereToWatchClick = useCallback((e) => {
+  const handleGetTicketsClick = useCallback((e) => {
     e.preventDefault();
-    const el = document.getElementById("buy-tickets");
+    const el = document.getElementById("leaderboard");
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
@@ -54,17 +54,15 @@ export default function Hero() {
         <h1 className="my-8 text-white text-xl font-normal uppercase md:hidden">
           <span className="font-semibold">American Baron’s Debut Film</span>
           <br />
-          IN Select Theaters on <span className="underline">
-            November 14th
-          </span>{" "}
+          Next Theatrical Release Date{" "}
+          <span className="underline">Coming Soon</span>
         </h1>
         {/* Desktop: Only show full heading */}
         <h1 className="mb-6 mt-8 text-white text-[30px] tracking-wider font-normal uppercase hidden md:block">
           <span className="font-semibold">American Baron’s Debut Film</span>
           <br />
-          IN Select Theaters on <span className="underline">
-            November 14th
-          </span>{" "}
+          Next Theatrical Release Date{" "}
+          <span className="underline">Coming Soon</span>
         </h1>
         {/* <h1
           className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
@@ -99,9 +97,9 @@ export default function Hero() {
           <a href="#buy-tickets" className="w-full sm:w-auto">
             <button
               className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] rounded-full border-2 border-black transition-colors duration-200"
-              onClick={handleWhereToWatchClick}
+              onClick={handleGetTicketsClick}
             >
-              Where Can I Watch?
+              Get Tickets
             </button>
           </a>
           <a href="https://creatorcamp.store/" className="w-full sm:w-auto">

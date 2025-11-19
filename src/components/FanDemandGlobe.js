@@ -10,6 +10,7 @@ import { clamp } from "../utils/helpers";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 import { useCityPins } from "../hooks/useCityPins";
 import { useSubmitSignup } from "../hooks/useSubmitSignup";
+import { useLeaderboard } from "../hooks/useLeaderboard";
 
 const Hero = lazy(() => import("./Hero"));
 const SignupsCounter = lazy(() => import("./SignupsCounter"));
@@ -21,6 +22,7 @@ const RetroEffects = lazy(() => import("./RetroEffects"));
 const NewAboutSection = lazy(() => import("./NewAboutSection"));
 const BuyTicketsSection = lazy(() => import("./v6/BuyTicketsSection"));
 const FAQSection = lazy(() => import("./v6/FAQSection"));
+const Leaderboard = lazy(() => import("./Leaderboard"));
 
 /**
  * Inner component containing the main globe functionality.
@@ -90,6 +92,7 @@ function FanDemandGlobeInner() {
   const RESUME_AFTER = 1500;
   const [submissions, setSubmissions] = useLiveSubmissions([]);
   const { pins: dbPins, loading: pinsLoading } = useCityPins();
+  const { leaderboard, loading: lbLoading } = useLeaderboard();
 
   const containerRef = useRef(null);
   const dragRef = useRef({
@@ -323,7 +326,7 @@ function FanDemandGlobeInner() {
         <Hero />
       </Suspense>
 
-      <Suspense
+      {/* <Suspense
         fallback={
           <div className="h-40 w-full flex flex-col items-center justify-center py-8">
             <div className="flex space-x-2 mb-4">
@@ -342,7 +345,136 @@ function FanDemandGlobeInner() {
         }
       >
         <BuyTicketsSection />
-      </Suspense>
+      </Suspense> */}
+
+      <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] w-full">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-12 lg:px-16">
+          <div className="flex-col items-center justify-center mb-6 md:mb-12">
+            <div className="w-full">
+              <h2 className="text-pink-600 text-[24px] md:text-2xl font-light leading-tight tracking-wider uppercase mb-3 md:mb-[2px]">
+                <span className="font-bold">WANT TO WATCH THE FILM?</span>{" "}DROP A PIN Below TO Bring
+                Two Sleepy People To Your City.
+              </h2>
+              <div className="max-w-5xl mx-auto">
+                <span className="text-[11px] md:text-[13px] text-black uppercase font-medium md:font-extralight tracking-wider">
+                  Over The next Two Months, We’ll Be Working With Theaters
+                  internationally To Screen The Movie In Cities With The Most
+                  Votes.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Globe and Signup Form - Side by side */}
+          <div id="signup" className="w-full py-6">
+            {/* Mobile: Counter before form */}
+            <div className="block md:hidden mb-6">
+              <Suspense fallback={<div>Loading counter…</div>}>
+                <SignupsCounter count={submissions.length} />
+              </Suspense>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 min-h-0">
+              {/* Signup Form - 50% width */}
+              <div className="flex flex-col w-full">
+                <Suspense fallback={<div>Loading form…</div>}>
+                  <SignupForm
+                    form={form}
+                    setForm={setForm}
+                    handleSubmit={handleSubmit}
+                    fatal={fatal}
+                    retroMode={retroMode}
+                    loading={loading}
+                  />
+                </Suspense>
+              </div>
+
+              {/* Globe - 50% width */}
+              <div className="flex flex-col w-full">
+                {/* Globe map and controls or loader */}
+                {pinsLoading ? (
+                  <div className="h-full flex items-center justify-center min-h-[400px] md:min-h-[600px]">
+                    <Suspense fallback={<div>Loading…</div>}>
+                      <RetroLoader
+                        text="Loading globe & pins..."
+                        retroMode={retroMode}
+                      />
+                    </Suspense>
+                  </div>
+                ) : dbPins.length === 0 ? (
+                  <Suspense
+                    fallback={
+                      <div className="h-full flex items-center justify-center min-h-[400px] md:min-h-[600px]">
+                        <Suspense fallback={<div>Loading…</div>}>
+                          <RetroLoader
+                            text="Loading globe…"
+                            retroMode={retroMode}
+                          />
+                        </Suspense>
+                      </div>
+                    }
+                  >
+                    <GlobeMap
+                      rotate={rotate}
+                      setRotate={setRotate}
+                      zoom={zoom}
+                      setZoom={setZoom}
+                      retroMode={retroMode}
+                      theme={theme}
+                      submissions={dbPins}
+                      jitter={jitter}
+                      containerRef={containerRef}
+                      cursor={cursor}
+                      hasSubmitted={hasSubmitted}
+                    />
+                  </Suspense>
+                ) : (
+                  <Suspense
+                    fallback={
+                      <div className="h-full flex items-center justify-center min-h-[400px] md:min-h-[600px]">
+                        <Suspense fallback={<div>Loading…</div>}>
+                          <RetroLoader
+                            text="Loading globe…"
+                            retroMode={retroMode}
+                          />
+                        </Suspense>
+                      </div>
+                    }
+                  >
+                    <GlobeMap
+                      rotate={rotate}
+                      setRotate={setRotate}
+                      zoom={zoom}
+                      setZoom={setZoom}
+                      retroMode={retroMode}
+                      theme={theme}
+                      submissions={dbPins}
+                      jitter={jitter}
+                      containerRef={containerRef}
+                      cursor={cursor}
+                      hasSubmitted={hasSubmitted}
+                    />
+                  </Suspense>
+                )}
+              </div>
+            </div>
+
+            {/* Desktop: Counter after grid */}
+            <div className="hidden md:block mt-6">
+              <Suspense fallback={<div>Loading counter…</div>}>
+                <SignupsCounter count={submissions.length} />
+              </Suspense>
+            </div>
+          </div>
+
+          <Leaderboard
+            leaderboard={leaderboard}
+            theme={theme}
+            loading={lbLoading}
+            retroMode={retroMode}
+          />
+        </div>
+      </div>
 
       {/* New About Section */}
       <Suspense
@@ -408,124 +540,6 @@ function FanDemandGlobeInner() {
         <MoviePremiere />
       </Suspense> */}
 
-      <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0">
-        <div className="w-full">
-          <h2 className="text-pink-600 text-[28px] md:text-3xl font-extrabold leading-tight tracking-wider uppercase mb-4 md:mb-[2px]">
-            No Screening In Your City Yet? SIGN UP BELOW TO Bring TSP TO YOU.
-          </h2>
-          <div className="max-w-5xl mx-auto">
-            <span className="text-[12px] md:text-[13px] text-black uppercase font-medium md:font-extralight tracking-wider">
-              Over The Next Few Weeks, We’ll Be Working With Theaters
-              internationally To Screen The Movie In Cities With The Most Votes.
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Globe and Signup Form - Side by side */}
-      <div
-        id="signup"
-        className="max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 py-6"
-      >
-        {/* Mobile: Counter before form */}
-        <div className="block md:hidden mb-6">
-          <Suspense fallback={<div>Loading counter…</div>}>
-            <SignupsCounter count={submissions.length} />
-          </Suspense>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[40px] md:gap-6 min-h-[600px]">
-          {/* Signup Form - 50% width */}
-          <div className="flex flex-col">
-            <Suspense fallback={<div>Loading form…</div>}>
-              <SignupForm
-                form={form}
-                setForm={setForm}
-                handleSubmit={handleSubmit}
-                fatal={fatal}
-                retroMode={retroMode}
-                loading={loading}
-              />
-            </Suspense>
-          </div>
-
-          {/* Globe - 50% width */}
-          <div className="flex flex-col">
-            {/* Globe map and controls or loader */}
-            {pinsLoading ? (
-              <div className="h-full flex items-center justify-center min-h-[600px]">
-                <Suspense fallback={<div>Loading…</div>}>
-                  <RetroLoader
-                    text="Loading globe & pins..."
-                    retroMode={retroMode}
-                  />
-                </Suspense>
-              </div>
-            ) : dbPins.length === 0 ? (
-              <Suspense
-                fallback={
-                  <div className="h-full flex items-center justify-center min-h-[600px]">
-                    <Suspense fallback={<div>Loading…</div>}>
-                      <RetroLoader
-                        text="Loading globe…"
-                        retroMode={retroMode}
-                      />
-                    </Suspense>
-                  </div>
-                }
-              >
-                <GlobeMap
-                  rotate={rotate}
-                  setRotate={setRotate}
-                  zoom={zoom}
-                  setZoom={setZoom}
-                  retroMode={retroMode}
-                  theme={theme}
-                  submissions={dbPins}
-                  jitter={jitter}
-                  containerRef={containerRef}
-                  cursor={cursor}
-                  hasSubmitted={hasSubmitted}
-                />
-              </Suspense>
-            ) : (
-              <Suspense
-                fallback={
-                  <div className="h-full flex items-center justify-center min-h-[600px]">
-                    <Suspense fallback={<div>Loading…</div>}>
-                      <RetroLoader
-                        text="Loading globe…"
-                        retroMode={retroMode}
-                      />
-                    </Suspense>
-                  </div>
-                }
-              >
-                <GlobeMap
-                  rotate={rotate}
-                  setRotate={setRotate}
-                  zoom={zoom}
-                  setZoom={setZoom}
-                  retroMode={retroMode}
-                  theme={theme}
-                  submissions={dbPins}
-                  jitter={jitter}
-                  containerRef={containerRef}
-                  cursor={cursor}
-                  hasSubmitted={hasSubmitted}
-                />
-              </Suspense>
-            )}
-          </div>
-        </div>
-
-        {/* Desktop: Counter after grid */}
-        <div className="hidden md:block mt-6">
-          <Suspense fallback={<div>Loading counter…</div>}>
-            <SignupsCounter count={submissions.length} />
-          </Suspense>
-        </div>
-      </div>
       <div className="w-full h-[2px] md:block hidden bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 mt-[72px]" />
       <Suspense fallback={null}>
         <Footer />

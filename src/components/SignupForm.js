@@ -66,17 +66,17 @@ export default function SignupForm({
   return (
     <div
       id="signup-form"
-      className="relative max-w-4xl w-full rounded-2xl p-4 md:p-5 border border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,0.6)]"
+      className="relative max-w-4xl w-full rounded-2xl p-3 md:p-5 border border-black bg-white shadow-[6px_6px_0_0_rgba(0,0,0,0.6)] md:shadow-[8px_8px_0_0_rgba(0,0,0,0.6)] text-start"
     >
       <div className="absolute -top-2 -left-2 h-4 w-4 bg-black" />
       <div className="absolute -bottom-2 -right-2 h-4 w-4 bg-black" />
 
-      <h2 className="text-2xl md:text-2xl font-extrabold tracking-wider">
+      <h2 className="text-lg md:text-2xl font-extrabold tracking-wider">
         Sign up to watch Two Sleepy People in{" "}
         <span className="underline decoration-black">Your City:</span>
       </h2>
-      <p className="text-xs pb-[24px] pt-[12px]">
-        We’ll notify you of when & where the showings will be soon. Every pin
+      <p className="text-[10px] md:text-xs pb-3 md:pb-[24px] pt-2 md:pt-[12px]">
+        We'll notify you of when & where the showings will be soon. Every pin
         counts!
       </p>
 
@@ -93,12 +93,12 @@ export default function SignupForm({
           if (form.fatal) setForm({ ...form, fatal: null });
           handleSubmit(e);
         }}
-        className="flex flex-col gap-[16px] mb-[40px]"
+        className="flex flex-col gap-3 md:gap-[16px] mb-6 md:mb-[40px]"
       >
         {/* Name */}
         <div>
           <label
-            className={`block text-xs font-bold uppercase mb-1 ${
+            className={`block text-[10px] md:text-xs font-bold uppercase mb-1 ${
               retroMode ? "blink" : ""
             }`}
           >
@@ -109,7 +109,7 @@ export default function SignupForm({
               retroMode
                 ? "border-black bg-[#fffef4]"
                 : "border-black/40 bg-[#fffcf5]"
-            } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+            } px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base font-mono focus:outline-none focus:ring-2 focus:ring-black`}
             placeholder="Jane Doe"
             value={form.name}
             onChange={(e) =>
@@ -121,7 +121,7 @@ export default function SignupForm({
         {/* Email */}
         <div>
           <label
-            className={`block text-xs font-bold uppercase mb-1 ${
+            className={`block text-[10px] md:text-xs font-bold uppercase mb-1 ${
               retroMode ? "blink" : ""
             }`}
           >
@@ -132,7 +132,7 @@ export default function SignupForm({
               retroMode
                 ? "border-black bg-[#fffef4]"
                 : "border-black/40 bg-[#fffcf5]"
-            } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+            } px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base font-mono focus:outline-none focus:ring-2 focus:ring-black`}
             placeholder="jane@example.com"
             value={form.email}
             onChange={(e) =>
@@ -144,7 +144,7 @@ export default function SignupForm({
         {/* Phone */}
         <div>
           <label
-            className={`block text-xs font-bold uppercase mb-1 ${
+            className={`block text-[10px] md:text-xs font-bold uppercase mb-1 ${
               retroMode ? "blink" : ""
             }`}
           >
@@ -155,7 +155,7 @@ export default function SignupForm({
               retroMode
                 ? "border-black bg-[#fffef4]"
                 : "border-black/40 bg-[#fffcf5]"
-            } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+            } px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base font-mono focus:outline-none focus:ring-2 focus:ring-black`}
             placeholder="e.g. +1 555 123 4567"
             value={form.phone || ""}
             onChange={(e) =>
@@ -170,7 +170,7 @@ export default function SignupForm({
         {/* Country */}
         <div>
           <label
-            className={`block text-xs font-bold uppercase mb-1 ${
+            className={`block text-[10px] md:text-xs font-bold uppercase mb-1 ${
               retroMode ? "blink" : ""
             }`}
           >
@@ -181,7 +181,7 @@ export default function SignupForm({
               retroMode
                 ? "border-black bg-[#fffef4]"
                 : "border-black/40 bg-[#fffcf5]"
-            } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+            } px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base font-mono focus:outline-none focus:ring-2 focus:ring-black`}
             value={selectedCountry}
             onChange={(e) =>
               setForm({ ...form, country: e.target.value, fatal: null })
@@ -198,7 +198,7 @@ export default function SignupForm({
         {/* ZIP / Postal Code */}
         <div>
           <label
-            className={`block text-xs font-bold uppercase mb-1 ${
+            className={`block text-[10px] md:text-xs font-bold uppercase mb-1 ${
               retroMode ? "blink" : ""
             }`}
           >
@@ -209,7 +209,7 @@ export default function SignupForm({
               retroMode
                 ? "border-black bg-[#fffef4]"
                 : "border-black/40 bg-[#fffcf5]"
-            } px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+            } px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base font-mono focus:outline-none focus:ring-2 focus:ring-black`}
             placeholder="Enter your postal code"
             value={form.zip}
             onChange={(e) =>
@@ -227,14 +227,14 @@ export default function SignupForm({
           <button
             type="submit"
             disabled={loading}
-            className={`rounded-md border-2 border-black px-4 py-2 font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-2 ${
+            className={`rounded-md border-2 border-black px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-2 ${
               retroMode
                 ? "bg-[#00ffd1] hover:bg-[#00e1ba] text-black"
                 : "bg-[#D42568] hover:bg-[#A61D4D] text-white"
             } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
           >
             {loading && (
-              <span className="inline-block w-4 h-4 border-2 border-t-2 border-t-transparent border-black rounded-full animate-spin"></span>
+              <span className="inline-block w-3 md:w-4 h-3 md:h-4 border-2 border-t-2 border-t-transparent border-black rounded-full animate-spin"></span>
             )}
             {loading ? "Processing..." : "Drop Pin"}
           </button>
@@ -249,7 +249,7 @@ export default function SignupForm({
                 country: "US",
               });
             }}
-            className={`rounded-md border-2 border-black px-3 py-2 font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
+            className={`rounded-md border-2 border-black px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
               retroMode
                 ? "bg-white hover:bg-amber-50"
                 : "bg-white hover:bg-gray-50"
@@ -261,7 +261,7 @@ export default function SignupForm({
 
         {/* Errors */}
         {fatal && (
-          <div className="mt-2 text-xs font-mono text-rose-700">
+          <div className="mt-2 text-[10px] md:text-xs font-mono text-rose-700">
             Error: {fatal}
           </div>
         )}

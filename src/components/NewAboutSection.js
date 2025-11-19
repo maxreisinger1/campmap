@@ -15,7 +15,7 @@ export default function AboutSection() {
   return (
     <section
       id="about-the-film"
-      className="max-w-7xl mx-auto border-t-[5px] border-dashed border-[#D42568]/30 py-8 md:py-10 pb-12 md:pb-16 px-4 md:px-12 lg:px-16 overflow-x-hidden mt-10 md:mt-20"
+      className="max-w-7xl mx-auto border-t-[5px] border-b-[5px] border-dashed border-[#D42568]/30 py-8 md:py-10 pb-12 md:pb-32 px-4 md:px-12 lg:px-16 overflow-x-hidden mt-10 md:mt-20"
     >
       {/* Mobile layout: About label, trailer, story box in order */}
 

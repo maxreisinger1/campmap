@@ -2,7 +2,7 @@ export default function FAQSection() {
   return (
     <section
       id="faq"
-      className="border-t-[5px] border-b-[5px] border-dashed border-[#D42568]/30 py-8 md:py-10 font-sans max-w-7xl mx-auto pb-12 md:pb-16 px-4 md:px-12 lg:px-16 overflow-x-hidden flex flex-col gap-6"
+      className="py-8 md:py-10 font-sans max-w-7xl mx-auto pb-12 md:pb-16 px-4 md:px-12 lg:px-16 overflow-x-hidden flex flex-col gap-6"
     >
       <h2 className="text-center text-[#D7266A] font-bold text-2xl md:text-3xl mb-6 md:mb-10 tracking-wide uppercase">
         Frequently Asked Questions
