@@ -65,7 +65,7 @@ export default function BuyTicketsSection() {
       <div>
         <h2 className="text-start text-[#D7266A] font-bold text-xl md:text-2xl lg:text-3xl tracking-wide uppercase">
           Buy Your Tickets Below! - In Theaters on{" "}
-          <span className="underline">November 14th</span> For ONE-NIGHT-ONLY
+          <span className="underline">Dec 5th</span> For ONE-NIGHT-ONLY
         </h2>
         <p className="text-gray-800 text-xs md:text-sm my-4 font-medium uppercase leading-relaxed">
           <span className="font-semibold">

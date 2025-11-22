@@ -61,8 +61,7 @@ export default function Hero() {
         <h1 className="mb-6 mt-8 text-white text-[30px] tracking-wider font-normal uppercase hidden md:block">
           <span className="font-semibold">American Baron’s Debut Film</span>
           <br />
-          Next Theatrical Release Date{" "}
-          <span className="underline">Coming Soon</span>
+          In select theaters on December 5th
         </h1>
         {/* <h1
           className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
