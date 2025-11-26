@@ -27,12 +27,12 @@ const theaters = [
   {
     name: "Ann Arbor 20 IMAX (Ypsilanti, MI)",
     city: "Ypsilanti, MI",
-    url: "",
+    url: "https://www.cinemark.com/TicketSeatMap/?TheaterId=1097&ShowtimeId=458723&CinemarkMovieId=106965&Showtime=2025-12-05T19:05:00",
   },
   {
     name: "Regal Irvine Spectrum (Irvine, CA)",
     city: "Irvine, CA",
-    url: "",
+    url: "https://www.regmovies.com/movies/two-sleepy-people-ho00020070?date=12-05-2025&site=1010&id=362389",
   },
   {
     name: "AMC Burbank 16 (Burbank, CA)",
@@ -108,6 +108,16 @@ const theaters = [
     name: "AMC Georgetown 14 with IMAX, Dolby (Washington, DC)",
     city: "Washington, DC",
     url: "https://www.amctheatres.com/showtimes/138520608/seats",
+  },
+  {
+    name: "Studio Movie Grill Plano (Plano, TX)",
+    city: "Plano, TX",
+    url: "https://www.studiomoviegrill.com/ticketing/tickets",
+  },
+  {
+    name: "Megaplex Theatres Jordan Commons + IMAX (Sandy, UT)",
+    city: "Sandy, UT",
+    url: "",
   },
 ];
 
