@@ -54,8 +54,7 @@ export default function Hero() {
         <h1 className="my-8 text-white text-xl font-normal uppercase md:hidden">
           <span className="font-semibold">American Baron’s Debut Film</span>
           <br />
-          Next Theatrical Release Date{" "}
-          <span className="underline">Coming Soon</span>
+          In select theaters on December 5th
         </h1>
         {/* Desktop: Only show full heading */}
         <h1 className="mb-6 mt-8 text-white text-[30px] tracking-wider font-normal uppercase hidden md:block">

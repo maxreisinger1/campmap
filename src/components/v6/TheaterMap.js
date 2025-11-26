@@ -98,7 +98,7 @@ const theaters = [
     name: "Portland Eastport Plaza (Portland, OR)",
     city: "Portland, OR",
     date: "5-Dec",
-    url: "",
+    url: "https://www.cinemark.com/TicketSeatMap/?TheaterId=432&ShowtimeId=497017&CinemarkMovieId=106965&Showtime=2025-12-05T19:30:00",
     coordinates: [-122.573, 45.487],
   },
   {
