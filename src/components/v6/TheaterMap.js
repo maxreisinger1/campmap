@@ -182,7 +182,7 @@ const theaters = [
     name: "Studio Movie Grill Plano (Plano, TX)",
     city: "Plano, TX",
     date: "5-Dec",
-    url: "https://www.studiomoviegrill.com/ticketing/tickets",
+    url: "https://www.studiomoviegrill.com/quicktickets/texas/plano/2025/12/5",
     coordinates: [-96.781, 33.027],
   },
   {

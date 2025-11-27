@@ -112,7 +112,7 @@ const theaters = [
   {
     name: "Studio Movie Grill Plano (Plano, TX)",
     city: "Plano, TX",
-    url: "https://www.studiomoviegrill.com/ticketing/tickets",
+    url: "https://www.studiomoviegrill.com/quicktickets/texas/plano/2025/12/5",
   },
   {
     name: "Megaplex Theatres Jordan Commons + IMAX (Sandy, UT)",
