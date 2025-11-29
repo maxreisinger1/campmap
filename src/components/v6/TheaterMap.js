@@ -189,7 +189,7 @@ const theaters = [
     name: "Megaplex Theatres Jordan Commons + IMAX (Sandy, UT)",
     city: "Sandy, UT",
     date: "5-Dec",
-    url: "",
+    url: "https://megaplex.com/jordancommons",
     coordinates: [-111.887, 40.579],
   },
 ];

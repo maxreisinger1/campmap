@@ -117,7 +117,7 @@ const theaters = [
   {
     name: "Megaplex Theatres Jordan Commons + IMAX (Sandy, UT)",
     city: "Sandy, UT",
-    url: "",
+    url: "https://megaplex.com/jordancommons",
   },
 ];
 
