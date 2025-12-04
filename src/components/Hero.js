@@ -92,11 +92,11 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center w-full px-4 md:px-0"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          <a href="#buy-tickets" className="w-full sm:w-auto">
-            <button
-              className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] rounded-full border-2 border-black transition-colors duration-200"
-              onClick={handleGetTicketsClick}
-            >
+          <a
+            href="https://www.fandango.com/twosleepypeople2025_243090/movieoverview?cmp=PDT_Copy_iPhone"
+            className="w-full sm:w-auto"
+          >
+            <button className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] rounded-full border-2 border-black transition-colors duration-200">
               Get Tickets
             </button>
           </a>
