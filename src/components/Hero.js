@@ -93,7 +93,7 @@ export default function Hero() {
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           <a
-            href="https://www.fandango.com/twosleepypeople2025_243090/movieoverview?cmp=PDT_Copy_iPhone"
+            href="https://tickets.twosleepypeople.com/"
             className="w-full sm:w-auto"
           >
             <button className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] rounded-full border-2 border-black transition-colors duration-200">
