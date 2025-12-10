@@ -326,104 +326,17 @@ function FanDemandGlobeInner() {
         <Hero />
       </Suspense>
 
-      <Suspense
-        fallback={
-          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
-            <div className="flex space-x-2 mb-4">
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
-            </div>
-            <div
-              className={`text-sm font-mono uppercase tracking-wider ${
-                retroMode ? "text-yellow-500" : "text-[#1f2937]"
-              }`}
-            >
-              Loading Movie Premiere Section...
-            </div>
-          </div>
-        }
-      >
-        <BuyTicketsSection />
-      </Suspense>
-
-      {/* New About Section */}
-      <Suspense
-        fallback={
-          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
-            <div className="flex space-x-2 mb-4">
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
-            </div>
-            <div
-              className={`text-sm font-mono uppercase tracking-wider ${
-                retroMode ? "text-yellow-500" : "text-[#1f2937]"
-              }`}
-            >
-              Loading About Section...
-            </div>
-          </div>
-        }
-      >
-        <NewAboutSection />
-      </Suspense>
-
-      <Suspense
-        fallback={
-          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
-            <div className="flex space-x-2 mb-4">
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
-            </div>
-            <div
-              className={`text-sm font-mono uppercase tracking-wider ${
-                retroMode ? "text-yellow-500" : "text-[#1f2937]"
-              }`}
-            >
-              Loading About Section...
-            </div>
-          </div>
-        }
-      >
-        <FAQSection />
-      </Suspense>
-
-      {/* <Suspense
-        fallback={
-          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
-            <div className="flex space-x-2 mb-4">
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
-              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
-            </div>
-            <div
-              className={`text-sm font-mono uppercase tracking-wider ${
-                retroMode ? "text-yellow-500" : "text-[#1f2937]"
-              }`}
-            >
-              Loading Movie Premiere Section...
-            </div>
-          </div>
-        }
-      >
-        <MoviePremiere />
-      </Suspense> */}
-
-      <div className="w-full max-w-7xl mx-auto border-b-[5px] border-dashed border-[#D42568]/30" />
-
       <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] w-full">
         <div className="max-w-[1280px] mx-auto px-4 md:px-12 lg:px-16">
           <div className="flex-col items-center justify-center mb-6 md:mb-12">
             <div className="w-full">
-              <h2 className="text-pink-600 text-[24px] md:text-4xl font-bold leading-tight tracking-wider uppercase mb-3 md:mb-[2px]">
-                No Screening In Your City Yet? SIGN UP BELOW TO Bring TSP TO
-                YOU.
+              <h2 className="text-pink-600 text-[24px] md:text-2xl font-normal leading-tight tracking-wider uppercase mb-3 md:mb-[2px]">
+                <span className="font-bold">WANT TO WATCH THE FILM?</span> DROP A PIN Below TO Bring
+                Two Sleepy People To Your City.
               </h2>
               <div className="max-w-6xl mx-auto">
                 <span className="text-[11px] md:text-[13px] text-black uppercase font-medium md:font-extralight tracking-wider">
-                  Over The Next Few Weeks, We’ll Be Working With Theaters
+                  Over The next Two Months, We’ll Be Working With Theaters
                   internationally To Screen The Movie In Cities With The Most
                   Votes.
                 </span>
@@ -533,14 +446,101 @@ function FanDemandGlobeInner() {
             </div>
           </div>
 
-          {/* <Leaderboard
+          <Leaderboard
             leaderboard={leaderboard}
             theme={theme}
             loading={lbLoading}
             retroMode={retroMode}
-          /> */}
+          />
         </div>
       </div>
+
+      {/* <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
+              Loading Movie Premiere Section...
+            </div>
+          </div>
+        }
+      >
+        <BuyTicketsSection />
+      </Suspense> */}
+
+      {/* New About Section */}
+      <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
+              Loading About Section...
+            </div>
+          </div>
+        }
+      >
+        <NewAboutSection />
+      </Suspense>
+
+      <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
+              Loading About Section...
+            </div>
+          </div>
+        }
+      >
+        <FAQSection />
+      </Suspense>
+
+      {/* <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
+              Loading Movie Premiere Section...
+            </div>
+          </div>
+        }
+      >
+        <MoviePremiere />
+      </Suspense> */}
+
+      {/* <div className="w-full max-w-7xl mx-auto border-b-[5px] border-dashed border-[#D42568]/30" /> */}
 
       <div className="w-full h-[2px] md:block hidden bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 mt-[72px]" />
       <Suspense fallback={null}>

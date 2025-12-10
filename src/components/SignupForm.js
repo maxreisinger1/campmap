@@ -72,12 +72,12 @@ export default function SignupForm({
       <div className="absolute -bottom-2 -right-2 h-4 w-4 bg-black" />
 
       <h2 className="text-lg md:text-2xl font-extrabold tracking-wider">
-        Sign up to watch Two Sleepy People in{" "}
+        Bring Two Sleepy People To{" "}
         <span className="underline decoration-black">Your City:</span>
       </h2>
       <p className="text-[10px] md:text-xs pb-3 md:pb-[24px] pt-2 md:pt-[12px]">
-        We'll notify you of when & where the showings will be soon. Every pin
-        counts!
+        We'll notify you of when & where the showings will be soon.{" "}
+        <span className="font-bold">Every pin counts!</span>
       </p>
 
       <form

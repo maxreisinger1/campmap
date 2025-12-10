@@ -3,7 +3,7 @@ import { useCallback } from "react";
 export default function Hero() {
   const handleGetTicketsClick = useCallback((e) => {
     e.preventDefault();
-    const el = document.getElementById("leaderboard");
+    const el = document.getElementById("signup");
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
@@ -54,13 +54,13 @@ export default function Hero() {
         <h1 className="my-8 text-white text-xl font-normal uppercase md:hidden">
           <span className="font-semibold">American Baron’s Debut Film</span>
           <br />
-          In select theaters on December 5th
+          OMING SOON TO THEATERS WORLDWIDE
         </h1>
         {/* Desktop: Only show full heading */}
         <h1 className="mb-6 mt-8 text-white text-[30px] tracking-wider font-normal uppercase hidden md:block">
           <span className="font-semibold">American Baron’s Debut Film</span>
           <br />
-          In select theaters on December 5th
+          COMING SOON TO THEATERS WORLDWIDE
         </h1>
         {/* <h1
           className="bg-[#D42568] textured-text border border-black border-w-[2px] max-h-[120px] text-white text-[24px] md:text-[72px] font-normal uppercase px-[13px] md:px-[76px] py-[10px] md:py-5 rounded"
@@ -92,12 +92,20 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center w-full px-4 md:px-0"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          <a
+          {/* <a
             href="https://tickets.twosleepypeople.com/"
             className="w-full sm:w-auto"
           >
             <button className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] rounded-full border-2 border-black transition-colors duration-200">
               Get Tickets
+            </button>
+          </a> */}
+          <a href="https://creatorcamp.store/" className="w-full sm:w-auto">
+            <button
+              className="w-full sm:w-auto py-3 px-8 md:py-[8px] md:px-[36px] text-xs uppercase md:text-base font-semibold bg-white hover:bg-[#F2A268] transition-colors duration-200 rounded-full border-2 border-black"
+              onClick={handleGetTicketsClick}
+            >
+              Vote for Your City
             </button>
           </a>
           <a href="https://creatorcamp.store/" className="w-full sm:w-auto">

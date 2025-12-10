@@ -46,11 +46,11 @@ export default function Navbar() {
           About The Film
         </a>
         <a
-          href="https://tickets.twosleepypeople.com/"
-          // onClick={(e) => handleSmoothScroll(e, "buy-tickets")}
+          // href="https://tickets.twosleepypeople.com/"
+          onClick={(e) => handleSmoothScroll(e, "signup")}
           className="bg-white border border-black rounded-full px-8 py-1 text-black underline font-semibold hover:bg-gray-200 transition"
         >
-          Buy Tickets Now
+          How to watch
         </a>
       </div>
 
@@ -103,11 +103,11 @@ export default function Navbar() {
             About The Film
           </a>
           <a
-            href="https://tickets.twosleepypeople.com/"
-            // onClick={(e) => handleSmoothScroll(e, "buy-tickets")}
+            // href="https://tickets.twosleepypeople.com/"
+            onClick={(e) => handleSmoothScroll(e, "signup")}
             className="bg-white border border-black rounded-full px-8 py-3 text-black underline font-semibold hover:bg-gray-200 transition text-center"
           >
-            Buy Tickets Now
+            How to watch
           </a>
         </div>
       </div>
