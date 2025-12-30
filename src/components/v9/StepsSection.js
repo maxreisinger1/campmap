@@ -59,7 +59,7 @@ export default function StepsSection({ signupCount, onOpenCreditsModal }) {
           <div className="flex flex-col max-w-7xl mx-auto lg:flex-row gap-8 mt-8 sm:px-0 px-8">
             <div className="text-white flex flex-col gap-4 lg:w-1/2 font-normal sm:text-base text-xs uppercase">
               <p>
-                On JanuAry 23rd, TWo Sleepy People Has The Chance to Play In 500
+                On JanuAry 23rd, TWo Sleepy People Will Play In 500
                 Theaters Worldwide.
               </p>
 
