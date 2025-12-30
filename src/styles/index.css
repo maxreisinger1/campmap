@@ -19,10 +19,18 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Adobe Garamond Pro";
+  src: url("../assets/fonts/AGaramondPro-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: bold;
+  font-display: swap;
+}
+
 body {
   margin: 0;
-  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono",
-    "Source Code Pro", monospace;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+    "Noto Sans", "Liberation Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

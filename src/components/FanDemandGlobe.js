@@ -12,17 +12,21 @@ import { useCityPins } from "../hooks/useCityPins";
 import { useSubmitSignup } from "../hooks/useSubmitSignup";
 import { useLeaderboard } from "../hooks/useLeaderboard";
 
-const Hero = lazy(() => import("./Hero"));
+const Hero = lazy(() => import("./v9/Hero"));
 const SignupsCounter = lazy(() => import("./SignupsCounter"));
 const SignupForm = lazy(() => import("./SignupForm"));
-const Footer = lazy(() => import("./Footer"));
+const CreditsModal = lazy(() => import("./CreditsModal"));
+const Footer = lazy(() => import("./v9/Footer"));
 const RetroLoader = lazy(() => import("./RetroLoader"));
 const GlobeMap = lazy(() => import("./GlobeMap"));
 const RetroEffects = lazy(() => import("./RetroEffects"));
 const NewAboutSection = lazy(() => import("./NewAboutSection"));
 const BuyTicketsSection = lazy(() => import("./v6/BuyTicketsSection"));
-const FAQSection = lazy(() => import("./v6/FAQSection"));
+const FAQSection = lazy(() => import("./v9/FAQSection"));
 const Leaderboard = lazy(() => import("./Leaderboard"));
+const HollywoodSection = lazy(() => import("./v9/HollywoodSection"));
+const StepsSection = lazy(() => import("./v9/StepsSection"));
+const MakingSection = lazy(() => import("./v9/MakingSection"));
 
 /**
  * Inner component containing the main globe functionality.
@@ -88,6 +92,7 @@ function FanDemandGlobeInner() {
   const [retroMode] = useState(false);
   // const [transitioning, setTransitioning] = useState(false); // Removed unused state
   const [loading, setLoading] = useState(false);
+  const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
   const resumeTimer = useRef(null);
   const RESUME_AFTER = 1500;
   const [submissions, setSubmissions] = useLiveSubmissions([]);
@@ -277,6 +282,73 @@ function FanDemandGlobeInner() {
     }
   }
 
+  // Handler for credits modal submission
+  async function handleCreditsModalSubmit(formData) {
+    // Client-side ZIP code validation
+    if (!isValidZip(formData.zip)) {
+      showToast("Please enter a valid postal/ZIP code.", retroMode);
+      return { success: false, error: "Please enter a valid postal/ZIP code." };
+    }
+
+    setLoading(true);
+    try {
+      const result = await submit(formData);
+      // Optimistic - Realtime will also push it to everyone else
+      setSubmissions((prev) =>
+        prev.some((s) => s.id === result.submission.id)
+          ? prev
+          : [result.submission, ...prev]
+      );
+      setHasSubmitted(true);
+
+      // Show a toast notification for the submission
+      showToast(
+        submitMessage ||
+          "🎬 Pin dropped! Your city is now on the map. Zooming in...",
+        retroMode
+      );
+
+      // Animate to the submitted location for a more tangible experience
+      if (result.submission.lat && result.submission.lon) {
+        // First zoom in closer for better city view
+        setZoom(2.8);
+        // Then animate to the location
+        setTimeout(() => {
+          animateToLocation({
+            lat: result.submission.lat,
+            lon: result.submission.lon,
+          });
+        }, 300);
+      }
+
+      return { success: true };
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      // Show user-friendly error messages for common backend errors
+      let errorMessage = "Submission failed";
+      if (err.message) {
+        if (err.message.toLowerCase().includes("postal code not found")) {
+          errorMessage =
+            "Sorry, we couldn't find that postal/ZIP code. Please check and try again.";
+        } else if (
+          err.message.toLowerCase().includes("too many submissions") ||
+          err.message.toLowerCase().includes("rate limit")
+        ) {
+          errorMessage =
+            "You've submitted too many times. Please wait before trying again.";
+        } else {
+          errorMessage = err.message;
+        }
+        showToast(errorMessage, retroMode);
+      } else {
+        setFatal("Submission failed");
+      }
+      return { success: false, error: errorMessage };
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const jitter = (i) => (i % 2 ? 0.2 : -0.2) * ((i % 5) + 1);
 
   const theme = useMemo(() => {
@@ -323,10 +395,20 @@ function FanDemandGlobeInner() {
           </div>
         }
       >
-        <Hero />
+        <Hero onOpenCreditsModal={() => setIsCreditsModalOpen(true)} />
       </Suspense>
 
-      <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] w-full">
+      {/* Credits Modal */}
+      <Suspense fallback={null}>
+        <CreditsModal
+          isOpen={isCreditsModalOpen}
+          onClose={() => setIsCreditsModalOpen(false)}
+          onSubmit={handleCreditsModalSubmit}
+          loading={loading}
+        />
+      </Suspense>
+
+      {/* <div className="text-center md:mb-[40px] mt-[56px] md:mt-[90px] w-full">
         <div className="max-w-[1280px] mx-auto px-4 md:px-12 lg:px-16">
           <div className="flex-col items-center justify-center mb-6 md:mb-12">
             <div className="w-full">
@@ -342,20 +424,20 @@ function FanDemandGlobeInner() {
                 </span>
               </div>
             </div>
-          </div>
+          </div> */}
 
-          {/* Globe and Signup Form - Side by side */}
-          <div id="signup" className="w-full py-6">
-            {/* Mobile: Counter before form */}
-            <div className="block md:hidden mb-6">
+      {/* Globe and Signup Form - Side by side */}
+      {/* <div id="signup" className="w-full py-6"> */}
+      {/* Mobile: Counter before form */}
+      {/* <div className="block md:hidden mb-6">
               <Suspense fallback={<div>Loading counter…</div>}>
                 <SignupsCounter count={submissions.length} />
               </Suspense>
-            </div>
+            </div> */}
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 min-h-0">
-              {/* Signup Form - 50% width */}
-              <div className="flex flex-col w-full">
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 min-h-0"> */}
+      {/* Signup Form - 50% width */}
+      {/* <div className="flex fl§ex-col w-full">
                 <Suspense fallback={<div>Loading form…</div>}>
                   <SignupForm
                     form={form}
@@ -366,12 +448,12 @@ function FanDemandGlobeInner() {
                     loading={loading}
                   />
                 </Suspense>
-              </div>
+              </div> */}
 
-              {/* Globe - 50% width */}
-              <div className="flex flex-col w-full">
-                {/* Globe map and controls or loader */}
-                {pinsLoading ? (
+      {/* Globe - 50% width */}
+      {/* <div className="flex flex-col w-full"> */}
+      {/* Globe map and controls or loader */}
+      {/* {pinsLoading ? (
                   <div className="h-full flex items-center justify-center min-h-[400px] md:min-h-[600px]">
                     <Suspense fallback={<div>Loading…</div>}>
                       <RetroLoader
@@ -436,24 +518,24 @@ function FanDemandGlobeInner() {
                   </Suspense>
                 )}
               </div>
-            </div>
+            </div> */}
 
-            {/* Desktop: Counter after grid */}
-            <div className="hidden md:block mt-6">
+      {/* Desktop: Counter after grid */}
+      {/* <div className="hidden md:block mt-6">
               <Suspense fallback={<div>Loading counter…</div>}>
                 <SignupsCounter count={submissions.length} />
               </Suspense>
             </div>
-          </div>
+          </div> */}
 
-          <Leaderboard
+      {/* <Leaderboard
             leaderboard={leaderboard}
             theme={theme}
             loading={lbLoading}
             retroMode={retroMode}
           />
         </div>
-      </div>
+      </div> */}
 
       {/* <Suspense
         fallback={
@@ -490,12 +572,57 @@ function FanDemandGlobeInner() {
                 retroMode ? "text-yellow-500" : "text-[#1f2937]"
               }`}
             >
-              Loading About Section...
+              Loading Hollywood Section...
             </div>
           </div>
         }
       >
-        <NewAboutSection />
+        <HollywoodSection />
+      </Suspense>
+
+      <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
+              Loading Steps Section...
+            </div>
+          </div>
+        }
+      >
+        <StepsSection
+          signupCount={submissions.length}
+          onOpenCreditsModal={() => setIsCreditsModalOpen(true)}
+        />
+      </Suspense>
+
+      <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
+              Loading Hollywood Section...
+            </div>
+          </div>
+        }
+      >
+        <MakingSection />
       </Suspense>
 
       <Suspense
@@ -542,7 +669,7 @@ function FanDemandGlobeInner() {
 
       {/* <div className="w-full max-w-7xl mx-auto border-b-[5px] border-dashed border-[#D42568]/30" /> */}
 
-      <div className="w-full h-[2px] md:block hidden bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 mt-[72px]" />
+      {/* <div className="w-full h-[2px] md:block hidden bg-black/20 max-w-[1280px] mx-auto px-10 md:px-12 lg:px-16 xl:px-0 mt-[72px]" /> */}
       <Suspense fallback={null}>
         <Footer />
       </Suspense>

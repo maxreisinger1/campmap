@@ -10,7 +10,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 // Lazy load the main globe component for better performance
 const FanDemandGlobe = lazy(() => import("./components/FanDemandGlobe"));
-const Navbar = lazy(() => import("./components/v6/Navbar"));
+const Navbar = lazy(() => import("./components/v9/Navbar"));
 
 /**
  * Main App component that serves as the entry point for the Creator Camp Map application.
