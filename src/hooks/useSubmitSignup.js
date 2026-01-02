@@ -86,7 +86,9 @@ export function useSubmitSignup() {
       };
 
       const result = await addSubmission(payload);
-      setMessage("Pinned! Thanks for raising your hand.");
+      setMessage(
+        "Thanks for supporting Two Sleepy People, you've officially joined the team. Stay tuned for more info :)"
+      );
       return result;
     } catch (err) {
       setError(err);

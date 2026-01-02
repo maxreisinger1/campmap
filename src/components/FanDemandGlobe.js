@@ -216,71 +216,71 @@ function FanDemandGlobeInner() {
     return typeof zip === "string" && /^[A-Za-z0-9\- ]{3,10}$/.test(zip.trim());
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    // Client-side ZIP code validation
-    if (!isValidZip(form.zip)) {
-      showToast("Please enter a valid postal/ZIP code.", retroMode);
-      return;
-    }
-    setLoading(true);
-    try {
-      const result = await submit(form);
-      // Optimistic - Realtime will also push it to everyone else
-      setSubmissions((prev) =>
-        prev.some((s) => s.id === result.submission.id)
-          ? prev
-          : [result.submission, ...prev]
-      );
-      setForm({ name: "", email: "", phone: "", zip: "" });
-      setHasSubmitted(true);
+  // async function handleSubmit(e) {
+  //   e.preventDefault();
+  //   // Client-side ZIP code validation
+  //   if (!isValidZip(form.zip)) {
+  //     showToast("Please enter a valid postal/ZIP code.", retroMode);
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   try {
+  //     const result = await submit(form);
+  //     // Optimistic - Realtime will also push it to everyone else
+  //     setSubmissions((prev) =>
+  //       prev.some((s) => s.id === result.submission.id)
+  //         ? prev
+  //         : [result.submission, ...prev]
+  //     );
+  //     setForm({ name: "", email: "", phone: "", zip: "" });
+  //     setHasSubmitted(true);
 
-      // Show a toast notification for the submission
-      showToast(
-        submitMessage ||
-          "🎬 Pin dropped! Your city is now on the map. Zooming in...",
-        retroMode
-      );
+  //     // Show a toast notification for the submission
+  //     showToast(
+  //       submitMessage ||
+  //         "🎬 Pin dropped! Your city is now on the map. Zooming in...",
+  //       retroMode
+  //     );
 
-      // Animate to the submitted location for a more tangible experience
-      if (result.submission.lat && result.submission.lon) {
-        // First zoom in closer for better city view
-        setZoom(2.8);
-        // Then animate to the location
-        setTimeout(() => {
-          animateToLocation({
-            lat: result.submission.lat,
-            lon: result.submission.lon,
-          });
-        }, 300);
-      }
-    } catch (err) {
-      console.error("Error submitting form:", err);
-      // Show user-friendly error messages for common backend errors
-      if (err.message) {
-        if (err.message.toLowerCase().includes("postal code not found")) {
-          showToast(
-            "Sorry, we couldn't find that postal/ZIP code. Please check and try again.",
-            retroMode
-          );
-        } else if (
-          err.message.toLowerCase().includes("too many submissions") ||
-          err.message.toLowerCase().includes("rate limit")
-        ) {
-          showToast(
-            "You've submitted too many times. Please wait before trying again.",
-            retroMode
-          );
-        } else {
-          showToast(err.message, retroMode);
-        }
-      } else {
-        setFatal("Submission failed");
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
+  //     // Animate to the submitted location for a more tangible experience
+  //     if (result.submission.lat && result.submission.lon) {
+  //       // First zoom in closer for better city view
+  //       setZoom(2.8);
+  //       // Then animate to the location
+  //       setTimeout(() => {
+  //         animateToLocation({
+  //           lat: result.submission.lat,
+  //           lon: result.submission.lon,
+  //         });
+  //       }, 300);
+  //     }
+  //   } catch (err) {
+  //     console.error("Error submitting form:", err);
+  //     // Show user-friendly error messages for common backend errors
+  //     if (err.message) {
+  //       if (err.message.toLowerCase().includes("postal code not found")) {
+  //         showToast(
+  //           "Sorry, we couldn't find that postal/ZIP code. Please check and try again.",
+  //           retroMode
+  //         );
+  //       } else if (
+  //         err.message.toLowerCase().includes("too many submissions") ||
+  //         err.message.toLowerCase().includes("rate limit")
+  //       ) {
+  //         showToast(
+  //           "You've submitted too many times. Please wait before trying again.",
+  //           retroMode
+  //         );
+  //       } else {
+  //         showToast(err.message, retroMode);
+  //       }
+  //     } else {
+  //       setFatal("Submission failed");
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 
   // Handler for credits modal submission
   async function handleCreditsModalSubmit(formData) {
@@ -304,7 +304,7 @@ function FanDemandGlobeInner() {
       // Show a toast notification for the submission
       showToast(
         submitMessage ||
-          "🎬 Pin dropped! Your city is now on the map. Zooming in...",
+          "Thanks for supporting Two Sleepy People, you've officially joined the team. Stay tuned for more info :)",
         retroMode
       );
 

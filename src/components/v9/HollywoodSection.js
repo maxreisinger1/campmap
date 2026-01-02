@@ -1,24 +1,19 @@
 export default function HollywoodSection() {
   return (
-    <section className="w-full h-[480px] sm:h-[800px] relative bg-[#DB286D] mx-auto py-8 md:py-10 pb-12 md:pb-32 px-4 md:px-12 lg:px-16 overflow-hidden">
+    <section className="w-full h-[480px] sm:h-[725px] relative bg-[#DB286D] mx-auto py-8 md:py-10 pb-12 md:pb-32 px-4 md:px-12 lg:px-16 overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         <div className="flex flex-col items-start">
           <h2 className="text-white text-start uppercase font-bold tracking-tight items-center gap-4 sm:inline-flex hidden">
             <span
-              className="text-[70px] text-start font-bold opacity-[0.6]"
+              className="text-[70px] text-center font-bold opacity-[0.6]"
               style={{
                 fontFamily: "'Adobe Garamond Pro', serif",
               }}
             >
-              1
+              2
             </span>
-            <span
-              className="font-bold text-[38px] tracking-tighter"
-              style={{
-                fontFamily: "'Inter', sans-serif",
-              }}
-            >
-              HOLLYWOOD IS BROKEN.
+            <span className="font-semibold text-[30px] tracking-wider">
+              Hollywood is Broken.
             </span>
           </h2>
 
@@ -29,7 +24,7 @@ export default function HollywoodSection() {
                 fontFamily: "'Adobe Garamond Pro', serif",
               }}
             >
-              1.
+              2.
             </span>
             <span
               className="font-bold text-[28px] tracking-tighter"
@@ -37,7 +32,7 @@ export default function HollywoodSection() {
                 fontFamily: "'Inter', sans-serif",
               }}
             >
-              HOLLYWOOD IS BROKEN.
+              Hollywood is Broken.
             </span>
           </h2>
 

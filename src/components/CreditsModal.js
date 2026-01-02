@@ -118,8 +118,8 @@ export default function CreditsModal({
           Sign Up To Join Us & Get Your Name in The Credits.
         </h2>
         <p className="text-[14px] pb-3 md:pb-[24px] pt-2 md:pt-[12px] max-w-xl sm:hidden">
-          We’re on the road to <span className="font-bold">500 theaters</span> for January. Sign up to
-          get notified for showings near you.
+          We’re on the road to <span className="font-bold">500 theaters</span>{" "}
+          for January. Sign up to get notified for showings near you.
         </p>
 
         <form
@@ -278,7 +278,7 @@ export default function CreditsModal({
               {loading && (
                 <span className="inline-block w-3 md:w-4 h-3 md:h-4 border-2 border-t-2 border-t-transparent border-black rounded-full animate-spin"></span>
               )}
-              {loading ? "Processing..." : "Drop Pin"}
+              {loading ? "Processing..." : "Add Name"}
             </button>
             <button
               type="button"

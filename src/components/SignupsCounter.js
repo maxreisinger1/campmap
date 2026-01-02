@@ -20,7 +20,7 @@ export default function SignupsCounter({ count = 0 }) {
 
           {/* Label */}
           <span className="ml-1.5 md:ml-3 font-mono text-white text-[10px] md:text-sm whitespace-nowrap">
-            tickets reserved
+            people joined
           </span>
         </div>
       </div>

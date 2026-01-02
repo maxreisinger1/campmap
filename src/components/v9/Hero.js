@@ -64,7 +64,7 @@ export default function Hero({ onOpenCreditsModal }) {
           />
         </div>
 
-        <div className="h-full w-full relative flex flex-col justify-center max-w-7xl mx-auto">
+        <div className="h-full w-full relative flex flex-col justify-center mx-auto">
           {/* Content Container */}
           <div className="relative z-10 flex flex-col items-center sm:items-start mt-36 sm:mt-0 sm:justify-center h-full w-full px-6 sm:px-8 gap-1">
             {/* Main Title */}
