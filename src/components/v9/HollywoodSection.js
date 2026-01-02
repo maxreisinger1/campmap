@@ -10,7 +10,7 @@ export default function HollywoodSection() {
                 fontFamily: "'Adobe Garamond Pro', serif",
               }}
             >
-              2
+              1
             </span>
             <span className="font-semibold text-[30px] tracking-wider">
               Hollywood is Broken.
@@ -24,7 +24,7 @@ export default function HollywoodSection() {
                 fontFamily: "'Adobe Garamond Pro', serif",
               }}
             >
-              2.
+              1.
             </span>
             <span
               className="font-bold text-[28px] tracking-tighter"
