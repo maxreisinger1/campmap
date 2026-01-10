@@ -4,6 +4,7 @@
  * @version 1.0.0
  */
 
+import { useRef, useEffect, useState } from "react";
 import {
   ComposableMap,
   Geographies,
@@ -19,6 +20,11 @@ import {
  */
 const GEO_URL =
   "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
+/**
+ * Clamp a value between min and max
+ */
+const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 
 /**
  * Interactive globe map component with rotation, zoom, city pin markers, and zoom-in clustering.
@@ -69,10 +75,118 @@ export default function GlobeMap({
   theme,
   submissions,
   jitter,
-  containerRef,
-  cursor,
+  containerRef: externalContainerRef,
+  cursor: externalCursor,
   hasSubmitted,
 }) {
+  // Internal refs and state for drag functionality
+  const internalContainerRef = useRef(null);
+  const containerRef = externalContainerRef || internalContainerRef;
+  const [cursor, setCursor] = useState(externalCursor || "grab");
+  const [autoRotate, setAutoRotate] = useState(true);
+  const resumeTimer = useRef(null);
+  const RESUME_AFTER = 1500; // ms to wait before resuming auto-rotation
+  const dragRef = useRef({
+    dragging: false,
+    startX: 0,
+    startY: 0,
+    startRotate: rotate,
+    factor: 0.35,
+  });
+
+  // Update cursor if external prop changes
+  useEffect(() => {
+    if (externalCursor) {
+      setCursor(externalCursor);
+    }
+  }, [externalCursor]);
+
+  // Auto-rotation effect
+  const autoSpeed = retroMode ? 0.12 : 0.06;
+  useEffect(() => {
+    if (!autoRotate) return;
+    const id = setInterval(() => {
+      setRotate(([x, y, z]) => [x + autoSpeed, y, z]);
+    }, 30);
+    return () => clearInterval(id);
+  }, [autoRotate, autoSpeed, setRotate]);
+
+  // Add drag handlers
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const down = (e) => {
+      setAutoRotate(false);
+      if (resumeTimer.current) clearTimeout(resumeTimer.current);
+
+      setCursor("grabbing");
+      dragRef.current = {
+        ...dragRef.current,
+        dragging: true,
+        startX: e.clientX,
+        startY: e.clientY,
+        startRotate: rotate,
+      };
+      el.setPointerCapture?.(e.pointerId);
+    };
+
+    const move = (e) => {
+      if (!dragRef.current.dragging) return;
+      const dx = e.clientX - dragRef.current.startX;
+      const dy = e.clientY - dragRef.current.startY;
+      const f = e.shiftKey
+        ? dragRef.current.factor * 1.8
+        : dragRef.current.factor;
+      const [rx, ry] = dragRef.current.startRotate;
+      setRotate([rx + dx * f, clamp(ry - dy * f, -89, 89), 0]);
+    };
+
+    const up = (e) => {
+      dragRef.current.dragging = false;
+      setCursor(externalCursor || "grab");
+      el.releasePointerCapture?.(e.pointerId);
+
+      // Resume auto-rotation after delay
+      if (resumeTimer.current) clearTimeout(resumeTimer.current);
+      resumeTimer.current = setTimeout(() => setAutoRotate(true), RESUME_AFTER);
+    };
+
+    el.addEventListener("pointerdown", down);
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+
+    return () => {
+      el.removeEventListener("pointerdown", down);
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    };
+  }, [rotate, setRotate, externalCursor, containerRef]);
+
+  // Add wheel zoom handler
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const onWheel = (e) => {
+      e.preventDefault();
+      setAutoRotate(false);
+      if (resumeTimer.current) clearTimeout(resumeTimer.current);
+
+      setZoom((z) => clamp(z * (e.deltaY > 0 ? 0.95 : 1.05), 0.9, 7.5));
+
+      // Resume auto-rotation after delay
+      resumeTimer.current = setTimeout(() => setAutoRotate(true), RESUME_AFTER);
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    };
+  }, [setZoom, containerRef]);
+
   // Clustering across all zoom levels: group nearby pins by on-screen proximity
   // so dense areas remain readable. The proximity is a constant screen radius
   // in pixels, converted to degrees given current zoom/projection. As you zoom

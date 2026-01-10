@@ -276,17 +276,23 @@ export default function AboutSection() {
             style={{ height: leftBoxHeight ? leftBoxHeight - 56 : "auto" }} // 56px is the height of the label + margin
           >
             <iframe
-              src="https://www.youtube.com/embed/TWpm8baVm9g"
-              title="Two Sleepy People Trailer"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/QX0aO-O00V8?si=fcRwnRDFfG8XZcqW"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
               className="w-full h-full"
             ></iframe>
           </div>
 
           <div className="flex flex-row items-center justify-center gap-2 px-2 mt-6">
-            <a href="https://letterboxd.com/film/two-sleepy-people/" target="_blank" rel="noreferrer">
+            <a
+              href="https://letterboxd.com/film/two-sleepy-people/"
+              target="_blank"
+              rel="noreferrer"
+            >
               <img
                 src="/images/v9/socials/letterboxd.png"
                 alt="Director Baron Ryan"
