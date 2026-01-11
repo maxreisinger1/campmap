@@ -1,4 +1,5 @@
 import countries from "world-countries";
+import { getCountryCallingCode } from "libphonenumber-js";
 
 /**
  * @fileoverview Signup form component for user registration and location input
@@ -47,16 +48,24 @@ export default function SignupForm({
   retroMode,
   loading = false,
 }) {
-  // Build dropdown options: ISO Alpha-2 + country name
+  // Build dropdown options: ISO Alpha-2 + country name + dial code
   const countryOptions = countries
     .map((c) => ({
-      code: c.cca2, // e.g., "US"
-      name: c.name.common, // e.g., "United States"
+      code: c.cca2,
+      name: c.name.common,
+      dial: (() => {
+        try {
+          return getCountryCallingCode(c.cca2);
+        } catch {
+          return "";
+        }
+      })(),
     }))
     .sort((a, b) => a.name.localeCompare(b.name));
 
   // Default to US if not set
   const selectedCountry = form.country || "US";
+  const selectedPhoneCountry = form.phoneCountry || selectedCountry || "US";
 
   // Postal code validation (just check it's non-empty)
   function validatePostalCode(code) {
@@ -150,21 +159,44 @@ export default function SignupForm({
           >
             Phone (optional)
           </label>
-          <input
-            className={`w-full rounded-md border ${
-              retroMode
-                ? "border-black bg-[#fffef4]"
-                : "border-black/40 bg-[#fffcf5]"
-            } px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base font-mono focus:outline-none focus:ring-2 focus:ring-black`}
-            placeholder="e.g. +1 555 123 4567"
-            value={form.phone || ""}
-            onChange={(e) =>
-              setForm({ ...form, phone: e.target.value, fatal: null })
-            }
-            type="tel"
-            inputMode="tel"
-            autoComplete="tel"
-          />
+          <div className="flex gap-2">
+            <select
+              className={`w-1/2 md:w-1/3 rounded-md border ${
+                retroMode
+                  ? "border-black bg-[#fffef4]"
+                  : "border-black/40 bg-[#fffcf5]"
+              } px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+              value={selectedPhoneCountry}
+              onChange={(e) =>
+                setForm({ ...form, phoneCountry: e.target.value, fatal: null })
+              }
+            >
+              {countryOptions.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.name}
+                  {c.dial ? ` (+${c.dial})` : ""}
+                </option>
+              ))}
+            </select>
+            <input
+              className={`flex-1 rounded-md border ${
+                retroMode
+                  ? "border-black bg-[#fffef4]"
+                  : "border-black/40 bg-[#fffcf5]"
+              } px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base font-mono focus:outline-none focus:ring-2 focus:ring-black`}
+              placeholder="Phone number"
+              value={form.phone || ""}
+              onChange={(e) =>
+                setForm({ ...form, phone: e.target.value, fatal: null })
+              }
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+            />
+          </div>
+          <p className="text-[10px] md:text-xs mt-1 text-black/70">
+            We'll save it with the country code automatically.
+          </p>
         </div>
 
         {/* Country */}
@@ -247,6 +279,7 @@ export default function SignupForm({
                 phone: "",
                 zip: "",
                 country: "US",
+                phoneCountry: "US",
               });
             }}
             className={`rounded-md border-2 border-black px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base font-bold shadow-[4px_4px_0_0_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${

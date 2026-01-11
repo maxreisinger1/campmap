@@ -260,4 +260,79 @@ describe("useSubmitSignup", () => {
 
     expect(result.current.message).toBe("Custom message");
   });
+
+  test("validates phone number must start with + when provided", async () => {
+    const { result } = renderHook(() => useSubmitSignup());
+
+    const form = {
+      name: "John Doe",
+      email: "test@example.com",
+      zip: "12345",
+      phone: "5551234567", // Missing country code
+    };
+
+    await act(async () => {
+      await expect(result.current.submit(form)).rejects.toThrow(
+        "Phone number must start with + and country code."
+      );
+    });
+
+    expect(result.current.message).toBe(
+      "Phone number must include country code (e.g., +1 for US)."
+    );
+  });
+
+  test("accepts phone number with country code", async () => {
+    const mockSubmissionResult = {
+      id: "123",
+      name: "John Doe",
+      email: "test@example.com",
+    };
+
+    mockAddSubmission.mockResolvedValue(mockSubmissionResult);
+
+    const { result } = renderHook(() => useSubmitSignup());
+
+    const form = {
+      name: "John Doe",
+      email: "test@example.com",
+      zip: "12345",
+      phone: "+15551234567",
+    };
+
+    await act(async () => {
+      await result.current.submit(form);
+    });
+
+    expect(mockAddSubmission).toHaveBeenCalledWith(
+      expect.objectContaining({
+        phone: "+15551234567",
+      })
+    );
+    expect(result.current.error).toBe(null);
+  });
+
+  test("accepts form without phone number", async () => {
+    const mockSubmissionResult = {
+      id: "123",
+      name: "John Doe",
+      email: "test@example.com",
+    };
+
+    mockAddSubmission.mockResolvedValue(mockSubmissionResult);
+
+    const { result } = renderHook(() => useSubmitSignup());
+
+    const form = {
+      name: "John Doe",
+      email: "test@example.com",
+      zip: "12345",
+    };
+
+    await act(async () => {
+      await result.current.submit(form);
+    });
+
+    expect(result.current.error).toBe(null);
+  });
 });

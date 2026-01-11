@@ -6,6 +6,7 @@
 
 import { useState, useRef } from "react";
 import { addSubmission } from "../services/SubmissionsService";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { toUserFriendlyMessage } from "../utils/errorParser";
 
 /**
@@ -56,6 +57,11 @@ export function useSubmitSignup() {
       setMessage("Please enter a valid email.");
       throw new Error("Please enter a valid email.");
     }
+
+    // Normalize and validate phone number if provided
+    const rawPhone = form?.phone?.trim();
+    const phoneCountry = form?.phoneCountry || form?.country || "US";
+
     const z = String(form?.zip || "").trim();
     const country = form?.country || "US";
     if (!z) {
@@ -80,10 +86,20 @@ export function useSubmitSignup() {
       const payload = {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
-        phone: form.phone ? form.phone.trim() : undefined,
         zip: z,
         country_code: country,
       };
+
+      if (rawPhone) {
+        const parsed = rawPhone.startsWith("+")
+          ? parsePhoneNumberFromString(rawPhone)
+          : parsePhoneNumberFromString(rawPhone, phoneCountry);
+        if (!parsed || !parsed.isValid()) {
+          setMessage("Please enter a valid phone number.");
+          throw new Error("Invalid phone number");
+        }
+        payload.phone = parsed.number; // E.164 format
+      }
 
       const result = await addSubmission(payload);
       setMessage(

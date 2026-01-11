@@ -197,12 +197,17 @@ export default function TheaterTable({ onOpenCreditsModal }) {
             aria-hidden
             className="absolute inset-0 translate-x-[2px] translate-y-[2px] rounded-xl bg-black opacity-75"
           />
-          <button
-            onClick={onOpenCreditsModal}
-            className={`relative px-4 sm:w-auto w-full sm:px-12 py-4 rounded-xl border-2 border-black text-[14px] font-bold underline uppercase bg-[#598CCC] text-white hover:opacity-90 transition cursor-pointer`}
+          <a
+            href="https://docs.google.com/spreadsheets/d/1lEfrY6je36FeQSYljG80S-OAhg8DttpMB-mIoZUuka8/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Don't See Showings Near Your City?
-          </button>
+            <button
+              className={`relative px-4 sm:w-auto w-full sm:px-12 py-4 rounded-xl border-2 border-black text-[14px] font-bold underline uppercase bg-[#598CCC] text-white hover:opacity-90 transition cursor-pointer`}
+            >
+              Don't See Showings Near Your City?
+            </button>
+          </a>
         </div>
       </div>
     </div>
