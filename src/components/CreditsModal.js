@@ -211,12 +211,17 @@ export default function CreditsModal({
                 } px-2 md:px-3 py-1.5 md:py-2 text-sm md:text-base font-mono focus:outline-none focus:ring-2 focus:ring-black`}
                 value={selectedPhoneCountry}
                 onChange={(e) =>
-                  setForm({ ...form, phoneCountry: e.target.value, fatal: null })
+                  setForm({
+                    ...form,
+                    phoneCountry: e.target.value,
+                    fatal: null,
+                  })
                 }
               >
                 {countryOptions.map((c) => (
                   <option key={c.code} value={c.code}>
-                    {c.name}{c.dial ? ` (+${c.dial})` : ""}
+                    {c.name}
+                    {c.dial ? ` (+${c.dial})` : ""}
                   </option>
                 ))}
               </select>
