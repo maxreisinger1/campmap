@@ -40,6 +40,12 @@ export default function Navbar() {
           About The Film
         </a>
         <a
+            href="mailto:contact@creatorcamp.co"
+          className="bg-[#30231A] border border-black rounded-full px-8 py-1 text-white font-medium hover:bg-gray-200 transition"
+        >
+          Contact
+        </a>
+        <a
           href="https://tickets.twosleepypeople.com/"
           // onClick={(e) => handleSmoothScroll(e, "signup")}
           className="bg-[#D42568] border border-black rounded-full px-8 py-1 text-white font-medium hover:bg-gray-200 transition"
@@ -95,6 +101,12 @@ export default function Navbar() {
             className="bg-white border border-black rounded-full px-8 py-3 text-black underline font-semibold hover:bg-gray-200 transition text-center"
           >
             About The Film
+          </a>
+          <a
+            href="mailto:contact@creatorcamp.co"
+            className="bg-white border border-black rounded-full px-8 py-3 text-black underline font-semibold hover:bg-gray-200 transition text-center"
+          >
+            Contact
           </a>
           <a
             href="https://tickets.twosleepypeople.com/"
