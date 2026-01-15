@@ -39,8 +39,6 @@ const parseCSV = (csvText) => {
   });
 };
 
-const theaters = [];
-
 const accentPink = "#d95b85";
 const thinPink = "rgba(217,91,133,0.12)";
 
