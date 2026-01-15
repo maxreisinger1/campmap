@@ -8,9 +8,7 @@ import { useState, useRef, useEffect, useMemo, lazy, Suspense } from "react";
 import { ToastProvider, useToast } from "../context/ToastContext";
 import { clamp } from "../utils/helpers";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
-import { useCityPins } from "../hooks/useCityPins";
 import { useSubmitSignup } from "../hooks/useSubmitSignup";
-import { useLeaderboard } from "../hooks/useLeaderboard";
 
 const Hero = lazy(() => import("./v9/Hero"));
 const SignupsCounter = lazy(() => import("./SignupsCounter"));
@@ -21,9 +19,7 @@ const RetroLoader = lazy(() => import("./RetroLoader"));
 const GlobeMap = lazy(() => import("./GlobeMap"));
 const RetroEffects = lazy(() => import("./RetroEffects"));
 const NewAboutSection = lazy(() => import("./NewAboutSection"));
-const BuyTicketsSection = lazy(() => import("./v6/BuyTicketsSection"));
 const FAQSection = lazy(() => import("./v9/FAQSection"));
-const Leaderboard = lazy(() => import("./Leaderboard"));
 const HollywoodSection = lazy(() => import("./v9/HollywoodSection"));
 const StepsSection = lazy(() => import("./v9/StepsSection"));
 const MakingSection = lazy(() => import("./v9/MakingSection"));
@@ -83,11 +79,16 @@ function FanDemandGlobeInner() {
     animate();
   }
 
-  const [zoom, setZoom] = useState(1.15);
-  const [cursor, setCursor] = useState("grab");
-  const [fatal, setFatal] = useState("");
-  const [form, setForm] = useState({ name: "", email: "", phone: "", zip: "" });
   // messages are shown via ToastContext
+  const [_zoom, setZoom] = useState(1.15);
+  const [_cursor, setCursor] = useState("grab");
+  const [_fatal, setFatal] = useState("");
+  const [_form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    zip: "",
+  });
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
   const [retroMode] = useState(false);
@@ -97,8 +98,6 @@ function FanDemandGlobeInner() {
   const resumeTimer = useRef(null);
   const RESUME_AFTER = 1500;
   const [submissions, setSubmissions] = useLiveSubmissions([]);
-  const { pins: dbPins, loading: pinsLoading } = useCityPins();
-  const { leaderboard, loading: lbLoading } = useLeaderboard();
 
   const containerRef = useRef(null);
   const dragRef = useRef({

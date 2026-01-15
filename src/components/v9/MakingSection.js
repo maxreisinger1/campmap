@@ -102,7 +102,10 @@ export default function AboutSection() {
               <ul className="list-disc list-inside ml-4">
                 <li>
                   a small group of friends from the internet (
-                  <a href="" className="underline">
+                  <a
+                    href="https://www.instagram.com/creatorcamp/"
+                    className="underline"
+                  >
                     @creatorcamp
                   </a>
                   )
@@ -216,7 +219,10 @@ export default function AboutSection() {
               <ul className="list-disc list-inside ml-4">
                 <li>
                   a small group of friends from the internet (
-                  <a href="" className="underline">
+                  <a
+                    href="https://www.instagram.com/creatorcamp/"
+                    className="underline"
+                  >
                     @creatorcamp
                   </a>
                   )
@@ -298,19 +304,19 @@ export default function AboutSection() {
                 alt="Director Baron Ryan"
               />
             </a>
-            <a>
+            <a href="https://www.imdb.com/title/tt27772662/">
               <img
                 src="/images/v9/socials/rating.png"
                 alt="Written and Directed by"
               />
             </a>
-            <a>
+            <a href="https://www.imdb.com/title/tt27772662/">
               <img
                 src="/images/v9/socials/IMDb-rating.png"
                 alt="Director Baron Ryan"
               />
             </a>
-            <a>
+            <a href="https://www.imdb.com/title/tt27772662/">
               <img
                 src="/images/v9/socials/IMDb-logo.png"
                 alt="Written and Directed by"
