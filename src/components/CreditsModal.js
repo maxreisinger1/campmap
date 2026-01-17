@@ -116,7 +116,7 @@ export default function CreditsModal({
         </div>
 
         <h2 className="text-lg md:text-2xl font-extrabold tracking-wider sm:block hidden">
-          Sign Up To Join & Get Your Name in The Credits.
+          Sign up for updates & BTS.
         </h2>
         <p className="text-[14px] pb-3 md:pb-[24px] pt-2 md:pt-[12px] max-w-xl sm:block hidden">
           We’re on the road to 500 theaters for this January. Sign up to get
@@ -125,7 +125,7 @@ export default function CreditsModal({
         </p>
 
         <h2 className="text-lg md:text-2xl font-extrabold tracking-wider sm:hidden">
-          Sign Up To Join Us & Get Your Name in The Credits.
+          Sign up for updates & BTS.
         </h2>
         <p className="text-[14px] pb-3 md:pb-[24px] pt-2 md:pt-[12px] max-w-xl sm:hidden">
           We’re on the road to <span className="font-bold">500 theaters</span>{" "}

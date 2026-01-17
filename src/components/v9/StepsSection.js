@@ -59,8 +59,8 @@ export default function StepsSection({ signupCount, onOpenCreditsModal }) {
           <div className="flex flex-col max-w-7xl mx-auto lg:flex-row gap-8 mt-8 sm:px-0 px-8">
             <div className="text-white flex flex-col gap-4 lg:w-1/2 font-normal sm:text-base text-xs uppercase">
               <p>
-                On JanuAry 23rd, TWo Sleepy People Will Play In 500
-                Theaters Worldwide.
+                On JanuAry 23rd, TWo Sleepy People Will Play In 500 Theaters
+                Worldwide.
               </p>
 
               <p>But, We Need Your Help To Make Film History.</p>
@@ -112,7 +112,7 @@ export default function StepsSection({ signupCount, onOpenCreditsModal }) {
                 onClick={onOpenCreditsModal}
                 className=" w-full px-8 py-3 md:px-10 bg-[#DB286D] hover:bg-[#DB286D] text-white border border-white font-semibold uppercase rounded-full transition-colors duration-200 text-[11px]"
               >
-                Sign Up & Get Your Name IN The Credits
+                Sign up for updates & BTS
               </button>
               <a
                 href="https://tickets.twosleepypeople.com/"
@@ -154,7 +154,7 @@ export default function StepsSection({ signupCount, onOpenCreditsModal }) {
             onClick={onOpenCreditsModal}
             className=" w-full px-8 py-3 md:px-10 bg-[#DB286D] hover:bg-[#DB286D] text-white border border-white font-semibold uppercase rounded-full transition-colors duration-200 text-sm"
           >
-            Sign Up & Get Your Name IN The Credits
+            Sign up for updates & BTS
           </button>
           <a
             href="https://tickets.twosleepypeople.com/"
