@@ -10,7 +10,8 @@ import { clamp } from "../utils/helpers";
 import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 import { useSubmitSignup } from "../hooks/useSubmitSignup";
 
-const Hero = lazy(() => import("./v9/Hero"));
+const Hero = lazy(() => import("./v10/Hero"));
+const ReviewSection = lazy(() => import("./v10/CommentSection"));
 const SignupsCounter = lazy(() => import("./SignupsCounter"));
 const SignupForm = lazy(() => import("./SignupForm"));
 const CreditsModal = lazy(() => import("./CreditsModal"));
@@ -557,6 +558,27 @@ function FanDemandGlobeInner() {
       >
         <BuyTicketsSection />
       </Suspense> */}
+
+      <Suspense
+        fallback={
+          <div className="h-40 w-full flex flex-col items-center justify-center py-8">
+            <div className="flex space-x-2 mb-4">
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-100"></div>
+              <div className="w-3 h-3 bg-[#D42568] rounded-full animate-bounce delay-200"></div>
+            </div>
+            <div
+              className={`text-sm font-mono uppercase tracking-wider ${
+                retroMode ? "text-yellow-500" : "text-[#1f2937]"
+              }`}
+            >
+              Loading Theaters Section...
+            </div>
+          </div>
+        }
+      >
+        <ReviewSection />
+      </Suspense>
 
       <Suspense
         fallback={

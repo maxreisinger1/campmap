@@ -86,15 +86,12 @@ export default function TheaterTable({ onOpenCreditsModal }) {
   }
 
   return (
-    <div className="w-full min-h-[600px] md:min-h-[800px] flex flex-col justify-center items-center relative bg-[#000000] mx-auto py-6 md:py-10 pb-8 md:pb-32 px-3 md:px-12 lg:px-16 overflow-hidden">
+    <div className="w-full min-h-[600px] md:min-h-[800px] flex-col justify-center items-center relative bg-[#000000] mx-auto py-6 md:py-10 pb-8 md:pb-32 px-3 md:px-12 lg:px-16 overflow-hidden hidden sm:flex">
       <div className="text-center w-full mb-6 md:mb-10 mt-4 md:mt-6 space-y-2 md:space-y-4 max-w-4xl mx-auto">
-        <h2 className="text-center text-[#ffffff] font-bold text-[22px] sm:text-[36px] tracking-wide uppercase px-2">
-          PRE-SALE TICKETS FOR JAN 23 ARE OFFICIALLY ON SALE
+        <h2 className="text-center text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wide uppercase px-2">
+          TICKETS OFFICIALLY ON SALE for JAN 23{" "}
+          <span className="underline font-thin italic">(Opening Weekend):</span>
         </h2>
-
-        <span className="text-center text-[#ffffff] font-bold text-sm sm:text-2xl tracking-wide uppercase">
-          SCROLL THROUGH THE LIST TO FIND YOUR CITY
-        </span>
       </div>
 
       <div
