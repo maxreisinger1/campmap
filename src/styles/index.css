@@ -11,6 +11,14 @@
 }
 
 @font-face {
+  font-family: "Grotesk Bold";
+  src: url("../assets/fonts/AutautGrotesk-Bold.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "GFS Didot";
   src: url("../assets/fonts/GFSDidot-Regular.ttf") format("truetype");
   font-weight: normal;

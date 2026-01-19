@@ -76,13 +76,21 @@ export default function Hero({ onOpenCreditsModal }) {
                 className="h-auto w-[250px] sm:w-full mb-8"
               />
 
-              <h1 className="text-4xl sm:text-6xl text-white text-center sm:text-left font-bold mb-4 uppercase tracking-normal sm:tracking-tight">
+              <h1
+                className="text-3xl sm:text-5xl text-white text-center sm:text-left font-bold mb-4 uppercase tracking-normal sm:tracking-tight"
+                style={{
+                  fontFamily: "'Grotesk Bold', serif",
+                  fontWeight: 700,
+                  lineHeight: "106%",
+                  letterSpacing: "-1%",
+                }}
+              >
                 Indie film isn't dead.
                 <br />
                 <span
-                  className="normal-case text-left italic text-[24px] sm:text-[38px]"
+                  className="normal-case text-left italic text-[26px] sm:text-[44px]"
                   style={{
-                    fontFamily: "'GFS Didot', serif",
+                    fontFamily: "'Adobe Garamond Pro', serif",
                     fontWeight: 700,
                     lineHeight: "106%",
                     letterSpacing: "-1%",
