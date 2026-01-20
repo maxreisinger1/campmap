@@ -2,6 +2,7 @@ import { useState } from "react";
 import GlobeMap from "../GlobeMap";
 import SignupsCounter from "../SignupsCounter";
 import { useCityPins } from "../../hooks/useCityPins";
+import CommentSectionCentered from "../v10/CommentSectionCentered";
 
 export default function StepsSection({ signupCount, onOpenCreditsModal }) {
   const [rotate, setRotate] = useState([0, 0, 0]);
@@ -43,12 +44,13 @@ export default function StepsSection({ signupCount, onOpenCreditsModal }) {
               2.
             </span>
             <span
-              className="font-bold text-[28px] tracking-tighter"
+              className="font-bold text-[28px] tracking-tighter leading-8"
               style={{
                 fontFamily: "'Inter', sans-serif",
               }}
             >
-              The World’s First Movie With 100,000 Producers
+              Early Reviews OF
+              <br /> Two Sleepy People
             </span>
           </h2>
 
@@ -57,7 +59,7 @@ export default function StepsSection({ signupCount, onOpenCreditsModal }) {
           </div>
 
           <div className="flex flex-col max-w-7xl mx-auto lg:flex-row gap-8 mt-8 sm:px-0 px-8">
-            <div className="text-white flex flex-col gap-4 lg:w-1/2 font-normal sm:text-base text-xs uppercase">
+            <div className="text-white flex-col gap-4 lg:w-1/2 font-normal sm:text-base text-xs uppercase hidden sm:flex">
               <p>
                 On JanuAry 23rd, TWo Sleepy People Will Play In 500 Theaters
                 Worldwide.
@@ -105,6 +107,8 @@ export default function StepsSection({ signupCount, onOpenCreditsModal }) {
               </p>
             </div>
 
+            <CommentSectionCentered />
+
             {/* Buttons - mobile */}
             <div className="flex-col gap-4 w-full flex sm:hidden">
               <button
@@ -149,23 +153,26 @@ export default function StepsSection({ signupCount, onOpenCreditsModal }) {
 
         {/* Buttons - desktop */}
         <div className="flex-row gap-8 w-full hidden sm:flex">
-          <button
-            type="button"
-            onClick={onOpenCreditsModal}
-            className=" w-full px-8 py-3 md:px-10 bg-[#DB286D] hover:bg-[#DB286D] text-white border border-white font-semibold uppercase rounded-full transition-colors duration-200 text-sm"
-          >
-            Sign up for updates & BTS
-          </button>
           <a
             href="https://tickets.twosleepypeople.com/"
             className="w-full"
             target="_blank"
             rel="noreferrer"
           >
-            <button className=" w-full px-8 py-3 md:px-10 bg-transparent border-2 border-[#DB286D] bg-white text-black hover:bg-white hover:text-black font-semibold uppercase rounded-full transition-colors duration-200 text-sm">
-              Tickets OUT NOW For JAN 23RD!
+            <button
+              type="button"
+              onClick={onOpenCreditsModal}
+              className=" w-full px-8 py-3 md:px-10 bg-[#DB286D] hover:bg-[#DB286D] text-white border border-white font-semibold uppercase rounded-full transition-colors duration-200 text-sm"
+            >
+              Buy Limited Tickets Now!
             </button>
           </a>
+          <button
+            onClick={onOpenCreditsModal}
+            className=" w-full px-8 py-3 md:px-10 bg-transparent border-2 border-[#DB286D] bg-white text-black hover:bg-white hover:text-black font-semibold uppercase rounded-full transition-colors duration-200 text-sm"
+          >
+            Sign Up To Bring TSP NEar You & Get BTS
+          </button>
         </div>
       </div>
     </section>

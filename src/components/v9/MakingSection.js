@@ -56,11 +56,13 @@ export default function AboutSection() {
             style={{ height: 220 }}
           >
             <iframe
-              src="https://www.youtube.com/embed/TWpm8baVm9g"
-              title="Two Sleepy People Trailer"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/QX0aO-O00V8?si=fcRwnRDFfG8XZcqW"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
               className="w-full h-full border-2 border-black"
             />
           </div>

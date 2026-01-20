@@ -11,7 +11,7 @@ import { useLiveSubmissions } from "../hooks/useLiveSubmissions";
 import { useSubmitSignup } from "../hooks/useSubmitSignup";
 
 const Hero = lazy(() => import("./v10/Hero"));
-const ReviewSection = lazy(() => import("./v10/CommentSection"));
+const ReviewSection = lazy(() => import("./v10/CommentTheatersSection"));
 const SignupsCounter = lazy(() => import("./SignupsCounter"));
 const SignupForm = lazy(() => import("./SignupForm"));
 const CreditsModal = lazy(() => import("./CreditsModal"));
@@ -580,7 +580,7 @@ function FanDemandGlobeInner() {
         <ReviewSection />
       </Suspense>
 
-      <Suspense
+      {/* <Suspense
         fallback={
           <div className="h-40 w-full flex flex-col items-center justify-center py-8">
             <div className="flex space-x-2 mb-4">
@@ -599,7 +599,7 @@ function FanDemandGlobeInner() {
         }
       >
         <TheatersTable onOpenCreditsModal={() => setIsCreditsModalOpen(true)} />
-      </Suspense>
+      </Suspense> */}
 
       <Suspense
         fallback={

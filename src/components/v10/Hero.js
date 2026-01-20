@@ -68,12 +68,12 @@ export default function Hero({ onOpenCreditsModal }) {
           {/* Content Container */}
           <div className="relative z-10 flex flex-col items-center sm:items-start mt-36 sm:mt-0 sm:justify-center h-full w-full px-6 sm:px-8">
             {/* Content Wrapper - consistent width for all elements */}
-            <div className="w-full max-w-md sm:max-w-lg sm:items-start items-center flex flex-col gap-1">
+            <div className="w-full max-w-md sm:max-w-lg sm:items-center items-center flex flex-col gap-1">
               {/* Main Title */}
               <img
-                src="/images/v10/hero-logo.svg"
+                src="/images/v10/hero-logo-2.svg"
                 alt="Two Sleepy People"
-                className="h-auto w-[250px] sm:w-full mb-8"
+                className="h-auto w-[250px] sm:max-w-[225px] mb-8"
               />
 
               <h1
@@ -133,7 +133,7 @@ export default function Hero({ onOpenCreditsModal }) {
           </div>
         </div>
 
-        <div className="absolute bottom-10 mx-auto z-50 block sm:hidden">
+        <div className="absolute bottom-10 mx-auto z-40 block sm:hidden">
           <img
             src="/images/v10/mobile-labels.svg"
             alt="Two Sleepy People"
