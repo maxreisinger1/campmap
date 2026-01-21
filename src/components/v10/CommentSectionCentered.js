@@ -39,19 +39,19 @@ export default function CommentSectionCentered() {
               alt="Director Baron Ryan"
             />
           </a>
-          <a href="https://www.imdb.com/title/tt27772662/">
+          <a href="https://www.imdb.com/title/tt38565998/">
             <img
               src="/images/v9/socials/rating.png"
               alt="Written and Directed by"
             />
           </a>
-          <a href="https://www.imdb.com/title/tt27772662/">
+          <a href="https://www.imdb.com/title/tt38565998/">
             <img
               src="/images/v9/socials/IMDb-rating.png"
               alt="Director Baron Ryan"
             />
           </a>
-          <a href="https://www.imdb.com/title/tt27772662/">
+          <a href="https://www.imdb.com/title/tt38565998/">
             <img
               src="/images/v9/socials/IMDb-logo.png"
               alt="Written and Directed by"
@@ -75,8 +75,8 @@ export default function CommentSectionCentered() {
             But, We Need Your Help To Make Film History.
           </p>
           <p>
-            But, We Need Your Help To Make Film History. The More People Show Up
-            Now, The More Likely We Are to Stay in Theaters and Keep Expanding.
+            The More People Show Up Now, The More Likely We Are to Stay in
+            Theaters and Keep Expanding.
           </p>
         </div>
       </div>

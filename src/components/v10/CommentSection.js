@@ -57,19 +57,19 @@ export default function CommentSection() {
                 alt="Director Baron Ryan"
               />
             </a>
-            <a href="https://www.imdb.com/title/tt27772662/">
+            <a href="https://www.imdb.com/title/tt38565998/">
               <img
                 src="/images/v9/socials/rating.png"
                 alt="Written and Directed by"
               />
             </a>
-            <a href="https://www.imdb.com/title/tt27772662/">
+            <a href="https://www.imdb.com/title/tt38565998/">
               <img
                 src="/images/v9/socials/IMDb-rating.png"
                 alt="Director Baron Ryan"
               />
             </a>
-            <a href="https://www.imdb.com/title/tt27772662/">
+            <a href="https://www.imdb.com/title/tt38565998/">
               <img
                 src="/images/v9/socials/IMDb-logo.png"
                 alt="Written and Directed by"

@@ -120,19 +120,19 @@ export default function AboutSection() {
                   alt="Director Baron Ryan"
                 />
               </a>
-              <a href="https://www.imdb.com/title/tt27772662/">
+              <a href="https://www.imdb.com/title/tt38565998/">
                 <img
                   src="/images/v9/socials/rating.png"
                   alt="Written and Directed by"
                 />
               </a>
-              <a href="https://www.imdb.com/title/tt27772662/">
+              <a href="https://www.imdb.com/title/tt38565998/">
                 <img
                   src="/images/v9/socials/IMDb-rating.png"
                   alt="Director Baron Ryan"
                 />
               </a>
-              <a href="https://www.imdb.com/title/tt27772662/">
+              <a href="https://www.imdb.com/title/tt38565998/">
                 <img
                   src="/images/v9/socials/IMDb-logo.png"
                   alt="Written and Directed by"
@@ -147,7 +147,8 @@ export default function AboutSection() {
         <div className="relative text-center w-full">
           <div className="text-center w-full space-y-2 md:space-y-4 max-w-4xl mx-auto">
             <h2 className="text-center text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wide uppercase leading-8">
-              TICKETS OFFICIALLY ON SALE <br />for JAN 23{" "}
+              TICKETS OFFICIALLY ON SALE <br />
+              for JAN 23{" "}
               <span className="underline font-thin italic">
                 (Opening Weekend):
               </span>

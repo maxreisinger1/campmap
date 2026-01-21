@@ -73,7 +73,7 @@ export default function Hero({ onOpenCreditsModal }) {
               <img
                 src="/images/v10/hero-logo-2.svg"
                 alt="Two Sleepy People"
-                className="h-auto w-[250px] sm:max-w-[225px] mb-8"
+                className="h-auto w-[150px] sm:max-w-[225px] mb-8"
               />
 
               <h1
