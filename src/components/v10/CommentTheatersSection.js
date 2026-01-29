@@ -76,40 +76,42 @@ export default function AboutSection() {
     <section className="bg-black mx-auto w-full gap-6 py-8 md:py-10 pb-12 md:pb-32 px-4 md:px-12 lg:px-16 overflow-x-hidden sm:flex hidden">
       {/* Desktop layout: keep original, hide on mobile */}
       <div className="hidden md:block w-full md:w-[50%] mx-auto">
-        <div className="relative flex flex-col justify-start items-start text-left w-full">
-          <h2 className="text-start text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wide uppercase leading-8">
-            Early Reviews OF <br />
-            Two Sleepy People
-          </h2>
+        <div className="relative flex flex-col justify-start items-center text-left w-full">
+          <div className="flex flex-col gap-12 items-start w-[80%] mt-6">
+            <h2 className="text-start text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wider uppercase leading-8">
+              Early Reviews OF <br />
+              Two Sleepy People
+            </h2>
+            <div className="flex flex-col gap-6">
+              <img
+                src="/images/reviews/review-1.png"
+                alt="Review 1"
+                className="h-auto rounded-lg shadow-md"
+              />
+              <img
+                src="/images/reviews/review-2.png"
+                alt="Review 2"
+                className="h-auto rounded-lg shadow-md"
+              />
+              <img
+                src="/images/reviews/review-3.png"
+                alt="Review 3"
+                className="h-auto rounded-lg shadow-md"
+              />
+              <img
+                src="/images/reviews/review-4.png"
+                alt="Review 3"
+                className="h-auto rounded-lg shadow-md"
+              />
+            </div>
 
-          <div className="flex flex-col gap-6 items-start w-[80%] mt-6">
-            <img
-              src="/images/reviews/review-1.png"
-              alt="Review 1"
-              className="h-auto rounded-lg shadow-md"
-            />
-            <img
-              src="/images/reviews/review-2.png"
-              alt="Review 2"
-              className="h-auto rounded-lg shadow-md"
-            />
-            <img
-              src="/images/reviews/review-3.png"
-              alt="Review 3"
-              className="h-auto rounded-lg shadow-md"
-            />
-            <img
-              src="/images/reviews/review-4.png"
-              alt="Review 3"
-              className="h-auto rounded-lg shadow-md"
-            />
+            <span className="uppercase text-white font-light tracking-[0.15em]">
+              See Full Reviews On:
+            </span>
           </div>
 
           <div className="flex flex-col items-start justify-center gap-2 mt-6 w-[90%]">
-            <span className="uppercase text-white font-light tracking-wider">
-              See Full Reviews On:
-            </span>
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-2 items-center">
               <a
                 href="https://letterboxd.com/film/two-sleepy-people/"
                 target="_blank"
@@ -138,6 +140,12 @@ export default function AboutSection() {
                   alt="Written and Directed by"
                 />
               </a>
+              <a href="https://www.rottentomatoes.com/m/two_sleepy_people">
+                <img
+                  src="/images/v10/rotten-tomatoes.png"
+                  alt="Written and Directed by"
+                />
+              </a>
             </div>
           </div>
         </div>
@@ -145,7 +153,7 @@ export default function AboutSection() {
 
       <div className="hidden md:flex w-full md:w-[50%] mx-auto flex-col">
         <div className="relative text-center w-full">
-          <div className="text-center w-full space-y-2 md:space-y-4 max-w-4xl mx-auto">
+          <div className="text-center w-full space-y-2 md:space-y-4 mx-auto">
             <h2 className="text-center text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wide uppercase leading-8">
               TICKETS OFFICIALLY ON SALE <br />
               for JAN 23{" "}

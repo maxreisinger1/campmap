@@ -76,47 +76,51 @@ export default function Hero({ onOpenCreditsModal }) {
                 className="h-auto w-[150px] sm:w-[225px] mb-8"
               />
 
-              <h1
-                className="text-3xl sm:text-5xl text-white text-center sm:text-left font-bold mb-4 uppercase tracking-normal sm:tracking-tight"
-                style={{
-                  fontFamily: "'Grotesk Bold', serif",
-                  fontWeight: 700,
-                  lineHeight: "106%",
-                  letterSpacing: "-1%",
-                }}
-              >
-                Indie film isn't dead.
-                <br />
-                <span
-                  className="normal-case text-left italic text-[26px] sm:text-[44px]"
+              <div className="hidden flex-row gap-2 mb-4 sm:flex">
+                <img
+                  src="/images/v9/socials/letterboxd.png"
+                  alt="Awards"
+                  className="h-auto w-full max-h-[40px]"
+                />
+                <img
+                  src="/images/v10/rotten-tomatoes.svg"
+                  alt="Awards"
+                  className="h-auto w-full max-h-[40px]"
+                />
+              </div>
+
+              <div>
+                <h1
+                  className="text-4xl sm:text-[54px] text-white text-center sm:text-left font-bold mb-4 uppercase tracking-normal sm:tracking-wide"
                   style={{
-                    fontFamily: "'Adobe Garamond Pro', serif",
+                    fontFamily: "'Grotesk Bold', serif",
                     fontWeight: 700,
                     lineHeight: "106%",
                     letterSpacing: "-1%",
                   }}
                 >
-                  This Movie’s Trying To Save it.
-                </span>
-              </h1>
+                  THE #1 INDIE FILM
+                  <br />
+                  IN THE COUNTRY
+                </h1>
 
-              <div className="flex flex-col gap-8 sm:gap-14 items-center sm:items-start">
-                {/* Subtitle */}
-                <p className="text-white text-[14px] sm:text-[24px] uppercase tracking-wider sm:tracking-[0.4rem] font-light">
-                  In Theaters January 23rd
-                </p>
+                <div className="flex flex-col gap-8 items-center sm:items-start">
+                  {/* Subtitle */}
+                  <p className="text-white text-[14px] sm:text-[20px] uppercase tracking-wider sm:tracking-[0.4rem] font-light">
+                    IN THEATERS THIS WEEK ONLY
+                  </p>
 
-                {/* Buttons */}
-                <div className="flex flex-col w-full">
-                  <a
-                    href="https://tickets.twosleepypeople.com/"
-                    className="w-full sm:w-auto"
-                  >
-                    <button className="w-full px-8 py-2 md:px-10 bg-[#EC407A] hover:bg-[#D81B60] text-white border border-white font-semibold uppercase rounded-full transition-colors duration-200 text-sm md:text-base">
-                      Buy Tickets
-                    </button>
-                  </a>
-                  <a href="https://thebreakupmovie.com/">
+                  {/* Buttons */}
+                  <div className="flex flex-col w-full">
+                    <a
+                      href="https://tickets.twosleepypeople.com/"
+                      className="w-full sm:w-auto"
+                    >
+                      <button className="w-full px-8 py-2 md:px-10 bg-[#EC407A] hover:bg-[#D81B60] text-white border border-white font-semibold uppercase rounded-full transition-colors duration-200 text-sm md:text-base">
+                        Buy Tickets
+                      </button>
+                    </a>
+                    {/* <a href="https://thebreakupmovie.com/">
                     <button className="w-full block sm:hidden mt-4 px-8 py-1.5 md:px-10 bg-transparent border-2 border-black bg-white text-black hover:bg-white hover:text-black font-semibold uppercase rounded-full transition-colors duration-200 text-sm">
                       TAKE THE RELATIONSHIP QUIZ
                     </button>
@@ -125,7 +129,20 @@ export default function Hero({ onOpenCreditsModal }) {
                     <button className="w-full hidden sm:block mt-4 px-8 py-1.5 md:px-10 bg-transparent border-2 border-black bg-white text-black hover:bg-white hover:text-black font-semibold uppercase rounded-full transition-colors duration-200 text-sm">
                       TAKE THE RELATIONSHIP QUIZ (3 Mins)
                     </button>
-                  </a>
+                  </a> */}
+                    <button
+                      onClick={handleOpenModal}
+                      className="w-full block sm:hidden mt-4 px-8 py-1.5 md:px-10 bg-transparent border-2 border-black bg-white text-black hover:bg-white hover:text-black font-semibold uppercase rounded-full transition-colors duration-200 text-xs"
+                    >
+                      NOT IN THE USA? SIGN UP FOR UPDATES!
+                    </button>
+                    <button
+                      onClick={handleOpenModal}
+                      className="w-full hidden sm:block mt-4 px-8 py-1.5 md:px-10 bg-transparent border-2 border-black bg-white text-black hover:bg-white hover:text-black font-semibold uppercase rounded-full transition-colors duration-200 text-sm"
+                    >
+                      (NOT IN THE USA? SIGN UP FOR WHEN WE EXPAND ABROAD)
+                    </button>
+                  </div>
                 </div>
               </div>
               {/* End Content Wrapper */}
@@ -133,9 +150,9 @@ export default function Hero({ onOpenCreditsModal }) {
           </div>
         </div>
 
-        <div className="absolute bottom-10 mx-auto z-40 block sm:hidden">
+        <div className="absolute bottom-10 mx-auto z-40 flex flex-row gap-4 sm:hidden">
           <img
-            src="/images/v10/mobile-labels.svg"
+            src="/images/v10/mobile-labels-v2.svg"
             alt="Two Sleepy People"
             className="object-cover z-0 w-full h-auto max-w-sm"
           />

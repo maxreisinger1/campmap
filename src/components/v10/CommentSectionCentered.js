@@ -57,6 +57,12 @@ export default function CommentSectionCentered() {
               alt="Written and Directed by"
             />
           </a>
+          <a href="https://www.rottentomatoes.com/m/two_sleepy_people">
+            <img
+              src="/images/v10/rotten-tomatoes.png"
+              alt="Written and Directed by"
+            />
+          </a>
         </div>
       </div>
 
