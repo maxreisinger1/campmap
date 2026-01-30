@@ -81,44 +81,45 @@ export default function AboutSection() {
   ];
 
   return (
-    <section className="bg-black mx-auto w-full gap-6 py-8 md:py-10 pb-12 md:pb-32 px-4 md:px-12 lg:px-16 overflow-x-hidden sm:flex hidden">
+    <section className="bg-black mx-auto w-full py-8 md:py-10 pb-12 md:pb-32 px-4 md:px-12 lg:px-16 overflow-x-hidden sm:block hidden">
       {/* Desktop layout: keep original, hide on mobile */}
-      <div className="hidden md:block w-full md:w-[50%] mx-auto">
-        <div className="relative flex flex-col justify-start items-center text-left w-full">
-          <div className="flex flex-col gap-12 items-start w-[80%]">
-            <h2 className="text-start text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wider uppercase leading-8">
-              Early Reviews OF <br />
-              Two Sleepy People
-            </h2>
-            <div className="flex flex-col gap-6">
-              <img
-                src="/images/reviews/review-1.png"
-                alt="Review 1"
-                className="h-auto rounded-lg shadow-md"
-              />
-              <img
-                src="/images/reviews/review-2.png"
-                alt="Review 2"
-                className="h-auto rounded-lg shadow-md"
-              />
-              <img
-                src="/images/reviews/review-3.png"
-                alt="Review 3"
-                className="h-auto rounded-lg shadow-md"
-              />
-              <img
-                src="/images/reviews/review-4.png"
-                alt="Review 3"
-                className="h-auto rounded-lg shadow-md"
-              />
+      <div className="max-w-7xl flex gap-6">
+        <div className="hidden md:block w-full md:w-[50%] mx-auto">
+          <div className="relative flex flex-col justify-start items-center text-left w-full">
+            <div className="flex flex-col gap-12 items-start w-[80%]">
+              <h2 className="text-start text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wider uppercase leading-8">
+                Early Reviews OF <br />
+                Two Sleepy People
+              </h2>
+              <div className="flex flex-col gap-6">
+                <img
+                  src="/images/reviews/review-1.png"
+                  alt="Review 1"
+                  className="h-auto rounded-lg shadow-md"
+                />
+                <img
+                  src="/images/reviews/review-2.png"
+                  alt="Review 2"
+                  className="h-auto rounded-lg shadow-md"
+                />
+                <img
+                  src="/images/reviews/review-3.png"
+                  alt="Review 3"
+                  className="h-auto rounded-lg shadow-md"
+                />
+                <img
+                  src="/images/reviews/review-4.png"
+                  alt="Review 3"
+                  className="h-auto rounded-lg shadow-md"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="hidden md:flex w-full md:w-[50%] mx-auto flex-col">
-        <div className="relative text-center w-full flex flex-col gap-12">
-          {/* <div className="text-center w-full space-y-2 md:space-y-4 mx-auto">
+        <div className="hidden md:flex w-full md:w-[50%] mx-auto flex-col">
+          <div className="relative text-center w-full flex flex-col gap-12">
+            {/* <div className="text-center w-full space-y-2 md:space-y-4 mx-auto">
             <h2 className="text-center text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wide uppercase leading-8">
               TICKETS OFFICIALLY ON SALE <br />
               for JAN 23{" "}
@@ -128,7 +129,7 @@ export default function AboutSection() {
             </h2>
           </div> */}
 
-          {/* <div
+            {/* <div
             className="w-full bg-white shadow-lg md:shadow-2xl relative h-[450px] sm:h-[500px] flex flex-col rounded-lg border-2 border-black max-w-4xl mx-auto mt-6"
             style={{ border: "1px solid rgba(0,0,0,0.06)" }}
           >
@@ -208,7 +209,7 @@ export default function AboutSection() {
             </div>
           </div> */}
 
-          {/* <div className="w-full flex mx-auto flex-col sm:flex-row items-center justify-center gap-2 mt-6">
+            {/* <div className="w-full flex mx-auto flex-col sm:flex-row items-center justify-center gap-2 mt-6">
             <div className="relative w-full">
               <span
                 aria-hidden
@@ -246,65 +247,67 @@ export default function AboutSection() {
             </div>
           </div> */}
 
-          <h2 className="text-start text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wider uppercase leading-8">
-            Official Promo Trailer
-          </h2>
+            <h2 className="text-start text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wider uppercase leading-8">
+              Can Your Relationship Survive?
+            </h2>
 
-          <div
-            className="w-full overflow-hidden rounded-lg border border-[#fff] flex-1 shadow-lg"
-            style={{ height: leftBoxHeight ? leftBoxHeight - 56 : "auto" }} // 56px is the height of the label + margin
-          >
-            <iframe
-              width="560"
-              height="315"
-              src="https://www.youtube.com/embed/xI3pH4X1ZcU?si=4DZYf3AwAVqiSnXm"
-              title="YouTube video player"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-            ></iframe>
-          </div>
-
-          <div className="flex flex-col items-start justify-center gap-2 mt-6 w-[90%]">
-            <span className="uppercase text-white font-light tracking-[0.15em]">
-              See Full Reviews On:
-            </span>
-            <div className="flex flex-row gap-2 items-center">
-              <a
-                href="https://letterboxd.com/film/two-sleepy-people/"
-                target="_blank"
-                rel="noreferrer"
+            <div className="w-full mx-auto" style={{ maxWidth: "800px" }}>
+              <div
+                className="relative w-full overflow-hidden rounded-lg border border-[#fff] shadow-lg"
+                style={{ paddingBottom: "56.25%" }}
               >
-                <img
-                  src="/images/v9/socials/letterboxd.png"
-                  alt="Director Baron Ryan"
-                />
-              </a>
-              <a href="https://www.imdb.com/title/tt38565998/">
-                <img
-                  src="/images/v9/socials/rating.png"
-                  alt="Written and Directed by"
-                />
-              </a>
-              <a href="https://www.imdb.com/title/tt38565998/">
-                <img
-                  src="/images/v9/socials/IMDb-rating.png"
-                  alt="Director Baron Ryan"
-                />
-              </a>
-              <a href="https://www.imdb.com/title/tt38565998/">
-                <img
-                  src="/images/v9/socials/IMDb-logo.png"
-                  alt="Written and Directed by"
-                />
-              </a>
-              <a href="https://www.rottentomatoes.com/m/two_sleepy_people">
-                <img
-                  src="/images/v10/rotten-tomatoes.png"
-                  alt="Written and Directed by"
-                />
-              </a>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src="https://www.youtube.com/embed/xI3pH4X1ZcU?si=4DZYf3AwAVqiSnXm"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-start justify-center gap-2 mt-6 w-[90%]">
+              <span className="uppercase text-white font-light tracking-[0.15em]">
+                See Full Reviews On:
+              </span>
+              <div className="flex flex-row gap-2 items-center">
+                <a
+                  href="https://letterboxd.com/film/two-sleepy-people/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    src="/images/v9/socials/letterboxd.png"
+                    alt="Director Baron Ryan"
+                  />
+                </a>
+                <a href="https://www.imdb.com/title/tt38565998/">
+                  <img
+                    src="/images/v9/socials/rating.png"
+                    alt="Written and Directed by"
+                  />
+                </a>
+                <a href="https://www.imdb.com/title/tt38565998/">
+                  <img
+                    src="/images/v9/socials/IMDb-rating.png"
+                    alt="Director Baron Ryan"
+                  />
+                </a>
+                <a href="https://www.imdb.com/title/tt38565998/">
+                  <img
+                    src="/images/v9/socials/IMDb-logo.png"
+                    alt="Written and Directed by"
+                  />
+                </a>
+                <a href="https://www.rottentomatoes.com/m/two_sleepy_people">
+                  <img
+                    src="/images/v10/rotten-tomatoes.png"
+                    alt="Written and Directed by"
+                  />
+                </a>
+              </div>
             </div>
           </div>
         </div>
