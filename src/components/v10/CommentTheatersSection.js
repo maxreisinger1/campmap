@@ -1,8 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function AboutSection() {
   const [theaters, setTheaters] = useState([]);
   const [loading, setLoading] = useState(true);
+  const leftBoxRef = useRef(null);
+  const [leftBoxHeight, setLeftBoxHeight] = useState(0);
+
+  useEffect(() => {
+    if (leftBoxRef.current) {
+      setLeftBoxHeight(leftBoxRef.current.offsetHeight);
+    }
+  }, []);
 
   useEffect(() => {
     fetch("/data/targeted-theaters.csv")
@@ -77,7 +85,7 @@ export default function AboutSection() {
       {/* Desktop layout: keep original, hide on mobile */}
       <div className="hidden md:block w-full md:w-[50%] mx-auto">
         <div className="relative flex flex-col justify-start items-center text-left w-full">
-          <div className="flex flex-col gap-12 items-start w-[80%] mt-6">
+          <div className="flex flex-col gap-12 items-start w-[80%]">
             <h2 className="text-start text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wider uppercase leading-8">
               Early Reviews OF <br />
               Two Sleepy People
@@ -104,56 +112,13 @@ export default function AboutSection() {
                 className="h-auto rounded-lg shadow-md"
               />
             </div>
-
-            <span className="uppercase text-white font-light tracking-[0.15em]">
-              See Full Reviews On:
-            </span>
-          </div>
-
-          <div className="flex flex-col items-start justify-center gap-2 mt-6 w-[90%]">
-            <div className="flex flex-row gap-2 items-center">
-              <a
-                href="https://letterboxd.com/film/two-sleepy-people/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img
-                  src="/images/v9/socials/letterboxd.png"
-                  alt="Director Baron Ryan"
-                />
-              </a>
-              <a href="https://www.imdb.com/title/tt38565998/">
-                <img
-                  src="/images/v9/socials/rating.png"
-                  alt="Written and Directed by"
-                />
-              </a>
-              <a href="https://www.imdb.com/title/tt38565998/">
-                <img
-                  src="/images/v9/socials/IMDb-rating.png"
-                  alt="Director Baron Ryan"
-                />
-              </a>
-              <a href="https://www.imdb.com/title/tt38565998/">
-                <img
-                  src="/images/v9/socials/IMDb-logo.png"
-                  alt="Written and Directed by"
-                />
-              </a>
-              <a href="https://www.rottentomatoes.com/m/two_sleepy_people">
-                <img
-                  src="/images/v10/rotten-tomatoes.png"
-                  alt="Written and Directed by"
-                />
-              </a>
-            </div>
           </div>
         </div>
       </div>
 
       <div className="hidden md:flex w-full md:w-[50%] mx-auto flex-col">
-        <div className="relative text-center w-full">
-          <div className="text-center w-full space-y-2 md:space-y-4 mx-auto">
+        <div className="relative text-center w-full flex flex-col gap-12">
+          {/* <div className="text-center w-full space-y-2 md:space-y-4 mx-auto">
             <h2 className="text-center text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wide uppercase leading-8">
               TICKETS OFFICIALLY ON SALE <br />
               for JAN 23{" "}
@@ -161,9 +126,9 @@ export default function AboutSection() {
                 (Opening Weekend):
               </span>
             </h2>
-          </div>
+          </div> */}
 
-          <div
+          {/* <div
             className="w-full bg-white shadow-lg md:shadow-2xl relative h-[450px] sm:h-[500px] flex flex-col rounded-lg border-2 border-black max-w-4xl mx-auto mt-6"
             style={{ border: "1px solid rgba(0,0,0,0.06)" }}
           >
@@ -241,9 +206,9 @@ export default function AboutSection() {
                 })}
               </div>
             </div>
-          </div>
+          </div> */}
 
-          <div className="w-full flex mx-auto flex-col sm:flex-row items-center justify-center gap-2 mt-6">
+          {/* <div className="w-full flex mx-auto flex-col sm:flex-row items-center justify-center gap-2 mt-6">
             <div className="relative w-full">
               <span
                 aria-hidden
@@ -277,6 +242,68 @@ export default function AboutSection() {
                 >
                   Don't See Showings Near Your City?
                 </button>
+              </a>
+            </div>
+          </div> */}
+
+          <h2 className="text-start text-[#ffffff] font-bold text-[22px] sm:text-[32px] tracking-wider uppercase leading-8">
+            Official Promo Trailer
+          </h2>
+
+          <div
+            className="w-full overflow-hidden rounded-lg border border-[#fff] flex-1 shadow-lg"
+            style={{ height: leftBoxHeight ? leftBoxHeight - 56 : "auto" }} // 56px is the height of the label + margin
+          >
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/xI3pH4X1ZcU?si=4DZYf3AwAVqiSnXm"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+
+          <div className="flex flex-col items-start justify-center gap-2 mt-6 w-[90%]">
+            <span className="uppercase text-white font-light tracking-[0.15em]">
+              See Full Reviews On:
+            </span>
+            <div className="flex flex-row gap-2 items-center">
+              <a
+                href="https://letterboxd.com/film/two-sleepy-people/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  src="/images/v9/socials/letterboxd.png"
+                  alt="Director Baron Ryan"
+                />
+              </a>
+              <a href="https://www.imdb.com/title/tt38565998/">
+                <img
+                  src="/images/v9/socials/rating.png"
+                  alt="Written and Directed by"
+                />
+              </a>
+              <a href="https://www.imdb.com/title/tt38565998/">
+                <img
+                  src="/images/v9/socials/IMDb-rating.png"
+                  alt="Director Baron Ryan"
+                />
+              </a>
+              <a href="https://www.imdb.com/title/tt38565998/">
+                <img
+                  src="/images/v9/socials/IMDb-logo.png"
+                  alt="Written and Directed by"
+                />
+              </a>
+              <a href="https://www.rottentomatoes.com/m/two_sleepy_people">
+                <img
+                  src="/images/v10/rotten-tomatoes.png"
+                  alt="Written and Directed by"
+                />
               </a>
             </div>
           </div>
