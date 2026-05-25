@@ -28,7 +28,7 @@ export default function AboutSection() {
           style={{ height: 220 }}
         >
           <iframe
-            src="https://www.youtube.com/watch?v=xI3pH4X1ZcU"
+            src="https://www.youtube.com/embed/xI3pH4X1ZcU"
             title="Two Sleepy People Trailer"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -112,7 +112,7 @@ export default function AboutSection() {
           style={{ height: leftBoxHeight ? leftBoxHeight - 56 : "auto" }} // 56px is the height of the label + margin
         >
           <iframe
-            src="https://www.youtube.com/watch?v=xI3pH4X1ZcU"
+            src="https://www.youtube.com/embed/xI3pH4X1ZcU"
             title="Two Sleepy People Trailer"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
