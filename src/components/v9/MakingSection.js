@@ -58,7 +58,7 @@ export default function AboutSection() {
             <iframe
               width="560"
               height="315"
-              src="https://www.youtube.com/embed/QX0aO-O00V8?si=fcRwnRDFfG8XZcqW"
+              src="https://www.youtube.com/embed/xI3pH4X1ZcU?si=fcRwnRDFfG8XZcqW"
               title="YouTube video player"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -286,7 +286,7 @@ export default function AboutSection() {
             <iframe
               width="560"
               height="315"
-              src="https://www.youtube.com/embed/QX0aO-O00V8?si=fcRwnRDFfG8XZcqW"
+              src="https://www.youtube.com/embed/xI3pH4X1ZcU?si=fcRwnRDFfG8XZcqW"
               title="YouTube video player"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
